@@ -43,10 +43,10 @@ sem = _thread.allocate_lock()
 
 #power point(6.16 sec)
 def run01():
-    zap1.straight(coefd1*-300)
-    zap1.turn(-70)
-    bratSt.run_time(800, 300)
+    zap1.straight(coefd1*-100)
+    zap1.turn(-45)
     zap1.straight(coefd1*-400)
+    #bratDr.run_time(1000, 10000)
 
 def brat01_thread():
     global varBrat
