@@ -21,32 +21,28 @@ vitmax=1000
 
 zapdisplay = EV3Brick()
 # definim motoarele si senzorii
-st = Motor(Port.B)
-dr = Motor(Port.C)
-bratDr = Motor(Port.A)
-bratSt = Motor(Port.D)
+st = Motor(Port.B, positive_direction=Direction.COUNTERCLOCKWISE)
+dr = Motor(Port.C, positive_direction=Direction.COUNTERCLOCKWISE)
+bratSt = Motor(Port.A)
+bratDr = Motor(Port.D)
 touch_sensor = TouchSensor(Port.S3)
-#left_sensor = ColorSensor(Port.S1)
-#right_sensor = ColorSensor(Port.S2)
+left_sensor = ColorSensor(Port.S2)
+right_sensor = ColorSensor(Port.S1)
 #gyro = GyroSensor(Port.S3)
 
 # cream drivebase-ul
-zap1 = DriveBase(st, dr, 62, 135)
-global coedf1
+zap1 = DriveBase(st, dr, 50, 105)
+global coefd1
+global coeft1
 coefd1 = 1
-zap1.settings(1000, 1000, 1000, 1000)
-
-
+coeft1 = 1
+zap1.settings(800, 500, 800, 1000)
+st.stop()
+dr.stop()
 global varBrat
 varBrat = 0
 sem = _thread.allocate_lock()
-
-#power point(6.16 sec)
-def run01():
-    zap1.straight(coefd1*-100)
-    zap1.turn(-45)
-    zap1.straight(coefd1*-400)
-    #bratDr.run_time(1000, 10000)
+zap.speaker.beep() 
 
 def brat01_thread():
     global varBrat
@@ -69,7 +65,7 @@ def brat02_thread():
         sem.acquire()
         if varBrat2 != 0:
             sem.release()
-            bratSt.run_time(varBrat2, 500)
+            bratSt.run_time(varBrat2, 1000)
             varBrat2 = 0
         else:
             sem.release()
@@ -81,12 +77,96 @@ _thread.start_new_thread(brat01_thread,())
 _thread.start_new_thread(brat02_thread,())
 
 sem.acquire()
-varBrat = 1
-varBrat2 = 1
+varBrat2 = 0
+varBrat = 0
 sem.release()
 
+def run01():
+    zap1.straight(coefd1*20)
+    zap1.turn(coeft1*-50)
+    zap1.straight(coefd1*200)
+    
+    zap1.turn(coeft1*-45)
+    zap1.straight(coefd1*80)
+    bratDr.run_time(500, 200)
+    zap1.turn(coeft1*72)
+    zap1.straight(coefd1*120)
+    bratDr.run_time(450, 600)
+    zap1.straight(coefd1*60)
+    zap1.turn(coeft1*-10)
+    zap1.straight(coefd1*70)
+    bratSt.run_time(-1000, 6000)
+    #zap1.straight(coefd1*200)
+    #zap1.turn(coeft1*-23)
+    #zap1.straight(coefd1*40)
+    #zap1.turn(coeft1*30)
+    #zap1.straight(coefd1*50)
+    #zap1.turn(coeft1*-7)
+    #bratDr.run_time(450, 550)
+    #zap1.straight(coefd1*200)
+
+    bratDr.stop()
+    bratSt.stop()
+
+def run02():
+    zap1.straight(coefd1*500)
+    zap1.turn(coeft1*37)
+    zap1.straight(coefd1*240) 
+    zap1.turn(coeft1*-55)
+    zap1.straight(coefd1*100)
+
+
+    bratDr.stop()
+    bratSt.stop()
+    
+
+def run05(degrees):
+    st.reset_angle(0)
+    while st.angle() < degrees:
+        zap1.straight(coefd1*50)
+        time.sleep(0.1)
+        zapdisplay.screen.clear()
+        zapdisplay.screen.draw_text(80, 50, str(st.angle()), Color.BLACK, None)
+        if left_sensor.color() == Color.WHITE:
+            zap1.turn(10)
+        if left_sensor.color() == Color.BLACK:
+            zap1.turn(-10)
+
+
+#bratDr (-) ridicare
+#bratSt (+) ridicare
+
+def run06():
+    #ridica bratele
+    bratDr.run_time(-400, 550)
+    bratSt.run_time(400, 550)
+    #merge cu spatele pana in fata sinei
+    zap1.straight(coefd1*470)
+    #coboara ambele brate
+    bratDr.run_time(450, 570)
+    bratSt.run_time(-400, 550)
+    #merge in fata cu directia spre baza
+    zap1.straight(coefd1*-110)
+    #urca brat stanga
+    bratSt.run_time(400, 550)
+    #se intoarce 45 de grade
+    zap1.turn(coeft1*-45)
+    #o ia cu fata cu directia spre baza
+    zap1.straight(coefd1*-100)
+    #se intoarce pe directia 0
+    zap1.turn(coeft1*-45)
+    #megre inainte ca sa lase camera in locul ei
+    zap1.straight(coefd1*150)
+    #ridica bratul
+    bratDr.run_time(-400 ,550)
+    #merge in baza
+    zap1.straight(coefd1*400)
+    bratDr.stop()
+    bratSt.stop()
+
 x = 1
-zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None)
+zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
+
 
 # afisare run pe ecran
 def update_screen(x):
@@ -97,6 +177,7 @@ touch=0
 
 # main
 while True:
+    
     # verificare apasare butoane
     if Button.UP in zapdisplay.buttons.pressed() and x < 8:
         x = x+1
@@ -133,7 +214,7 @@ while True:
     if int(x)==5 and touch_sensor.pressed():
         touch = 1
         if touch_sensor.pressed() and touch==1:
-            run05()
+            run05(5000)
             touch = 0
     if int(x)==6 and touch_sensor.pressed():
         touch = 1
@@ -150,3 +231,5 @@ while True:
         if touch_sensor.pressed() and touch==1:
             run08()
             touch = 0
+dr.stop()
+st.stop()
