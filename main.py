@@ -1,4 +1,8 @@
 #!/usr/bin/env pybricks-micropython
+
+#! Nu modificati importurile ca ne ducem dracu sau sa modificati orice alt ceva infara de runuri
+#! version: 0.3
+#***************************IMPORTS***************************
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
                                  InfraredSensor, UltrasonicSensor, GyroSensor)
@@ -10,6 +14,8 @@ import utime
 import time
 import _thread
 
+#***************************VALUES***************************
+
 # Create variables
 zap=EV3Brick()
 
@@ -18,8 +24,8 @@ vitneg = -viteza #viteza negativa
 vitezafin = 400 #viteza final
 acceleratie=200
 vitmax=1000
-
 zapdisplay = EV3Brick()
+
 # definim motoarele si senzorii
 st = Motor(Port.B, positive_direction=Direction.COUNTERCLOCKWISE)
 dr = Motor(Port.C, positive_direction=Direction.COUNTERCLOCKWISE)
@@ -36,13 +42,15 @@ global coefd1
 global coeft1
 coefd1 = 1
 coeft1 = 1
-zap1.settings(800, 500, 800, 1000)
+zap1.settings(800, 500, 300, 300)
 st.stop()
 dr.stop()
 global varBrat
 varBrat = 0
 sem = _thread.allocate_lock()
 zap.speaker.beep() 
+
+#***************************THREAD BRATE***************************
 
 def brat01_thread():
     global varBrat
@@ -81,21 +89,27 @@ varBrat2 = 0
 varBrat = 0
 sem.release()
 
+#***************************RUNS***************************
 def run01():
-    zap1.straight(coefd1*20)
+    bratDr.run_time(500,180)
+    zap1.straight(coefd1*40)
     zap1.turn(coeft1*-50)
-    zap1.straight(coefd1*200)
+    zap1.straight(coefd1*190)
     
-    zap1.turn(coeft1*-45)
-    zap1.straight(coefd1*80)
-    bratDr.run_time(500, 200)
-    zap1.turn(coeft1*72)
-    zap1.straight(coefd1*120)
-    bratDr.run_time(450, 600)
+    zap1.turn(coeft1*-60)
     zap1.straight(coefd1*60)
-    zap1.turn(coeft1*-10)
-    zap1.straight(coefd1*70)
-    bratSt.run_time(-1000, 6000)
+    bratDr.run_time(700,500)
+    zap1.turn(coeft1*72)
+    zap1.straight(coefd1*-60)
+    #zap1.straight(coefd1*120)
+    #bratDr.run_time(450, 600)
+    #zap1.straight(coefd1*60)
+    #zap1.turn(coeft1*-10)
+    #zap1.straight(coefd1*70)
+
+    #bratSt.run_time(-1000, 6000)
+
+
     #zap1.straight(coefd1*200)
     #zap1.turn(coeft1*-23)
     #zap1.straight(coefd1*40)
@@ -119,6 +133,11 @@ def run02():
     bratDr.stop()
     bratSt.stop()
     
+def run03():
+    zap1.straight(-400)
+    time.sleep(0.2)
+    zap1.straight(400)
+
 
 def run05(degrees):
     st.reset_angle(0)
@@ -163,6 +182,9 @@ def run06():
     zap1.straight(coefd1*400)
     bratDr.stop()
     bratSt.stop()
+
+
+#***************************Display***************************
 
 x = 1
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
@@ -217,7 +239,7 @@ while True:
             run05(5000)
             touch = 0
     if int(x)==6 and touch_sensor.pressed():
-        touch = 1
+        touch = 1   
         if touch_sensor.pressed() and touch==1:
             run06()
             touch = 0
