@@ -136,15 +136,21 @@ def run01():
     zap1.straight(400)
 
 def run02():
+    time.sleep(0.1)
     bratDr.run_time(500,180)
     zap1.straight(coefd1*40)
     zap1.turn(coeft1*-50)
     zap1.straight(coefd1*190)
     zap1.turn(coeft1*-60)
     zap1.straight(coefd1*60)
-    bratDr.run_time(700,500)
-    zap1.turn(coeft1*72)
-    zap1.straight(coefd1*-60)
+    bratDr.run_time(400,500)
+    zap1.turn(coeft1*77)
+    zap1.straight(coefd1*-100)
+    bratDr.run_time(-400,450)
+    zap1.straight(coefd1*125)
+    bratDr.run_time(200,700)
+    zap1.straight(coefd1*210)
+    bratSt.run_time(1000,1000)
 
     bratDr.stop()
     bratSt.stop()
@@ -203,7 +209,7 @@ def urmarireLinie1(degrees):
 
 #***************************DISPLAY***************************
 #afisare run pe ecran
-x = 1
+x = 2
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
@@ -226,45 +232,45 @@ while True:
         update_screen(x)
         wait(700)
 
-    if int(x)==1 and touch_sensor.pressed() :
+    if int(x)==1 and senzorApasare.pressed() :
         touch = 1
-        if touch_sensor.pressed() and touch==1:
+        if senzorApasare.pressed() and touch==1:
             run01()
             touch = 0
-    if int(x)==2 and touch_sensor.pressed():
+    if int(x)==2 and senzorApasare.pressed():
         wait(200)
         touch = 1
-        if touch_sensor.pressed() and touch==1:
+        if senzorApasare.pressed() and touch==1:
             run02()
             touch = 0
-    if int(x)==3 and touch_sensor.pressed():
+    if int(x)==3 and senzorApasare.pressed():
         touch = 1
-        if touch_sensor.pressed() and touch==1:
+        if senzorApasare.pressed() and touch==1:
             run03()
             touch = 0   
-    if int(x)==4 and touch_sensor.pressed():
+    if int(x)==4 and senzorApasare.pressed():
         touch = 1
-        if touch_sensor.pressed() and touch==1:
+        if senzorApasare.pressed() and touch==1:
             run04()
             touch = 0
-    if int(x)==5 and touch_sensor.pressed():
+    if int(x)==5 and senzorApasare.pressed():
         touch = 1
-        if touch_sensor.pressed() and touch==1:
+        if senzorApasare.pressed() and touch==1:
             run05(5000)
             touch = 0
-    if int(x)==6 and touch_sensor.pressed():
+    if int(x)==6 and senzorApasare.pressed():
         touch = 1   
-        if touch_sensor.pressed() and touch==1:
+        if senzorApasare.pressed() and touch==1:
             run06()
             touch = 0
-    if int(x)==7 and touch_sensor.pressed():
+    if int(x)==7 and senzorApasare.pressed():
         touch = 1
-        if touch_sensor.pressed() and touch==1:
+        if senzorApasare.pressed() and touch==1:
             run07()
             touch = 0
-    if int(x)==8 and touch_sensor.pressed():
+    if int(x)==8 and senzorApasare.pressed():
         touch = 1
-        if touch_sensor.pressed() and touch==1:
+        if senzorApasare.pressed() and touch==1:
             run08()
             touch = 0
 dr.stop()
