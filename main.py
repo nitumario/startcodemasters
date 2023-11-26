@@ -23,10 +23,10 @@ st = Motor(Port.B, positive_direction=Direction.COUNTERCLOCKWISE)
 dr = Motor(Port.C, positive_direction=Direction.COUNTERCLOCKWISE)
 bratSt = Motor(Port.A)
 bratDr = Motor(Port.D)
-right_sensor = ColorSensor(Port.S1)
-left_sensor = ColorSensor(Port.S2)
-touch_sensor = TouchSensor(Port.S3)
-gyro = GyroSensor(Port.S4)
+senzorCuloareDr = ColorSensor(Port.S1)
+senzorCuloareSt = ColorSensor(Port.S2)
+senzorApasare = TouchSensor(Port.S3)
+senzorGiro = GyroSensor(Port.S4)
 
 #cream setarile robotului
 zap1 = DriveBase(st, dr, 50, 105)
@@ -35,7 +35,7 @@ zap3 = DriveBase(st, dr, 50, 105)
 zap4 = DriveBase(st, dr, 50, 105)
 zap5 = DriveBase(st, dr, 50, 105)
 zap6 = DriveBase(st, dr, 50, 105)
-zap7= DriveBase(st, dr, 50, 105)
+zap7 = DriveBase(st, dr, 50, 105)
 zap8 = DriveBase(st, dr, 50, 105)
 
 zap1.settings(800, 500, 300, 300)
@@ -85,19 +85,19 @@ coefd8 = 1
 coeft8 = 1
 
 #***************************THREAD BRATE***************************
+varBrat1 = 0
+varBrat2 = 0
 
-global varBrat
-varBrat = 0
-sem = _thread.allocate_lock()
+#definim functiile pentru thread-uri
 def brat01_thread():
-    global varBrat
+    global varBrat1
     while True:
 
         sem.acquire()
-        if varBrat != 0:
+        if varBrat1 != 0:
             sem.release()
-            bratDr.run_time(varBrat, 1000)
-            varBrat = 0
+            bratDr.run_time(varBrat1, 1000)
+            varBrat1 = 0
         else:
             sem.release()
             time.sleep(0.1) 
@@ -116,14 +116,14 @@ def brat02_thread():
             sem.release()
             time.sleep(0.1) 
 
-
-
+#programul principal pentru thread-uri
+sem = _thread.allocate_lock()
 _thread.start_new_thread(brat01_thread,())
 _thread.start_new_thread(brat02_thread,())
 
 sem.acquire()
+varBrat1 = 0
 varBrat2 = 0
-varBrat = 0
 sem.release()
 
 #***************************RUNS***************************
@@ -201,7 +201,7 @@ def urmarireLinie1(degrees):
             zap1.turn(-10)
 
 
-#***************************Display***************************
+#***************************DISPLAY***************************
 #afisare run pe ecran
 x = 1
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
