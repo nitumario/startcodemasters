@@ -146,12 +146,17 @@ def run02():
     bratDr.run_time(400,500)
     zap1.turn(coeft1*85)
     zap1.straight(coefd1*-100)
-    zap1.drive(-100, 10)
     bratDr.run_time(-400,450)
+    #merge la al doilea omulet
     zap1.straight(coefd1*170)
+    #ridica al doilea omulet
     bratDr.run_time(200,700)
-    zap1.straight(coefd1*220)
-    bratSt.run_time(1000,1000)
+    #se indreapta spre cocos
+    zap1.straight(coefd1*200)
+    zap1.turn(coeft1*-70)
+    zap1.straight(coefd1*50)
+    bratSt.run_time(-1000,3000)
+    zap1.straight(coefd1*-500)
 
     bratDr.stop()
     bratSt.stop()
