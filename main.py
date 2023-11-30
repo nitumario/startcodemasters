@@ -1,5 +1,8 @@
 #!/usr/bin/env pybricks-micropython
-
+#TODO: terminati run-ul unu, facet-il sa mearga perfect
+#TODO: apucativa de run-ul 2
+#! Nu modificati importurile ca ne ducem dracu sau sa modificati orice alt ceva infara de runuri
+#! version: 0.3
 #***************************IMPORTS***************************
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
@@ -12,7 +15,9 @@ import utime
 import time
 import _thread
 
-#***************************VALUES***************************
+#***************************ROBOTUL***************************
+#!bratDr (+) ridicare
+#!bratSt (-) lasa in jos
 
 #definim caramida si display-ul
 zap=EV3Brick()
@@ -28,7 +33,9 @@ senzorCuloareSt = ColorSensor(Port.S2)
 senzorApasare = TouchSensor(Port.S3)
 senzorGiro = GyroSensor(Port.S4)
 
-#cream setarile robotului
+#***************************OBIECTELE***************************
+
+#DRIVE BASE-UL SI SETARILE OBIECTELOR
 zap1 = DriveBase(st, dr, 50, 105)
 zap2 = DriveBase(st, dr, 50, 105)
 zap3 = DriveBase(st, dr, 50, 105)
@@ -49,7 +56,10 @@ zap8.settings(800, 500, 300, 300)
 
 st.stop()
 dr.stop()
-#cream coeficientii pentru erori
+
+#CREEM COEFICIENTELE
+#!Daca nu sti pentru ce sunt coefincientele intraba-l pe Vlad
+
 global coefd1
 global coeft1
 global coefd2
@@ -88,7 +98,6 @@ coeft8 = 1
 varBrat1 = 0
 varBrat2 = 0
 
-#definim functiile pentru thread-uri
 def brat01_thread():
     global varBrat1
     while True:
@@ -116,7 +125,7 @@ def brat02_thread():
             sem.release()
             time.sleep(0.1) 
 
-#programul principal pentru thread-uri
+#PROGRAMUL PRINCIPAL PENTRU THREAD-URI
 sem = _thread.allocate_lock()
 _thread.start_new_thread(brat01_thread,())
 _thread.start_new_thread(brat02_thread,())
@@ -127,40 +136,44 @@ varBrat2 = 0
 sem.release()
 
 #***************************RUNS***************************
-#bratDr (+) ridicare
-#bratSt (-) ridicare
 
 def run01():
-    zap1.straight(-400)
-    time.sleep(0.2)
-    zap1.straight(400)
-
-def run02():
-    time.sleep(0.1)
-    bratDr.run_time(500,180)
     zap1.straight(coefd1*40)
+    bratDr.run_time(500,180)
     zap1.turn(coeft1*-50)
     zap1.straight(coefd1*190)
     zap1.turn(coeft1*-60)
-    zap1.straight(coefd1*60)
-    bratDr.run_time(400,500)
-    zap1.turn(coeft1*77)
+    zap1.straight(coefd1*80)
+    bratDr.run_time(400,500) # SE IA PRIMUL OM
+    zap1.straight(coefd1*-20)
+    zap1.turn(coeft1*76)
     zap1.straight(coefd1*-100)
-    bratDr.run_time(-400,450)
-    zap1.straight(coefd1*125)
-    bratDr.run_time(200,700)
-    zap1.straight(coefd1*210)
-    bratSt.run_time(1000,1000)
+    bratDr.run_time(-400,500)
+    zap1.straight(coefd1*180)
+    bratDr.run_time(200,1000) # SE IA AL DOILEA OM
+    zap1.turn(coeft1*10)
+    zap1.straight(coefd1*50)
+    zap1.turn(coeft1*-10)
+    zap1.straight(coefd1*180)
+    zap1.straight(coefd1*-6)
+    bratSt.run_time(-1000,2000) # SE FACE GAINA
+    zap1.straight(coefd1*-400)
 
     bratDr.stop()
     bratSt.stop()
 
+def run02():
+    zap2.straight(-400)
+    time.sleep(0.2)
+    zap2.straight(400)
+
+
 def run03():
-    zap1.straight(coefd1*500)
-    zap1.turn(coeft1*37)
-    zap1.straight(coefd1*240) 
-    zap1.turn(coeft1*-55)
-    zap1.straight(coefd1*100)
+    zap3.straight(coefd1*500)
+    zap3.turn(coeft1*37)
+    zap3.straight(coefd1*240) 
+    zap3.turn(coeft1*-55)
+    zap3.straight(coefd1*100)
 
     bratDr.stop()
     bratSt.stop()
@@ -194,6 +207,8 @@ def run06():
     bratDr.stop()
     bratSt.stop()
 
+#***************************URMARIRE LINIE***************************
+
 def urmarireLinie1(degrees):
     st.reset_angle(0)
     while st.angle() < degrees:
@@ -208,8 +223,8 @@ def urmarireLinie1(degrees):
 
 
 #***************************DISPLAY***************************
-#afisare run pe ecran
-x = 2
+#FUNCTIA DE AFISARE
+x = 1
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
@@ -219,7 +234,7 @@ def update_screen(x):
 
 touch=0
 
-#main
+#***************************DISPLAY***************************
 while True:
     #verificare apasare butoane
     if Button.UP in zapdisplay.buttons.pressed() and x < 8:
