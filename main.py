@@ -45,7 +45,7 @@ zap8 = DriveBase(st, dr, 50, 105)
 
 zap1.settings(800, 500, 300, 300)
 zap2.settings(1000, 1000, 300, 300)
-zap3.settings(800, 500, 300, 300)
+zap3.settings(800, 800, 300, 300)
 zap4.settings(800, 500, 300, 300)
 zap5.settings(800, 500, 300, 300)
 zap6.settings(800, 500, 300, 300)
@@ -137,27 +137,34 @@ sem.release()
 
 def run01():
     zap1.straight(coefd1*40)
-    bratDr.run_time(500,180)
+    #prima rotire din baza spre primul om
     zap1.turn(coeft1*-50)
     zap1.straight(coefd1*190)
+    #prima rotire spre primul om
     zap1.turn(coeft1*-60)
+    #ajunge bratul in cercul omului
     zap1.straight(coefd1*80)
     #se ridica primul om
     bratDr.run_time(400,500)
     zap1.straight(coefd1*-20)
     zap1.turn(coeft1*76)
     zap1.straight(coefd1*-100)
+    #coboram bratul ca sa apucam al doilea om
     bratDr.run_time(-400,500)
     zap1.straight(coefd1*180)
     #se ridica al doilea om
     bratDr.run_time(200,1000)
-    zap1.turn(coeft1*10)
-    zap1.straight(coefd1*50)
-    zap1.turn(coeft1*-10)
+    zap1.turn(coeft1*12)
+    zap1.straight(coefd1*35)
+    zap1.turn(coeft1*-15)
+    #se indreapta la cocos
     zap1.straight(coefd1*180)
     zap1.straight(coefd1*-6)
     #actionam motorul pentru cocos
     bratSt.run_time(-1000,2000)
+    #rotire pentru indeplinirea imprimantei complet
+    zap1.turn(coeft1*-10)
+    #merge in baza
     zap1.straight(coefd1*-400)
 
     bratDr.stop()
@@ -168,21 +175,25 @@ def run02():
     time.sleep(0.2)
     zap2.straight(400)
 
-
 def run03():
-    zap3.straight(coefd1*500)
-    zap3.turn(coeft1*37)
-    zap3.straight(coefd1*240) 
-    zap3.turn(coeft1*-55)
-    zap3.straight(coefd1*100)
+    bratSt.run_time(500, 230)
+    bratDr.run_time(500, 500)
+    zap3.straight(coefd3*700)
+    zap3.turn(coeft3*45)
+    zap3.straight(coefd3*150)
+    bratSt.run_time(1500, 500)
+    bratDr.run_time(-500, 500)
+    zap3.straight(coefd3*-200)
+    zap3.turn(coeft3*-80)
+    zap3.straight(coefd3*-600)
 
     bratDr.stop()
     bratSt.stop()
 
 def run06():
     #ridica bratele
-    bratDr.run_time(-400, 550)
-    bratSt.run_time(400, 550)
+    bratDr.run_time(-200, 550)
+    bratSt.run_time(200, 550)
     #merge cu spatele pana in fata sinei
     zap1.straight(coefd1*470)
     #coboara ambele brate
@@ -225,7 +236,7 @@ def urmarireLinie1(degrees):
 
 #**************************DISPLAY**************************
 #FUNCTIA DE AFISARE
-x = 1
+x = 3
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
