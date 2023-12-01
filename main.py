@@ -26,10 +26,11 @@ st = Motor(Port.B, positive_direction=Direction.COUNTERCLOCKWISE)
 dr = Motor(Port.C, positive_direction=Direction.COUNTERCLOCKWISE)
 bratSt = Motor(Port.A)
 bratDr = Motor(Port.D)
-senzorCuloareDr = ColorSensor(Port.S1)
+#senzorCuloareDr = ColorSensor(Port.S1)
 senzorCuloareSt = ColorSensor(Port.S2)
 senzorApasare = TouchSensor(Port.S3)
-senzorGiro = GyroSensor(Port.S4)
+senzorGyro = GyroSensor(Port.S4)
+senzorUltra = UltrasonicSensor(Port.S1)
 
 #**************************OBIECTELE**************************
 
@@ -92,6 +93,23 @@ coeft7 = 1
 coefd8 = 1
 coeft8 = 1
 
+#**************************THREAD SENZORI**************************
+gyro = DataLog('run', 'time', 'angle', 'distance')
+
+def sensor_thread()
+    while True:
+    #citeste datele de la gyro
+    angle = senzorGyro.angle()
+    time = watch.time()
+    run = x
+    distance = senzorUltra.distance()
+    data.log(run, time/1000, angle, distance)
+    wait(100)
+
+
+
+
+
 #**************************THREAD BRATE**************************
 varBrat1 = 0
 varBrat2 = 0
@@ -134,7 +152,6 @@ varBrat2 = 0
 sem.release()
 
 #**************************RUNS**************************
-
 def run01():
     zap1.straight(coefd1*40)
     bratDr.run_time(500,180)
