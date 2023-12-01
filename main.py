@@ -1,9 +1,7 @@
 #!/usr/bin/env pybricks-micropython
 #TODO: terminati run-ul unu, facet-il sa mearga perfect
 #TODO: apucativa de run-ul 2
-#! Nu modificati importurile ca ne ducem dracu sau sa modificati orice alt ceva infara de runuri
-#! version: 0.3
-#***************************IMPORTS***************************
+#**************************IMPORTS**************************
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
                                  InfraredSensor, UltrasonicSensor, GyroSensor)
@@ -15,7 +13,7 @@ import utime
 import time
 import _thread
 
-#***************************ROBOTUL***************************
+#**************************ROBOTUL**************************
 #!bratDr (+) ridicare
 #!bratSt (-) lasa in jos
 
@@ -33,7 +31,7 @@ senzorCuloareSt = ColorSensor(Port.S2)
 senzorApasare = TouchSensor(Port.S3)
 senzorGiro = GyroSensor(Port.S4)
 
-#***************************OBIECTELE***************************
+#**************************OBIECTELE**************************
 
 #DRIVE BASE-UL SI SETARILE OBIECTELOR
 zap1 = DriveBase(st, dr, 50, 105)
@@ -94,7 +92,7 @@ coeft7 = 1
 coefd8 = 1
 coeft8 = 1
 
-#***************************THREAD BRATE***************************
+#**************************THREAD BRATE**************************
 varBrat1 = 0
 varBrat2 = 0
 
@@ -135,7 +133,7 @@ varBrat1 = 0
 varBrat2 = 0
 sem.release()
 
-#***************************RUNS***************************
+#**************************RUNS**************************
 
 def run01():
     zap1.straight(coefd1*40)
@@ -207,7 +205,7 @@ def run06():
     bratDr.stop()
     bratSt.stop()
 
-#***************************URMARIRE LINIE***************************
+#**************************URMARIRE LINIE**************************
 
 def urmarireLinie1(degrees):
     st.reset_angle(0)
@@ -222,7 +220,7 @@ def urmarireLinie1(degrees):
             zap1.turn(-10)
 
 
-#***************************DISPLAY***************************
+#**************************DISPLAY**************************
 #FUNCTIA DE AFISARE
 x = 1
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
@@ -234,7 +232,7 @@ def update_screen(x):
 
 touch=0
 
-#***************************DISPLAY***************************
+#**************************DISPLAY**************************
 while True:
     #verificare apasare butoane
     if Button.UP in zapdisplay.buttons.pressed() and x < 8:
