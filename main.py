@@ -1,6 +1,7 @@
 #!/usr/bin/env pybricks-micropython
-
-#***************************IMPORTS***************************
+#TODO: terminati run-ul unu, facet-il sa mearga perfect
+#TODO: apucativa de run-ul 2
+#**************************IMPORTS**************************
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
                                  InfraredSensor, UltrasonicSensor, GyroSensor)
@@ -12,7 +13,9 @@ import utime
 import time
 import _thread
 
-#***************************VALUES***************************
+#**************************ROBOTUL**************************
+#!bratDr (+) ridicare
+#!bratSt (-) lasa in jos
 
 #definim caramida si display-ul
 zap=EV3Brick()
@@ -28,7 +31,9 @@ senzorCuloareSt = ColorSensor(Port.S2)
 senzorApasare = TouchSensor(Port.S3)
 senzorGiro = GyroSensor(Port.S4)
 
-#cream setarile robotului
+#**************************OBIECTELE**************************
+
+#DRIVE BASE-UL SI SETARILE OBIECTELOR
 zap1 = DriveBase(st, dr, 50, 105)
 zap2 = DriveBase(st, dr, 50, 105)
 zap3 = DriveBase(st, dr, 50, 105)
@@ -39,7 +44,7 @@ zap7 = DriveBase(st, dr, 50, 105)
 zap8 = DriveBase(st, dr, 50, 105)
 
 zap1.settings(800, 500, 300, 300)
-zap2.settings(800, 500, 300, 300)
+zap2.settings(1000, 1000, 300, 300)
 zap3.settings(800, 500, 300, 300)
 zap4.settings(800, 500, 300, 300)
 zap5.settings(800, 500, 300, 300)
@@ -49,7 +54,10 @@ zap8.settings(800, 500, 300, 300)
 
 st.stop()
 dr.stop()
-#cream coeficientii pentru erori
+
+#CREEM COEFICIENTELE DE EROARE
+#!Daca nu sti pentru ce sunt coefincientele intraba-l pe Vlad
+
 global coefd1
 global coeft1
 global coefd2
@@ -84,11 +92,10 @@ coeft7 = 1
 coefd8 = 1
 coeft8 = 1
 
-#***************************THREAD BRATE***************************
+#**************************THREAD BRATE**************************
 varBrat1 = 0
 varBrat2 = 0
 
-#definim functiile pentru thread-uri
 def brat01_thread():
     global varBrat1
     while True:
@@ -116,7 +123,7 @@ def brat02_thread():
             sem.release()
             time.sleep(0.1) 
 
-#programul principal pentru thread-uri
+#PROGRAMUL PRINCIPAL PENTRU THREAD-URI
 sem = _thread.allocate_lock()
 _thread.start_new_thread(brat01_thread,())
 _thread.start_new_thread(brat02_thread,())
@@ -126,47 +133,48 @@ varBrat1 = 0
 varBrat2 = 0
 sem.release()
 
-#***************************RUNS***************************
-#bratDr (+) ridicare
-#bratSt (-) ridicare
+#**************************RUNS**************************
 
 def run01():
-    zap1.straight(-400)
-    time.sleep(0.2)
-    zap1.straight(400)
-
-def run02():
-    time.sleep(0.1)
-    bratDr.run_time(500,180)
     zap1.straight(coefd1*40)
-    zap1.turn(coeft1*-45)
+    bratDr.run_time(500,180)
+    zap1.turn(coeft1*-50)
     zap1.straight(coefd1*190)
     zap1.turn(coeft1*-60)
-    zap1.straight(coefd1*120)
+    zap1.straight(coefd1*80)
+    #se ridica primul om
     bratDr.run_time(400,500)
-    zap1.turn(coeft1*85)
+    zap1.straight(coefd1*-20)
+    zap1.turn(coeft1*76)
     zap1.straight(coefd1*-100)
-    bratDr.run_time(-400,450)
-    #merge la al doilea omulet
-    zap1.straight(coefd1*170)
-    #ridica al doilea omulet
-    bratDr.run_time(200,700)
-    #se indreapta spre cocos
-    zap1.straight(coefd1*200)
-    zap1.turn(coeft1*-70)
+    bratDr.run_time(-400,500)
+    zap1.straight(coefd1*180)
+    #se ridica al doilea om
+    bratDr.run_time(200,1000)
+    zap1.turn(coeft1*10)
     zap1.straight(coefd1*50)
-    bratSt.run_time(-1000,3000)
-    zap1.straight(coefd1*-500)
+    zap1.turn(coeft1*-10)
+    zap1.straight(coefd1*180)
+    zap1.straight(coefd1*-6)
+    #actionam motorul pentru cocos
+    bratSt.run_time(-1000,2000)
+    zap1.straight(coefd1*-400)
 
     bratDr.stop()
     bratSt.stop()
 
+def run02():
+    zap2.straight(-400)
+    time.sleep(0.2)
+    zap2.straight(400)
+
+
 def run03():
-    zap1.straight(coefd1*500)
-    zap1.turn(coeft1*37)
-    zap1.straight(coefd1*240) 
-    zap1.turn(coeft1*-55)
-    zap1.straight(coefd1*100)
+    zap3.straight(coefd1*500)
+    zap3.turn(coeft1*37)
+    zap3.straight(coefd1*240) 
+    zap3.turn(coeft1*-55)
+    zap3.straight(coefd1*100)
 
     bratDr.stop()
     bratSt.stop()
@@ -200,6 +208,8 @@ def run06():
     bratDr.stop()
     bratSt.stop()
 
+#**************************URMARIRE LINIE**************************
+
 def urmarireLinie1(degrees):
     st.reset_angle(0)
     while st.angle() < degrees:
@@ -213,9 +223,9 @@ def urmarireLinie1(degrees):
             zap1.turn(-10)
 
 
-#***************************DISPLAY***************************
-#afisare run pe ecran
-x = 2
+#**************************DISPLAY**************************
+#FUNCTIA DE AFISARE
+x = 1
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
@@ -225,7 +235,7 @@ def update_screen(x):
 
 touch=0
 
-#main
+#**************************DISPLAY**************************
 while True:
     #verificare apasare butoane
     if Button.UP in zapdisplay.buttons.pressed() and x < 8:
