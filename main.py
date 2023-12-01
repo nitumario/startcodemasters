@@ -44,7 +44,7 @@ zap7 = DriveBase(st, dr, 50, 105)
 zap8 = DriveBase(st, dr, 50, 105)
 
 zap1.settings(800, 500, 300, 300)
-zap2.settings(800, 500, 300, 300)
+zap2.settings(1000, 1000, 300, 300)
 zap3.settings(800, 500, 300, 300)
 zap4.settings(800, 500, 300, 300)
 zap5.settings(800, 500, 300, 300)
@@ -55,7 +55,7 @@ zap8.settings(800, 500, 300, 300)
 st.stop()
 dr.stop()
 
-#CREEM COEFICIENTELE
+#CREEM COEFICIENTELE DE EROARE
 #!Daca nu sti pentru ce sunt coefincientele intraba-l pe Vlad
 
 global coefd1
@@ -142,19 +142,22 @@ def run01():
     zap1.straight(coefd1*190)
     zap1.turn(coeft1*-60)
     zap1.straight(coefd1*80)
-    bratDr.run_time(400,500) # SE IA PRIMUL OM
+    #se ridica primul om
+    bratDr.run_time(400,500)
     zap1.straight(coefd1*-20)
     zap1.turn(coeft1*76)
     zap1.straight(coefd1*-100)
     bratDr.run_time(-400,500)
     zap1.straight(coefd1*180)
-    bratDr.run_time(200,1000) # SE IA AL DOILEA OM
+    #se ridica al doilea om
+    bratDr.run_time(200,1000)
     zap1.turn(coeft1*10)
     zap1.straight(coefd1*50)
     zap1.turn(coeft1*-10)
     zap1.straight(coefd1*180)
     zap1.straight(coefd1*-6)
-    bratSt.run_time(-1000,2000) # SE FACE GAINA
+    #actionam motorul pentru cocos
+    bratSt.run_time(-1000,2000)
     zap1.straight(coefd1*-400)
 
     bratDr.stop()
