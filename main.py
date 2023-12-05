@@ -177,38 +177,40 @@ def run02():
 
 def run03():
     #setam bratele la pozitie de plecare
-    bratSt.run_time(500, 500)
+    bratSt.run_time(500, 450)
     bratDr.run_time(500, 500)
-    zap3.straight(coefd3*700)
+    zap3.straight(coefd3*720)
     #ne indreptam spre scena
     zap3.turn(coeft3*45)
     #impingem scena
-    zap3.straight(coefd3*150)
-    """
+    zap3.straight(coefd3*140)
     #actionam bratele pentru stanga si dreapta scenei
-    bratSt.run_time(1500, 500)
+    bratSt.run_time(-2000, 450)
     bratDr.run_time(-500, 500)
+    #test stanga scenei
+    zap3.straight(coefd3*-50)
+    zap3.turn(coeft3*-35)
+    zap3.straight(coefd3*70)
+    bratSt.run_time(2000, 460)
+    zap3.straight(coefd3*-50)
+    zap3.turn(coeft3*35)
+    #final test
     #dam cu spatele dupa TAO
-    zap3.straight(coefd3*-160)
-    #resetam bratul la pozitia initiala din baza
-    bratSt.run_time(-700, 500)
+    zap3.straight(coefd3*-170)
     #mergem cu spatele pana la floare
-    zap3.turn(coeft3*40)
-    zap3.straight(coefd3*-600)
-    zap3.turn(coeft3*-45)
+    zap3.turn(coeft3*20)
+    zap3.straight(coefd3*-450)
+    zap3.turn(coeft3*-40)
     #ducem bratul St in dreptul florii
-    zap3.straight(coefd3*230)
-    #actionam bratul pentru floare
-    bratSt.run_time(-1000, 300)
+    zap3.straight(coefd3*130)
     zap3.turn(coeft3*90)
     zap3.reset()
-    while zap3.distance() < 300:
+    while zap3.distance() < 370:
         zap3.drive(200, -40)
     zap3.reset()
     zap3.straight(coefd3*10)
     zap3.turn(coeft3*-90)
     zap3.straight(coefd3*-800)
-    """
 
     bratDr.stop()
     bratSt.stop()
