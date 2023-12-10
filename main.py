@@ -171,7 +171,7 @@ def run01():
     bratSt.stop()
 
 def run02():
-    bratSt.run_angle(-500, 20   0)
+    bratSt.run_angle(-600, 520)
     #zap2.straight(-400)
     #time.sleep(0.2)
     #zap2.straight(400)
@@ -179,13 +179,13 @@ def run02():
 def run03():
     #setam bratele la pozitie de plecare
     bratDr.run_time(500, 500)
-    zap3.straight(coefd3*760)
+    zap3.straight(coefd3*660)
     #ne indreptam spre scena
-    zap3.turn(coeft3*45)
+    zap3.turn(coeft3*25)
     #impingem scena TAO
-    zap3.straight(coefd3*90)
+    zap3.straight(coefd3*190)
     #actionam bratele pentru a ridica stanga si dreapta scenei
-    bratSt.run_angle(-1000, 600)
+    bratSt.run_angle(-600, 450)
     bratDr.run_time(-500, 500)
     #dam cu spatele ca sa facem partea stanga TAO 
     #zap3.straight(coefd3*-50)               
@@ -194,16 +194,15 @@ def run03():
     #zap3.straight(coefd3*70)
     #actionam bratul ca sa faca partea stanga
     #bratSt.run_angle(1000, 150)
-    zap3.straight(coefd3*-50)
+    zap3.straight(coefd3*-100)
     zap3.turn(coeft3*35)
     #dam cu spatele dupa TAO
-    zap3.straight(coefd3*-200)
+    zap3.straight(coefd3*-550)
     #mergem cu spatele pana la floare
-    zap3.turn(coeft3*15)
-    zap3.straight(coefd3*-450)
-    zap3.turn(coeft3*-30)
+    #zap3.turn(coeft3*10)
+    zap3.turn(coeft3*-35)
     #ducem bratul St in dreptul florii
-    bratSt.run_angle(-1000, 190)
+    bratSt.run_angle(-600, 200)
     zap3.straight(coefd3*120)
     zap3.turn(coeft3*90)
     zap3.reset()
@@ -251,9 +250,22 @@ def run06():
     bratDr.stop()
     bratSt.stop()
 
+def run07():
+
+    zap1.straight(coefd1*250)
+    zap1.turn(coeft1*-75)
+    bratDr.run_time(400 ,1850)
+    zap1.turn(coeft1*-20)
+    zap1.straight(coefd1*100)
+    zap1.turn(coeft1*-120)
+    bratDr.run_time(-400 ,2300)
+    zap1.straight(coefd1*200)
+
+
+
 #**************************URMARIRE LINIE**************************
 
-def urmarireLinie1(degrees):
+'''def urmarireLinie1(degrees):
     st.reset_angle(0)
     while st.angle() < degrees:
         zap1.straight(coefd1*50)
@@ -263,7 +275,7 @@ def urmarireLinie1(degrees):
         if left_sensor.color() == Color.WHITE:
             zap1.turn(10)
         if left_sensor.color() == Color.BLACK:
-            zap1.turn(-10)
+            zap1.turn(-10)'''
 
 
 #**************************DISPLAY**************************
