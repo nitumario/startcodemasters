@@ -53,6 +53,8 @@ zap6.settings(800, 500, 300, 300)
 zap7.settings(800, 500, 300, 300)
 zap8.settings(800, 500, 300, 300)
 
+
+
 st.stop()
 dr.stop()
 
@@ -94,17 +96,20 @@ coefd8 = 1
 coeft8 = 1
 
 #**************************THREAD SENZORI**************************
-gyro = DataLog('run', 'time', 'angle', 'distance')
+#definim STOPWATCH
+x = 1
+watch = StopWatch()
+data = DataLog('run', 'time', 'angle', 'distance')
 
-def sensor_thread()
+def sensor_thread():
     while True:
     #citeste datele de la gyro
-    angle = senzorGyro.angle()
-    time = watch.time()
-    run = x
-    distance = senzorUltra.distance()
-    data.log(run, time/1000, angle, distance)
-    wait(100)
+        angle = senzorGyro.angle()
+        time = watch.time()
+        run = x
+        distance = senzorUltra.distance()
+        data.log(run, time/1000, angle, distance/10)
+        wait(100)
 
 
 
@@ -242,7 +247,6 @@ def urmarireLinie1(degrees):
 
 #**************************DISPLAY**************************
 #FUNCTIA DE AFISARE
-x = 1
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
@@ -253,6 +257,7 @@ def update_screen(x):
 touch=0
 
 #**************************DISPLAY**************************
+
 while True:
     #verificare apasare butoane
     if Button.UP in zapdisplay.buttons.pressed() and x < 8:
@@ -270,41 +275,50 @@ while True:
         if senzorApasare.pressed() and touch==1:
             run01()
             touch = 0
+            _thread.start_new_thread(sensor_thread())
     if int(x)==2 and senzorApasare.pressed():
         wait(200)
         touch = 1
         if senzorApasare.pressed() and touch==1:
             run02()
             touch = 0
+            _thread.start_new_thread(sensor_thread())
     if int(x)==3 and senzorApasare.pressed():
         touch = 1
         if senzorApasare.pressed() and touch==1:
             run03()
-            touch = 0   
+            touch = 0
+            _thread.start_new_thread(sensor_thread())
     if int(x)==4 and senzorApasare.pressed():
         touch = 1
         if senzorApasare.pressed() and touch==1:
             run04()
             touch = 0
+            _thread.start_new_thread(sensor_thread())
     if int(x)==5 and senzorApasare.pressed():
         touch = 1
         if senzorApasare.pressed() and touch==1:
             run05(5000)
             touch = 0
+            _thread.start_new_thread(sensor_thread())
     if int(x)==6 and senzorApasare.pressed():
         touch = 1   
         if senzorApasare.pressed() and touch==1:
             run06()
             touch = 0
+            _thread.start_new_thread(sensor_thread())
     if int(x)==7 and senzorApasare.pressed():
         touch = 1
         if senzorApasare.pressed() and touch==1:
             run07()
             touch = 0
+            _thread.start_new_thread(sensor_thread())
     if int(x)==8 and senzorApasare.pressed():
         touch = 1
         if senzorApasare.pressed() and touch==1:
             run08()
             touch = 0
+            _thread.start_new_thread(sensor_thread())
+
 dr.stop()
 st.stop()
