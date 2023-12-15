@@ -49,7 +49,7 @@ zap3.settings(800, 800, 300, 300)
 zap4.settings(800, 500, 300, 300)
 zap5.settings(800, 500, 300, 300)
 zap6.settings(800, 500, 300, 300)
-zap7.settings(800, 500, 300, 300)
+zap7.settings(1000, 500, 800, 800)
 zap8.settings(800, 500, 300, 300)
 
 st.stop()
@@ -134,7 +134,6 @@ varBrat2 = 0
 sem.release()
 
 #**************************RUNS**************************
-
 def run01():
     zap1.straight(coefd1*40)
     #prima rotire din baza spre primul om
@@ -179,40 +178,39 @@ def run02():
 def run03():
     #setam bratele la pozitie de plecare
     bratDr.run_time(500, 500)
-    zap3.straight(coefd3*660)
+    zap3.straight(coefd3*700)
     #ne indreptam spre scena
-    zap3.turn(coeft3*25)
+    zap3.turn(coeft3*45)
     #impingem scena TAO
-    zap3.straight(coefd3*190)
+    zap3.straight(coefd3*120)
     #actionam bratele pentru a ridica stanga si dreapta scenei
-    bratSt.run_angle(-600, 450)
+    bratSt.run_angle(600, 1150)
     bratDr.run_time(-500, 500)
-    #dam cu spatele ca sa facem partea stanga TAO 
-    #zap3.straight(coefd3*-50)               
-    #facem un unghi si ne indreptam ca sa facem partea stanga
-    #zap3.turn(coeft3*-35)
-    #zap3.straight(coefd3*70)
-    #actionam bratul ca sa faca partea stanga
-    #bratSt.run_angle(1000, 150)
-    zap3.straight(coefd3*-100)
-    zap3.turn(coeft3*35)
+    
+    zap3.straight(coefd3*-150)
+    zap3.turn(coeft3*45)
     #dam cu spatele dupa TAO
-    zap3.straight(coefd3*-550)
+    zap3.straight(coefd3*-500)
     #mergem cu spatele pana la floare
     #zap3.turn(coeft3*10)
-    zap3.turn(coeft3*-35)
+    zap3.turn(coeft3*-45)
     #ducem bratul St in dreptul florii
-    bratSt.run_angle(-600, 200)
-    zap3.straight(coefd3*120)
+    bratSt.run_angle(-600, 1150)
+    zap3.straight(coefd3*95)
+    #intoarcem spre traiectoria semicercului
     zap3.turn(coeft3*90)
+    #bucla pentru semicerc floare
     zap3.reset()
-    while zap3.distance() < 270:
+    while zap3.distance() < 360:
         zap3.drive(200, -45)
     zap3.reset()
+    #iesim din bucla
     zap3.straight(coefd3*10)
-    zap3.turn(coeft3*-95)
+    #mergem in baza
+    zap3.turn(coeft3*-115)
     zap3.straight(coefd3*-800)
 
+    #setam motoarele pe float
     bratDr.stop()
     bratSt.stop()
 
@@ -251,15 +249,18 @@ def run06():
     bratSt.stop()
 
 def run07():
-
-    zap1.straight(coefd1*250)
-    zap1.turn(coeft1*-75)
+    #TEST pentru a lua oamenii de langa cocos
+    zap7.straight(coefd1*250)
+    zap7.turn(coeft1*-75)
     bratDr.run_time(400 ,1850)
-    zap1.turn(coeft1*-20)
-    zap1.straight(coefd1*100)
-    zap1.turn(coeft1*-120)
+    zap7.turn(coeft1*-20)
+    zap7.straight(coefd1*100)
+    zap7.turn(coeft1*-120)
     bratDr.run_time(-400 ,2300)
-    zap1.straight(coefd1*200)
+    zap7.straight(coefd1*200)
+
+def run08():
+    bratSt.run_time(400, 550)
 
 
 
