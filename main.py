@@ -50,7 +50,7 @@ zap4.settings(800, 500, 300, 300)
 zap5.settings(800, 500, 300, 300)
 zap6.settings(800, 500, 300, 300)
 zap7.settings(1000, 500, 800, 800)
-zap8.settings(800, 500, 300, 300)
+zap8.settings(800, 500, 500, 500)
 
 st.stop()
 dr.stop()
@@ -177,6 +177,48 @@ def run02():
 
 def run03():
     #setam bratele la pozitie de plecare
+    bratDr.run_time(500, 450)
+    zap3.straight(coefd3*700)
+    #ne indreptam spre scena
+    zap3.turn(coeft3*45)
+    #impingem scena TAO
+    zap3.straight(coefd3*140)
+    #actionam bratele pentru a ridica stanga si dreapta scenei
+    bratSt.run_angle(1000, 1250)
+    bratDr.run_time(-500, 450)
+    #bratDr.run_time(500, 450)
+
+    
+    zap3.straight(coefd3*-140)
+    zap3.turn(coeft3*45)
+    #dam cu spatele dupa TAO
+    zap3.straight(coefd3*-470)
+    zap3.turn(coeft3*-120)
+    #zap3.straight(coefd3*70)
+    #zap3.turn(coeft3*30)
+    bratDr.run_time(1000, 500)
+    zap3.straight(coefd3*-180)
+   # zap3.turn(coeft3*30)
+
+
+
+
+
+
+
+
+    '''zap3.turn(coefd3*-90)
+    bratSt.run_angle(1000, 280)
+    zap3.straight(coefd3*70)
+    bratSt.run_angle(1000, 1000)
+'''
+
+    #setam motoarele pe float
+    bratDr.stop()
+    bratSt.stop()
+
+def run03_test():
+    #setam bratele la pozitie de plecare
     bratDr.run_time(500, 500)
     zap3.straight(coefd3*700)
     #ne indreptam spre scena
@@ -195,7 +237,7 @@ def run03():
     #zap3.turn(coeft3*10)
     zap3.turn(coeft3*-45)
     #ducem bratul St in dreptul florii
-    bratSt.run_angle(-600, 1150)
+    bratSt.run_angle(600, 270)
     zap3.straight(coefd3*95)
     #intoarcem spre traiectoria semicercului
     zap3.turn(coeft3*90)
@@ -215,6 +257,12 @@ def run03():
     bratSt.stop()
 
 def run04():
+    #test extensie bratDr pt run3
+    bratSt.run_angle(600, 1150)
+    bratSt.run_angle(600, 270)
+
+
+def run05():
     bratSt.run_time(-500, 1100)
     zap4.turn(5)
     bratSt.run_time(-500, 700)
@@ -259,8 +307,18 @@ def run07():
     bratDr.run_time(-400 ,2300)
     zap7.straight(coefd1*200)
 
+def run09():
+    #bratSt.run_time(1000, 3200)
+    zap8.turn(coeft1*90)
+
 def run08():
-    bratSt.run_time(400, 550)
+    zap8.straight(coefd1*250)
+    zap8.turn(coeft1*25)
+    zap8.straight(coefd1*500)
+    zap8.turn(coeft1*60)
+    zap8.straight(coefd1*590)
+    zap8.turn(coeft1*90)
+    zap8.straight(coefd1*200)
 
 
 
