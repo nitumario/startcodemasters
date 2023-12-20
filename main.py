@@ -34,14 +34,18 @@ senzorGiro = GyroSensor(Port.S4)
 #**************************OBIECTELE**************************
 
 #DRIVE BASE-UL SI SETARILE OBIECTELOR
-zap1 = DriveBase(st, dr, 50, 105)
-zap2 = DriveBase(st, dr, 50, 105)
-zap3 = DriveBase(st, dr, 50, 105)
-zap4 = DriveBase(st, dr, 50, 105)
-zap5 = DriveBase(st, dr, 50, 105)
-zap6 = DriveBase(st, dr, 50, 105)
-zap7 = DriveBase(st, dr, 50, 105)
-zap8 = DriveBase(st, dr, 50, 105)
+zap1 = DriveBase(st, dr, 49.5, 103)
+zap2 = DriveBase(st, dr, 49.5, 103)
+zap3 = DriveBase(st, dr, 49.5, 103)
+zap4 = DriveBase(st, dr, 49.5, 103)
+zap5 = DriveBase(st, dr, 49.5, 103)
+zap6 = DriveBase(st, dr, 49.5, 103)
+zap7 = DriveBase(st, dr, 49.5, 103)
+zap8 = DriveBase(st, dr, 49.5, 103)
+zap9 = DriveBase(st, dr, 49.5, 103)
+zap10 = DriveBase(st, dr, 49.5, 103)
+zap11 = DriveBase(st, dr, 49.5, 103)
+zap12 = DriveBase(st, dr, 49.5, 103)
 
 zap1.settings(800, 500, 300, 300)
 zap2.settings(1000, 1000, 300, 300)
@@ -50,7 +54,11 @@ zap4.settings(800, 500, 300, 300)
 zap5.settings(800, 500, 300, 300)
 zap6.settings(800, 500, 300, 300)
 zap7.settings(1000, 500, 800, 800)
-zap8.settings(800, 500, 500, 500)
+zap8.settings(800, 500, 200, 200)
+zap9.settings(800, 500, 300, 300)
+zap10.settings(800, 500, 300, 300)
+zap11.settings(1000, 500, 800, 800)
+zap12.settings(800, 500, 200, 200)
 
 st.stop()
 dr.stop()
@@ -74,6 +82,14 @@ global coefd7
 global coeft7
 global coefd8
 global coeft8
+global coefd9
+global coeft9
+global coefd10
+global coeft10
+global coefd11
+global coeft11
+global coefd12
+global coeft12
 
 coefd1 = 1
 coeft1 = 1
@@ -91,6 +107,14 @@ coefd7 = 1
 coeft7 = 1
 coefd8 = 1
 coeft8 = 1
+coefd9 = 1
+coeft9 = 1
+coefd10 = 1
+coeft10 = 1
+coefd11 = 1
+coeft11 = 1
+coefd12 = 1
+coeft12 = 1
 
 #**************************THREAD BRATE**************************
 varBrat1 = 0
@@ -312,13 +336,24 @@ def run09():
     zap8.turn(coeft1*90)
 
 def run08():
+    bratSt.stop()
+    bratDr.stop()
     zap8.straight(coefd1*250)
     zap8.turn(coeft1*25)
-    zap8.straight(coefd1*500)
+    zap8.straight(coefd1*480)
     zap8.turn(coeft1*60)
     zap8.straight(coefd1*590)
-    zap8.turn(coeft1*90)
+    zap8.turn(coeft1*-90)
+    zap8.straight(coefd1*130)
+    zap8.straight(coefd1*-130)
+    zap8.turn(coeft1*180)
     zap8.straight(coefd1*200)
+    bratSt.run_angle(-1000, 2000)
+
+
+#**************************RUN-URI DE TESTE(>8)**************************
+def run09():
+    
 
 
 
@@ -339,7 +374,7 @@ def run08():
 
 #**************************DISPLAY**************************
 #FUNCTIA DE AFISARE
-x = 3
+x = 8
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
@@ -352,7 +387,7 @@ touch=0
 #**************************DISPLAY**************************
 while True:
     #verificare apasare butoane
-    if Button.UP in zapdisplay.buttons.pressed() and x < 8:
+    if Button.UP in zapdisplay.buttons.pressed() and x < 12:
         x = x+1
         update_screen(x)
         wait(700)
@@ -402,6 +437,26 @@ while True:
         touch = 1
         if senzorApasare.pressed() and touch==1:
             run08()
+            touch = 0
+    if int(x)==9 and senzorApasare.pressed():
+        touch = 1
+        if senzorApasare.pressed() and touch==1:
+            run09()
+            touch = 0
+    if int(x)==10 and senzorApasare.pressed():
+        touch = 1
+        if senzorApasare.pressed() and touch==1:
+            run10()
+            touch = 0
+    if int(x)==11 and senzorApasare.pressed():
+        touch = 1   
+        if senzorApasare.pressed() and touch==1:
+            run01()
+            touch = 0
+    if int(x)==12 and senzorApasare.pressed():
+        touch = 1
+        if senzorApasare.pressed() and touch==1:
+            run012()
             touch = 0
 dr.stop()
 st.stop()
