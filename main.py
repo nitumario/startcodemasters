@@ -116,250 +116,36 @@ coeft11 = 1
 coefd12 = 1
 coeft12 = 1
 
-#**************************THREAD BRATE**************************
-varBrat1 = 0
-varBrat2 = 0
+global angles_zap1
+global bratSt_speed
+global bratSt_angles
+global bratDr_speed
+global bratDr_angles
+def thread_zap1(angles_zap1):
+    _thread.allocate_lock().acquire()
+    zap1.straight(coefd1 * angles_zap1)
+#    _thread.allocate_lock().release()
+def thread_bratSt(bratSt_speed, bratSt_angles):
+    _thread.allocate_lock().acquire()
+    bratSt.run_angle(bratSt_speed, bratSt_angles)
+#    _thread.allocate_lock().release()
+def thread_bratDr(bratDr_speed, bratDr_angles):
+    _thread.allocate_lock().acquire()
+    bratDr.run_angle(bratDr_speed, bratDr_angles)
+#    _thread.allocate_lock().release()  
 
-def brat01_thread():
-    global varBrat1
-    while True:
-
-        sem.acquire()
-        if varBrat1 != 0:
-            sem.release()
-            bratDr.run_time(varBrat1, 1000)
-            varBrat1 = 0
-        else:
-            sem.release()
-            time.sleep(0.1) 
-
-
-def brat02_thread():
-    global varBrat2
-    while True:
-
-        sem.acquire()
-        if varBrat2 != 0:
-            sem.release()
-            bratSt.run_time(varBrat2, 1000)
-            varBrat2 = 0
-        else:
-            sem.release()
-            time.sleep(0.1) 
-
-#PROGRAMUL PRINCIPAL PENTRU THREAD-URI
-sem = _thread.allocate_lock()
-_thread.start_new_thread(brat01_thread,())
-_thread.start_new_thread(brat02_thread,())
-
-sem.acquire()
-varBrat1 = 0
-varBrat2 = 0
-sem.release()
 
 #**************************RUNS**************************
+
 def run01():
-    zap1.straight(coefd1*40)
-    #prima rotire din baza spre primul om
-    zap1.turn(coeft1*-50)
-    zap1.straight(coefd1*190)
-    #prima rotire spre primul om
-    zap1.turn(coeft1*-60)
-    #ajunge bratul in cercul omului
-    zap1.straight(coefd1*80)
-    #se ridica primul om
-    bratDr.run_time(400,500)
-    zap1.straight(coefd1*-20)
-    zap1.turn(coeft1*76)
-    zap1.straight(coefd1*-100)
-    #coboram bratul ca sa apucam al doilea om
-    bratDr.run_time(-400,500)
-    zap1.straight(coefd1*180)
-    #se ridica al doilea om
-    bratDr.run_time(200,1000)
-    zap1.turn(coeft1*12)
-    zap1.straight(coefd1*35)
-    zap1.turn(coeft1*-15)
-    #se indreapta la cocos
-    zap1.straight(coefd1*180)
-    zap1.straight(coefd1*-6)
-    #actionam motorul pentru cocos
-    bratSt.run_time(-1000,2000)
-    #rotire pentru indeplinirea imprimantei complet
-    zap1.turn(coeft1*-10)
-    #merge in baza
-    zap1.straight(coefd1*-400)
-
-    bratDr.stop()
-    bratSt.stop()
-
-def run02():
-    bratSt.run_angle(-600, 520)
-    #zap2.straight(-400)
-    #time.sleep(0.2)
-    #zap2.straight(400)
-
-def run03():
-    #setam bratele la pozitie de plecare
-    bratDr.run_time(500, 450)
-    zap3.straight(coefd3*700)
-    #ne indreptam spre scena
-    zap3.turn(coeft3*45)
-    #impingem scena TAO
-    zap3.straight(coefd3*140)
-    #actionam bratele pentru a ridica stanga si dreapta scenei
-    bratSt.run_angle(1000, 1250)
-    bratDr.run_time(-500, 450)
-    #bratDr.run_time(500, 450)
-
-    
-    zap3.straight(coefd3*-140)
-    zap3.turn(coeft3*45)
-    #dam cu spatele dupa TAO
-    zap3.straight(coefd3*-470)
-    zap3.turn(coeft3*-120)
-    #zap3.straight(coefd3*70)
-    #zap3.turn(coeft3*30)
-    bratDr.run_time(1000, 500)
-    zap3.straight(coefd3*-180)
-   # zap3.turn(coeft3*30)
-
-
-
-
-
-
-
-
-    '''zap3.turn(coefd3*-90)
-    bratSt.run_angle(1000, 280)
-    zap3.straight(coefd3*70)
-    bratSt.run_angle(1000, 1000)
-'''
-
-    #setam motoarele pe float
-    bratDr.stop()
-    bratSt.stop()
-
-def run03_test():
-    #setam bratele la pozitie de plecare
-    bratDr.run_time(500, 500)
-    zap3.straight(coefd3*700)
-    #ne indreptam spre scena
-    zap3.turn(coeft3*45)
-    #impingem scena TAO
-    zap3.straight(coefd3*120)
-    #actionam bratele pentru a ridica stanga si dreapta scenei
-    bratSt.run_angle(600, 1150)
-    bratDr.run_time(-500, 500)
-    
-    zap3.straight(coefd3*-150)
-    zap3.turn(coeft3*45)
-    #dam cu spatele dupa TAO
-    zap3.straight(coefd3*-500)
-    #mergem cu spatele pana la floare
-    #zap3.turn(coeft3*10)
-    zap3.turn(coeft3*-45)
-    #ducem bratul St in dreptul florii
-    bratSt.run_angle(600, 270)
-    zap3.straight(coefd3*95)
-    #intoarcem spre traiectoria semicercului
-    zap3.turn(coeft3*90)
-    #bucla pentru semicerc floare
-    zap3.reset()
-    while zap3.distance() < 360:
-        zap3.drive(200, -45)
-    zap3.reset()
-    #iesim din bucla
-    zap3.straight(coefd3*10)
-    #mergem in baza
-    zap3.turn(coeft3*-115)
-    zap3.straight(coefd3*-800)
-
-    #setam motoarele pe float
-    bratDr.stop()
-    bratSt.stop()
-
-def run04():
-    #test extensie bratDr pt run3
-    bratSt.run_angle(600, 1150)
-    bratSt.run_angle(600, 270)
-
-
-def run05():
-    bratSt.run_time(-500, 1100)
-    zap4.turn(5)
-    bratSt.run_time(-500, 700)
-
-def run06():
-    #ridica bratele
-    bratDr.run_time(-200, 550)
-    bratSt.run_time(200, 550)
-    #merge cu spatele pana in fata sinei
-    zap1.straight(coefd1*470)
-    #coboara ambele brate
-    bratDr.run_time(450, 570)
-    bratSt.run_time(-400, 550)
-    #merge in fata cu directia spre baza
-    zap1.straight(coefd1*-110)
-    #urca brat stanga
-    bratSt.run_time(400, 550)
-    #se intoarce 45 de grade
-    zap1.turn(coeft1*-45)
-    #o ia cu fata cu directia spre baza
-    zap1.straight(coefd1*-100)
-    #se intoarce pe directia 0
-    zap1.turn(coeft1*-45)
-    #megre inainte ca sa lase camera in locul ei
-    zap1.straight(coefd1*150)
-    #ridica bratul
-    bratDr.run_time(-400 ,550)
-    #merge in baza
-    zap1.straight(coefd1*400)
-
-    bratDr.stop()
-    bratSt.stop()
-
-def run07():
-    #TEST pentru a lua oamenii de langa cocos
-    zap7.straight(coefd1*250)
-    zap7.turn(coeft1*-75)
-    bratDr.run_time(400 ,1850)
-    zap7.turn(coeft1*-20)
-    zap7.straight(coefd1*100)
-    zap7.turn(coeft1*-120)
-    bratDr.run_time(-400 ,2300)
-    zap7.straight(coefd1*200)
-
-def run09():
-    #bratSt.run_time(1000, 3200)
-    zap8.turn(coeft1*90)
-
-def run08():
-    bratSt.stop()
-    bratDr.stop()
-    zap8.straight(coefd1*250)
-    zap8.turn(coeft1*25)
-    zap8.straight(coefd1*480)
-    zap8.turn(coeft1*60)
-    zap8.straight(coefd1*590)
-    zap8.turn(coeft1*-90)
-    zap8.straight(coefd1*130)
-    zap8.straight(coefd1*-130)
-    zap8.turn(coeft1*180)
-    zap8.straight(coefd1*200)
-    bratSt.run_angle(-1000, 2000)
-
-
-#**************************RUN-URI DE TESTE(>8)**************************
-def run09():
-    
-
+    _thread.start_new_thread(thread_zap1, (100,))
+    _thread.start_new_thread(thread_bratSt, (1000, 360))
+    _thread.start_new_thread(thread_bratDr, (1000, 360))
 
 
 #**************************URMARIRE LINIE**************************
 
-'''def urmarireLinie1(degrees):
+def urmarireLinie1(degrees):
     st.reset_angle(0)
     while st.angle() < degrees:
         zap1.straight(coefd1*50)
@@ -369,12 +155,12 @@ def run09():
         if left_sensor.color() == Color.WHITE:
             zap1.turn(10)
         if left_sensor.color() == Color.BLACK:
-            zap1.turn(-10)'''
+            zap1.turn(-10)
 
 
 #**************************DISPLAY**************************
 #FUNCTIA DE AFISARE
-x = 8
+x = 1
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
@@ -451,12 +237,15 @@ while True:
     if int(x)==11 and senzorApasare.pressed():
         touch = 1   
         if senzorApasare.pressed() and touch==1:
-            run01()
+            run11()
             touch = 0
     if int(x)==12 and senzorApasare.pressed():
         touch = 1
         if senzorApasare.pressed() and touch==1:
-            run012()
+            run12()
             touch = 0
+
+    if Button.LEFT in zapdisplay.buttons.pressed():
+        bratSt.run_time(200, 10)
 dr.stop()
 st.stop()
