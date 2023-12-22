@@ -159,6 +159,43 @@ def run01():
     #ne intoarcem spre lalea
     zap1.turn(coeft1*-90)
     #facem diagonala pentru a face laleaua
+    zap1.straight(coefd1*-160)
+    zap1.turn(coeft1*-25)
+    #facem diagonala ca sa ne apropiem
+    zap1.straight(coefd1*-190)
+    zap1.turn(coeft1*25)
+    #mergem cu spatele sa facem laleaua
+    zap1.straight(coefd1*-500)
+    zap1.turn(-180)
+    zap1.straight(coefd1*250)
+    #facem TAO
+
+    '''_thread.start_new_thread(thread_zap1, (100,))
+    _thread.start_new_thread(thread_bratSt, (1000, 360))
+    _thread.start_new_thread(thread_bratDr, (1000, 360))
+    _thread.start_new_thread(thread_zap1, (100,))'''
+
+
+def run02():
+    zap1.turn
+def run01_init():
+    zap1.straight(coefd1 * 100)
+    zap1.turn(coeft1*70)
+    zap1.straight(coefd1 * 620)
+    zap1.turn(coeft1 * -70)
+    zap1.straight(coefd1 * 270)
+    zap1.turn(coeft1*30)
+    #diagonala
+    zap1.straight(coefd1 * 130)
+    zap1.turn(coeft1*-30)
+    zap1.straight(coefd1 * 60)
+    #actionam bratul ca sa facem MOV
+    bratSt.run_angle(-1000, 1050)
+    #dam cu spatele dupa MOV
+    zap1.straight(coefd1*-100)
+    #ne intoarcem spre lalea
+    zap1.turn(coeft1*-90)
+    #facem diagonala pentru a face laleaua
     zap1.straight(coefd1*-170)
     zap1.turn(coeft1*-25)
     #facem diagonala ca sa ne apropiem
@@ -285,7 +322,7 @@ while True:
         wait(500)
 
     if Button.RIGHT in zapdisplay.buttons.pressed():
-        bratSt.run_angle(200, 50)
+        bratSt.run_angle(200, 100)
         wait(200)
 
 dr.stop()
