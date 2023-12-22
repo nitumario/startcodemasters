@@ -1,6 +1,4 @@
 #!/usr/bin/env pybricks-micropython
-#TODO: terminati run-ul unu, facet-il sa mearga perfect
-#TODO: apucativa de run-ul 2
 #**************************IMPORTS**************************
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
@@ -63,6 +61,8 @@ zap12.settings(800, 500, 200, 200)
 st.stop()
 dr.stop()
 
+#**************************COEFICIENTE DE EROARE**************************
+
 #CREEM COEFICIENTELE DE EROARE
 #!Daca nu sti pentru ce sunt coefincientele intraba-l pe Vlad
 
@@ -116,11 +116,14 @@ coeft11 = 1
 coefd12 = 1
 coeft12 = 1
 
+#**************************THREAD-URI**************************
+
 global angles_zap1
 global bratSt_speed
 global bratSt_angles
 global bratDr_speed
 global bratDr_angles
+
 def thread_zap1(angles_zap1):
     _thread.allocate_lock().acquire()
     zap1.straight(coefd1 * angles_zap1)
@@ -138,10 +141,37 @@ def thread_bratDr(bratDr_speed, bratDr_angles):
 #**************************RUNS**************************
 
 def run01():
-    _thread.start_new_thread(thread_zap1, (100,))
+    zap1.straight(coefd1 * 100)
+    zap1.turn(coeft1*70)
+    zap1.straight(coefd1 * 620)
+    zap1.turn(coeft1 * -70)
+    zap1.straight(coefd1 * 270)
+    zap1.turn(coeft1*30)
+    #diagonala
+    zap1.straight(coefd1 * 110)
+    zap1.turn(coeft1*-30)
+    zap1.straight(coefd1 * 70)
+    #actionam bratul ca sa facem MOV
+    bratSt.run_angle(-1000, 1000)
+    #dam cu spatele dupa MOV
+    zap1.straight(coefd1*-100)
+    #ne intoarcem spre lalea
+    zap1.turn(coeft1*-90)
+    #facem diagonala pentru a face laleaua
+    zap1.straight(coefd1*-170)
+    zap1.turn(coeft1*-25)
+    #facem diagonala ca sa ne apropiem
+    zap1.straight(coefd1*-280)
+    zap1.turn(coeft1*25)
+    #mergem cu spatele sa facem laleaua
+    zap1.straight(coefd1*-350)
+    zap1.turn(coeft1*-200)
+
+
+    '''_thread.start_new_thread(thread_zap1, (100,))
     _thread.start_new_thread(thread_bratSt, (1000, 360))
     _thread.start_new_thread(thread_bratDr, (1000, 360))
-
+    _thread.start_new_thread(thread_zap1, (100,))'''
 
 #**************************URMARIRE LINIE**************************
 
