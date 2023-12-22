@@ -123,18 +123,19 @@ global bratSt_speed
 global bratSt_angles
 global bratDr_speed
 global bratDr_angles
+global extra
 
 def thread_zap1(angles_zap1):
     _thread.allocate_lock().acquire()
     zap1.straight(coefd1 * angles_zap1)
 #    _thread.allocate_lock().release()
-def thread_bratSt(bratSt_speed, bratSt_angles):
+def thread_bratSt(bratSt_speed, bratSt_angles, extra):
     _thread.allocate_lock().acquire()
-    bratSt.run_angle(bratSt_speed, bratSt_angles)
+    bratSt.run_angle(bratSt_speed, bratSt_angles, extra)
 #    _thread.allocate_lock().release()
-def thread_bratDr(bratDr_speed, bratDr_angles):
+def thread_bratDr(bratDr_speed, bratDr_angles, extra):
     _thread.allocate_lock().acquire()
-    bratDr.run_angle(bratDr_speed, bratDr_angles)
+    bratDr.run_angle(bratDr_speed, bratDr_angles, extra)
 #    _thread.allocate_lock().release()  
 
 
@@ -148,11 +149,11 @@ def run01():
     zap1.straight(coefd1 * 270)
     zap1.turn(coeft1*30)
     #diagonala
-    zap1.straight(coefd1 * 110)
+    zap1.straight(coefd1 * 130)
     zap1.turn(coeft1*-30)
-    zap1.straight(coefd1 * 70)
+    zap1.straight(coefd1 * 60)
     #actionam bratul ca sa facem MOV
-    bratSt.run_angle(-1000, 1000)
+    bratSt.run_angle(-1000, 1050)
     #dam cu spatele dupa MOV
     zap1.straight(coefd1*-100)
     #ne intoarcem spre lalea
@@ -161,11 +162,14 @@ def run01():
     zap1.straight(coefd1*-170)
     zap1.turn(coeft1*-25)
     #facem diagonala ca sa ne apropiem
-    zap1.straight(coefd1*-280)
+    zap1.straight(coefd1*-190)
     zap1.turn(coeft1*25)
     #mergem cu spatele sa facem laleaua
-    zap1.straight(coefd1*-350)
-    zap1.turn(coeft1*-200)
+    zap1.straight(coefd1*-500)
+    #ne indretam spre TAO
+    zap1.turn(coeft1*-230)
+    #facem TAO
+    zap1.straight(coefd1*230)
 
 
     '''_thread.start_new_thread(thread_zap1, (100,))
@@ -276,6 +280,13 @@ while True:
             touch = 0
 
     if Button.LEFT in zapdisplay.buttons.pressed():
-        bratSt.run_time(200, 10)
+        _thread.start_new_thread(thread_bratSt, (500, 120, Stop.COAST))
+        _thread.start_new_thread(thread_bratDr, (500, 120, Stop.COAST))
+        wait(500)
+
+    if Button.RIGHT in zapdisplay.buttons.pressed():
+        bratSt.run_angle(200, 50)
+        wait(200)
+
 dr.stop()
 st.stop()
