@@ -45,7 +45,7 @@ zap10 = DriveBase(st, dr, 49.5, 103)
 zap11 = DriveBase(st, dr, 49.5, 103)
 zap12 = DriveBase(st, dr, 49.5, 103)
 
-zap1.settings(800, 500, 300, 300)
+zap1.settings(800, 200, 200, 200)
 zap2.settings(1000, 1000, 300, 300)
 zap3.settings(800, 800, 300, 300)
 zap4.settings(800, 500, 300, 300)
@@ -133,13 +133,27 @@ def thread_bratSt(bratSt_speed, bratSt_angles, extra):
     _thread.allocate_lock().acquire()
     bratSt.run_angle(bratSt_speed, bratSt_angles, extra)
 #    _thread.allocate_lock().release()
-def thread_bratDr(bratDr_speed, bratDr_angles, extra):
+def thread_bratDr(bratDr_speed, bratDr_angles, ):
     _thread.allocate_lock().acquire()
-    bratDr.run_angle(bratDr_speed, bratDr_angles, extra)
+    bratDr.run_angle(bratDr_speed, bratDr_angles)
 #    _thread.allocate_lock().release()  
 
 
 #**************************RUNS**************************
+def run03():
+    _thread.start_new_thread(thread_bratDr, (1000, 100))
+    _thread.start_new_thread(thread_zap1, (230,))
+    zap1.straight(coefd1* 100)
+    zap1.turn(coeft1*45)
+    zap1.straight(coefd1 * 250)
+    _thread.start_new_thread(thread_bratDr, (1000, 520))
+    _thread.start_new_thread(thread_zap1, (10,))
+    zap1.straight(coefd1* 100)
+    zap1.turn(coeft1*45)
+    zap1.turn(coeft1*45)
+
+
+
 
 def run01():
     zap1.straight(coefd1 * 100)
@@ -162,13 +176,25 @@ def run01():
     zap1.straight(coefd1*-160)
     zap1.turn(coeft1*-25)
     #facem diagonala ca sa ne apropiem
-    zap1.straight(coefd1*-190)
+    zap1.straight(coefd1*-210)
     zap1.turn(coeft1*25)
     #mergem cu spatele sa facem laleaua
     zap1.straight(coefd1*-500)
-    zap1.turn(-180)
-    zap1.straight(coefd1*250)
+    zap1.turn(coeft1*-120)
+    zap1.straight(coefd1*30)
+    zap1.turn(coeft1*-100)
     #facem TAO
+    bratSt.run_angle(-1000, 500)
+    bratDr.run_angle(1000, 300)
+    zap1.straight(coefd1*130)
+    bratSt.run_angle(1000, 1300)
+    bratDr.run_angle(-1000, 300)
+    #catre baza albastraaaaaaaaaa LETSGOOOOOO MEOW MEOW
+    zap1.straight(coefd1*-180)
+    zap1.turn(coeft1*90)
+    zap1.straight(coefd1*900)
+
+
 
     '''_thread.start_new_thread(thread_zap1, (100,))
     _thread.start_new_thread(thread_bratSt, (1000, 360))
@@ -206,6 +232,8 @@ def run01_init():
     #ne indretam spre TAO
     zap1.turn(coeft1*-230)
     #facem TAO
+
+
     zap1.straight(coefd1*230)
 
 
@@ -231,7 +259,7 @@ def urmarireLinie1(degrees):
 
 #**************************DISPLAY**************************
 #FUNCTIA DE AFISARE
-x = 1
+x = 3
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
