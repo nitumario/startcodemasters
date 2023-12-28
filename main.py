@@ -141,7 +141,6 @@ def thread_bratDr(bratDr_speed, bratDr_angles, ):
 
 #**************************RUNS**************************
 def run03():
-    _thread.start_new_thread(thread_bratDr, (1000, 100))
     _thread.start_new_thread(thread_zap1, (230,))
     zap1.straight(coefd1* 100)
     zap1.turn(coeft1*45)
@@ -150,10 +149,15 @@ def run03():
     _thread.start_new_thread(thread_zap1, (10,))
     zap1.straight(coefd1* 100)
     zap1.turn(coeft1*45)
-    zap1.turn(coeft1*45)
+    zap1.straight(coefd1* -100)
 
 
-
+def run09():
+    zap1.straight(150)
+    zap1.turn(-45)
+    zap1.straight(330)
+    bratSt.run_time(1000, 2000)
+    zap1.straight(-450)
 
 def run01():
     zap1.straight(coefd1 * 100)
@@ -259,7 +263,7 @@ def urmarireLinie1(degrees):
 
 #**************************DISPLAY**************************
 #FUNCTIA DE AFISARE
-x = 3
+x = 9
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
