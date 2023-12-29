@@ -50,7 +50,7 @@ zap2.settings(1000, 1000, 300, 300)
 zap3.settings(800, 800, 300, 300)
 zap4.settings(800, 500, 300, 300)
 zap5.settings(800, 500, 300, 300)
-zap6.settings(800, 500, 300, 300)
+zap6.settings(800, 500, 300, 150)
 zap7.settings(1000, 500, 800, 800)
 zap8.settings(800, 500, 200, 200)
 zap9.settings(1000, 1000, 800, 800)
@@ -252,6 +252,29 @@ def run09():
     #ne intoarcem in baza
     zap9.straight(coefd9*-400)
 
+def run06():
+    #trecem de pizza
+    zap6.straight(coefd6*650)
+    zap6.turn(coeft6*-90)
+    #mergem la muzeu
+    zap6.straight(coefd6*660)
+    zap6.turn(coeft6*90)
+    zap6.straight(coefd6*150)
+    #mergem la turn
+    zap6.straight(coefd6*-110)
+    zap6.turn(coeft6*180)
+    zap6.straight(coefd6*200)
+    zap6.turn(coeft6*-20)
+    #facem misiunea 
+    bratSt.run_time(-1000, 3400)
+    bratSt.run_time(1000, 500)
+    #merge inapoi
+    zap6.straight(coefd6*-150)
+    zap6.turn(coeft6*-90)
+    zap6.straight(coefd6*640)
+    zap6.turn(coeft6*90)
+    zap6.straight(coefd6*750)
+    
 #**************************URMARIRE LINIE**************************
 
 def urmarireLinie1(degrees):
@@ -273,7 +296,7 @@ def miscaBrat(cm):
 
 #**************************DISPLAY**************************
 #FUNCTIA DE AFISARE
-x = 9
+x = 6
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
@@ -284,9 +307,7 @@ def update_screen(x):
 touch=0
 
 #**************************DISPLAY**************************
-miscaBrat(20)
 
-'''
 while True:
     #verificare apasare butoane
     if Button.UP in zapdisplay.buttons.pressed() and x < 12:
@@ -372,4 +393,3 @@ while True:
 
 dr.stop()
 st.stop()
-'''
