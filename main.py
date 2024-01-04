@@ -252,7 +252,7 @@ def run09():
     #ne intoarcem in baza
     zap9.straight(coefd9*-400)
 
-def run06():
+def run06_test():
     #trecem de pizza
     zap6.straight(coefd6*650)
     zap6.turn(coeft6*-90)
@@ -272,8 +272,11 @@ def run06():
     zap6.straight(coefd6*-150)
     zap6.turn(coeft6*-90)
     zap6.straight(coefd6*640)
-    zap6.turn(coeft6*90)
+    zap6.turn(coeft6*80)
     zap6.straight(coefd6*750)
+
+def run06():
+    
     
 #**************************URMARIRE LINIE**************************
 
