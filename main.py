@@ -1,5 +1,5 @@
 #!/usr/bin/env pybricks-micropython
-#**************************IMPORTS**************************
+#*********IMPORTS*********
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
                                  InfraredSensor, UltrasonicSensor, GyroSensor)
@@ -11,7 +11,7 @@ import utime
 import time
 import _thread
 
-#**************************ROBOTUL**************************
+#*********ROBOTUL*********
 #!bratDr (+) ridicare
 #!bratSt (-) lasa in jos
 
@@ -29,7 +29,7 @@ senzorCuloareSt = ColorSensor(Port.S2)
 senzorApasare = TouchSensor(Port.S3)
 senzorGiro = GyroSensor(Port.S4)
 
-#**************************OBIECTELE**************************
+#*********OBIECTELE*********
 
 #DRIVE BASE-UL SI SETARILE OBIECTELOR
 zap1 = DriveBase(st, dr, 49.5, 103)
@@ -61,7 +61,7 @@ zap12.settings(800, 500, 200, 200)
 st.stop()
 dr.stop()
 
-#**************************COEFICIENTE DE EROARE**************************
+#*********COEFICIENTE DE EROARE*********
 
 #CREEM COEFICIENTELE DE EROARE
 #!Daca nu sti pentru ce sunt coefincientele intraba-l pe Vlad
@@ -116,7 +116,7 @@ coeft11 = 1
 coefd12 = 1
 coeft12 = 1
 
-#**************************THREAD-URI**************************
+#*********THREAD-URI*********
 
 global angles_zap1
 global bratSt_speed
@@ -138,8 +138,23 @@ def thread_bratDr(bratDr_speed, bratDr_angles, ):
     bratDr.run_angle(bratDr_speed, bratDr_angles)
 #    _thread.allocate_lock().release()  
 
+    
+#*********URMARIRE LINIE*********
 
-#**************************RUNS**************************
+def urmarireLinie1(degrees):
+    st.reset_angle()
+    while st.angle() < degrees:
+        zap1.straight(coefd1*50)
+        time.sleep(0.1)
+        zapdisplay.screen.clear()
+        zapdisplay.screen.draw_text(80, 50, str(st.angle()), Color.BLACK, None)
+        if senzorCuloareSt.color() == Color.BLACK:
+            zap1.turn(10)
+        if senzorCuloareSt.color() == Color.WHITE:
+            zap1.turn(-10)
+
+
+#*********RUNS*********
 def run01():
     zap1.straight(coefd1 * 100)
     zap1.turn(coeft1*70)
@@ -276,34 +291,43 @@ def run06_test():
     zap6.straight(coefd6*750)
 
 def run06():
-    zap6.straight(coefd6*-530)
+    #mergem spre tao
+    zap6.straight(coefd6*-450)
+    #diagonala
     zap6.turn(coeft6*-45)
-    zap6.straight(coefd6*-200)
-    zap6.turn(coeft6*-47)
+    zap6.straight(coefd6*-290)
+    #ne intoarcem paralel cu turnul
+    zap6.turn(coeft6*-50)
+    #mergem pana in fata turnului paralel
     zap6.straight(coefd6*-700)
-    zap6.turn(coeft6*90)
+    #ne intoarcem spre muzeu
+    zap6.turn(coeft6*95)
+    #lasam tot in muzeu
+    zap6.straight(coefd6*-90)
+    #mergem in turn
+    zap6.straight(coefd6*300)
+    #facem turnul
+    bratSt.run_time(-1000, 4000)
+    #ne indepartam de turn
+    bratSt.run_time(1000, 500)
+    zap6.straight(coefd6*-110)
+    zap6.turn(coeft6*-100)
+    zap6.straight(coefd6*660)
+    zap6.turn(coeft6*75)
+    zap6.straight(coefd6*700)
+
 
     
-#**************************URMARIRE LINIE**************************
 
-def urmarireLinie1(degrees):
-    st.reset_angle(0)
-    while st.angle() < degrees:
-        zap1.straight(coefd1*50)
-        time.sleep(0.1)
-        zapdisplay.screen.clear()
-        zapdisplay.screen.draw_text(80, 50, str(st.angle()), Color.BLACK, None)
-        if left_sensor.color() == Color.WHITE:
-            zap1.turn(10)
-        if left_sensor.color() == Color.BLACK:
-            zap1.turn(-10)
 
-#**************************BRAT OAMENII**************************
+
+
+#*********BRAT OAMENII*********
 
 def miscaBrat(cm):
     bratSt.run_time(1000, cm**2.2)
 
-#**************************DISPLAY**************************
+#*********DISPLAY*********
 #FUNCTIA DE AFISARE
 x = 6
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
@@ -315,7 +339,7 @@ def update_screen(x):
 
 touch=0
 
-#**************************DISPLAY**************************
+#*********DISPLAY*********
 
 while True:
     #verificare apasare butoane
