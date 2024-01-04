@@ -276,7 +276,13 @@ def run06_test():
     zap6.straight(coefd6*750)
 
 def run06():
-    
+    zap6.straight(coefd6*-530)
+    zap6.turn(coeft6*-45)
+    zap6.straight(coefd6*-200)
+    zap6.turn(coeft6*-47)
+    zap6.straight(coefd6*-700)
+    zap6.turn(coeft6*90)
+
     
 #**************************URMARIRE LINIE**************************
 
