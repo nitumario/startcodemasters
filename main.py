@@ -201,9 +201,6 @@ def run01():
     _thread.start_new_thread(thread_bratDr, (1000, 360))
     _thread.start_new_thread(thread_zap1, (100,))'''
 
-
-def run02():
-    zap1.turn
 def run01_init():
     zap1.straight(coefd1 * 100)
     zap1.turn(coeft1*70)
@@ -299,9 +296,9 @@ def run06():
     #ne intoarcem paralel cu turnul
     zap6.turn(coeft6*-50)
     #mergem pana in fata turnului paralel
-    zap6.straight(coefd6*-700)
+    zap6.straight(coefd6*-710)
     #ne intoarcem spre muzeu
-    zap6.turn(coeft6*95)
+    zap6.turn(coeft6*90)
     #lasam tot in muzeu
     zap6.straight(coefd6*-90)
     #mergem in turn
@@ -309,18 +306,24 @@ def run06():
     #facem turnul
     bratSt.run_time(-1000, 4000)
     #ne indepartam de turn
-    bratSt.run_time(1000, 500)
+    bratSt.run_time(1000, 700)
     zap6.straight(coefd6*-110)
     zap6.turn(coeft6*-100)
     zap6.straight(coefd6*660)
     zap6.turn(coeft6*75)
     zap6.straight(coefd6*700)
 
-
-    
-
-
-
+def run02():
+    #merge in stanga dragonului
+    zap2.straight(-150*coefd2)
+    zap2.turn(coeft2*-30)
+    zap2.straight(-100*coefd2)
+    #face misiunea
+    zap2.turn(coeft2*60)
+    #se intoarce la unghiul initial
+    zap2.turn(coeft2*-20)
+    #se intoarce in baza
+    zap2.straight(250*coefd2)
 
 #*********BRAT OAMENII*********
 
@@ -329,7 +332,7 @@ def miscaBrat(cm):
 
 #*********DISPLAY*********
 #FUNCTIA DE AFISARE
-x = 6
+x = 2
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
