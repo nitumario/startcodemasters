@@ -313,7 +313,7 @@ def run06():
     zap6.turn(coeft6*75)
     zap6.straight(coefd6*700)
 
-def run02():
+def run02Test():
     #merge in stanga dragonului
     zap2.straight(-150*coefd2)
     zap2.turn(coeft2*-30)
@@ -325,6 +325,24 @@ def run02():
     #se intoarce in baza
     zap2.straight(250*coefd2)
 
+def run02():
+    pass
+
+def run12():
+    zap2.turn(coeft2*-25)
+    bratSt.run_time(1300, 800)
+    bratSt.run_time(-1300, 900)
+    zap2.straight(coeft2*20)
+    zap2.turn(coeft2*-65)
+    zap2.straight(coeft2*-120)
+    bratSt.run_time(1300, 800)
+    bratSt.run_time(-1300, 900)
+    zap2.turn(coeft2*-25)
+    bratSt.run_time(1300, 800)
+    bratSt.run_time(-1300, 900)
+
+
+
 #*********BRAT OAMENII*********
 
 def miscaBrat(cm):
@@ -332,7 +350,7 @@ def miscaBrat(cm):
 
 #*********DISPLAY*********
 #FUNCTIA DE AFISARE
-x = 2
+x = 12
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
