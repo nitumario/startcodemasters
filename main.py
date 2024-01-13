@@ -45,9 +45,9 @@ zap10 = DriveBase(st, dr, 49.5, 103)
 zap11 = DriveBase(st, dr, 49.5, 103)
 zap12 = DriveBase(st, dr, 49.5, 103)
 
-zap1.settings(800, 200, 200, 200)
-zap2.settings(1000, 1000, 300, 300)
-zap3.settings(800, 800, 300, 300)
+zap1.settings(1000, 500, 300, 300)
+zap2.settings(1000, 500, 300, 300)
+zap3.settings(800, 1000, 300, 300)
 zap4.settings(800, 500, 300, 300)
 zap5.settings(800, 500, 300, 300)
 zap6.settings(800, 500, 300, 150)
@@ -142,17 +142,14 @@ def thread_bratDr(bratDr_speed, bratDr_angles, ):
 #*********URMARIRE LINIE*********
 
 def urmarireLinie1(degrees):
-    st.reset_angle()
     while st.angle() < degrees:
-        zap1.straight(coefd1*50)
-        time.sleep(0.1)
+        zap1.straight(coefd1*-25)
         zapdisplay.screen.clear()
         zapdisplay.screen.draw_text(80, 50, str(st.angle()), Color.BLACK, None)
         if senzorCuloareSt.color() == Color.BLACK:
             zap1.turn(10)
         if senzorCuloareSt.color() == Color.WHITE:
             zap1.turn(-10)
-
 
 #*********RUNS*********
 def run01():
@@ -313,20 +310,23 @@ def run06():
     zap6.turn(coeft6*75)
     zap6.straight(coefd6*700)
 
-def run02Test():
-    #merge in stanga dragonului
-    zap2.straight(-150*coefd2)
-    zap2.turn(coeft2*-30)
-    zap2.straight(-100*coefd2)
-    #face misiunea
-    zap2.turn(coeft2*60)
-    #se intoarce la unghiul initial
-    zap2.turn(coeft2*-20)
-    #se intoarce in baza
-    zap2.straight(250*coefd2)
-
-def run02():
-    pass
+def run03(repetari):
+    # mergem la teatru
+    zap3.straight(coeft2*-200)
+    zap3.turn(coeft2*-90)
+    zap3.straight(coeft2*-300)
+    zap3.turn(coeft2*90)
+    zap3.straight(coeft2*-460)
+    zap3.turn(coeft2*45)
+    # face misiunea
+    for i in range(repetari):
+        zap3.straight(coeft2*-70)
+        zap3.straight(coeft2*70)
+    # se intoarce in baza
+    zap3.turn(coeft2*-45)
+    zap3.straight(coeft2*500)
+    zap3.turn(coeft2*90)
+    zap3.straight(coeft2*-100)
 
 def run12():
     zap2.turn(coeft2*-25)
@@ -341,7 +341,8 @@ def run12():
     bratSt.run_time(1300, 800)
     bratSt.run_time(-1300, 900)
 
-
+def run13():
+    bratSt.run_time(1300, 900)
 
 #*********BRAT OAMENII*********
 
@@ -350,7 +351,7 @@ def miscaBrat(cm):
 
 #*********DISPLAY*********
 #FUNCTIA DE AFISARE
-x = 12
+x = 3
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
@@ -364,7 +365,7 @@ touch=0
 
 while True:
     #verificare apasare butoane
-    if Button.UP in zapdisplay.buttons.pressed() and x < 12:
+    if Button.UP in zapdisplay.buttons.pressed() and x < 13:
         x = x+1
         update_screen(x)
         wait(700)
@@ -388,7 +389,7 @@ while True:
     if int(x)==3 and senzorApasare.pressed():
         touch = 1
         if senzorApasare.pressed() and touch==1:
-            run03()
+            run03(1)
             touch = 0   
     if int(x)==4 and senzorApasare.pressed():
         touch = 1
@@ -434,6 +435,11 @@ while True:
         touch = 1
         if senzorApasare.pressed() and touch==1:
             run12()
+            touch = 0
+    if int(x)==13 and senzorApasare.pressed():
+        touch = 1
+        if senzorApasare.pressed() and touch==1:
+            run13()
             touch = 0
 
     if Button.LEFT in zapdisplay.buttons.pressed():
