@@ -153,11 +153,12 @@ def urmarireLinie1(degrees):
 
 #*********RUNS*********
 def run01():
-    zap1.straight(coefd1 * 280)
+    #RUN CINCI
+    zap1.straight(coefd1 * 260)
     zap1.turn(coeft1*90)
     zap1.straight(coefd1 * 640)
     zap1.turn(coeft1 * -90)
-    zap1.straight(coefd1 * 250)
+    zap1.straight(coefd1 * 270)
     zap1.turn(coeft1*10)
     #diagonala
     zap1.straight(coefd1 * 100)
@@ -195,43 +196,8 @@ def run01():
     _thread.start_new_thread(thread_bratDr, (1000, 360))
     _thread.start_new_thread(thread_zap1, (100,))'''
 
-def run01_init():
-    zap1.straight(coefd1 * 100)
-    zap1.turn(coeft1*70)
-    zap1.straight(coefd1 * 620)
-    zap1.turn(coeft1 * -70)
-    zap1.straight(coefd1 * 270)
-    zap1.turn(coeft1*30)
-    #diagonala
-    zap1.straight(coefd1 * 130)
-    zap1.turn(coeft1*-30)
-    zap1.straight(coefd1 * 60)
-    #actionam bratul ca sa facem MOV
-    bratSt.run_angle(-1000, 1050)
-    #dam cu spatele dupa MOV
-    zap1.straight(coefd1*-100)
-    #ne intoarcem spre lalea
-    zap1.turn(coeft1*-90)
-    #facem diagonala pentru a face laleaua
-    zap1.straight(coefd1*-170)
-    zap1.turn(coeft1*-25)
-    #facem diagonala ca sa ne apropiem
-    zap1.straight(coefd1*-190)
-    zap1.turn(coeft1*25)
-    #mergem cu spatele sa facem laleaua
-    zap1.straight(coefd1*-500)
-    #ne indretam spre TAO
-    zap1.turn(coeft1*-230)
-    #facem TAO
-    zap1.straight(coefd1*230)
 
-
-    '''_thread.start_new_thread(thread_zap1, (100,))
-    _thread.start_new_thread(thread_bratSt, (1000, 360))
-    _thread.start_new_thread(thread_bratDr, (1000, 360))
-    _thread.start_new_thread(thread_zap1, (100,))'''
-
-def run03_ceva():
+def run04():
     _thread.start_new_thread(thread_zap1, (230,))
     zap1.straight(coefd1* 100)
     zap1.turn(coeft1*45)
@@ -251,12 +217,12 @@ def run09():
     zap9.straight(coefd9*330)
     zap9.turn(coeft9*-15)
     #actionam bratul pentru cocos
-    bratSt.run_time(1000, 3000)
+    bratSt.run_time(1000, 2050)
     zap9.straight(coefd9*30)
     #facem un unghi ca sa facem imprimanta
     zap9.turn(coeft9*-10)
     #ne intoarcem in baza
-    zap9.straight(coefd9*-400)
+    zap9.straight(coefd9*-600)
 
 def run06_test():
     #trecem de pizza
@@ -290,20 +256,24 @@ def run06():
     #ne intoarcem paralel cu turnul
     zap6.turn(coeft6*-50)
     #mergem pana in fata turnului paralel
-    zap6.straight(coefd6*-710)
+    zap6.straight(coefd6*-680)
     #ne intoarcem spre muzeu
     zap6.turn(coeft6*90)
     #lasam tot in muzeu
-    zap6.straight(coefd6*-90)
+    zap6.straight(coefd6*-70)
     #mergem in turn
-    zap6.straight(coefd6*300)
+    zap6.straight(coefd6*70)
+    zap6.turn(20)
+    zap6.straight(coefd6*100)
+    zap6.turn(-20)
+    zap6.straight(coefd6*60)
     #facem turnul
-    bratSt.run_time(-1000, 4000)
+    bratSt.run_time(-1000, 4600)
     #ne indepartam de turn
-    bratSt.run_time(1000, 700)
-    zap6.straight(coefd6*-110)
+    bratSt.run_time(1000, 1000)
+    zap6.straight(coefd6*-90)
     zap6.turn(coeft6*-100)
-    zap6.straight(coefd6*660)
+    zap6.straight(coefd6*640)
     zap6.turn(coeft6*75)
     zap6.straight(coefd6*700)
 
@@ -341,6 +311,10 @@ def run12():
 def run13():
     bratSt.run_time(1300, 900)
 
+def run07():
+    zap7.straight(coeft2*-400)
+    zap7.straight(coeft2*400)
+
 #*********BRAT OAMENII*********
 
 def miscaBrat(cm):
@@ -348,7 +322,7 @@ def miscaBrat(cm):
 
 #*********DISPLAY*********
 #FUNCTIA DE AFISARE
-x = 1
+x = 6
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
