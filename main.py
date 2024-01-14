@@ -45,7 +45,7 @@ zap10 = DriveBase(st, dr, 49.5, 103)
 zap11 = DriveBase(st, dr, 49.5, 103)
 zap12 = DriveBase(st, dr, 49.5, 103)
 
-zap1.settings(1000, 500, 300, 300)
+zap1.settings(800, 200, 200, 200)
 zap2.settings(1000, 500, 300, 300)
 zap3.settings(800, 1000, 300, 300)
 zap4.settings(800, 500, 300, 300)
@@ -153,45 +153,42 @@ def urmarireLinie1(degrees):
 
 #*********RUNS*********
 def run01():
-    zap1.straight(coefd1 * 100)
-    zap1.turn(coeft1*70)
-    zap1.straight(coefd1 * 620)
-    zap1.turn(coeft1 * -70)
-    zap1.straight(coefd1 * 270)
-    zap1.turn(coeft1*30)
+    zap1.straight(coefd1 * 280)
+    zap1.turn(coeft1*90)
+    zap1.straight(coefd1 * 640)
+    zap1.turn(coeft1 * -90)
+    zap1.straight(coefd1 * 250)
+    zap1.turn(coeft1*10)
     #diagonala
-    zap1.straight(coefd1 * 130)
-    zap1.turn(coeft1*-30)
-    zap1.straight(coefd1 * 60)
+    zap1.straight(coefd1 * 100)
+    zap1.turn(coeft1*-10)
+    zap1.straight(coefd1 * 80)
     #actionam bratul ca sa facem MOV
     bratSt.run_angle(-1000, 1050)
     #dam cu spatele dupa MOV
-    zap1.straight(coefd1*-100)
+    zap1.straight(coefd1*-90)
     #ne intoarcem spre lalea
     zap1.turn(coeft1*-90)
     #facem diagonala pentru a face laleaua
     zap1.straight(coefd1*-160)
-    zap1.turn(coeft1*-25)
+    zap1.turn(coeft1*-30)
     #facem diagonala ca sa ne apropiem
-    zap1.straight(coefd1*-210)
-    zap1.turn(coeft1*25)
+    zap1.straight(coefd1*-220)
+    zap1.turn(coeft1*30)
     #mergem cu spatele sa facem laleaua
-    zap1.straight(coefd1*-500)
+    zap1.straight(coefd1*-440)
     zap1.turn(coeft1*-120)
-    zap1.straight(coefd1*30)
-    zap1.turn(coeft1*-100)
+    zap1.straight(coefd1*60)
+    zap1.turn(coeft1*-110)
     #facem TAO
     bratSt.run_angle(-1000, 500)
-    bratDr.run_angle(1000, 300)
-    zap1.straight(coefd1*130)
-    bratSt.run_angle(1000, 1300)
+    zap1.straight(coefd1*170)
+    bratSt.run_angle(1000, 1400)
     bratDr.run_angle(-1000, 300)
     #catre baza albastraaaaaaaaaa LETSGOOOOOO MEOW MEOW
     zap1.straight(coefd1*-180)
-    zap1.turn(coeft1*90)
+    zap1.turn(coeft1*100)
     zap1.straight(coefd1*900)
-
-
 
     '''_thread.start_new_thread(thread_zap1, (100,))
     _thread.start_new_thread(thread_bratSt, (1000, 360))
@@ -234,7 +231,7 @@ def run01_init():
     _thread.start_new_thread(thread_bratDr, (1000, 360))
     _thread.start_new_thread(thread_zap1, (100,))'''
 
-def run03():
+def run03_ceva():
     _thread.start_new_thread(thread_zap1, (230,))
     zap1.straight(coefd1* 100)
     zap1.turn(coeft1*45)
@@ -320,8 +317,8 @@ def run03(repetari):
     zap3.turn(coeft2*45)
     # face misiunea
     for i in range(repetari):
-        zap3.straight(coeft2*-70)
-        zap3.straight(coeft2*70)
+        zap3.straight(coeft2*-60)
+        zap3.straight(coeft2*60)
     # se intoarce in baza
     zap3.turn(coeft2*-45)
     zap3.straight(coeft2*500)
@@ -351,7 +348,7 @@ def miscaBrat(cm):
 
 #*********DISPLAY*********
 #FUNCTIA DE AFISARE
-x = 3
+x = 1
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
