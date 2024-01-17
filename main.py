@@ -1,5 +1,5 @@
 #!/usr/bin/env pybricks-micropython
-#*********IMPORTS*********
+#**************************IMPORTS**************************
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
                                  InfraredSensor, UltrasonicSensor, GyroSensor)
@@ -11,7 +11,7 @@ import utime
 import time
 import _thread
 
-#*********ROBOTUL*********
+#**************************ROBOTUL**************************
 #!bratDr (+) ridicare
 #!bratSt (-) lasa in jos
 
@@ -29,7 +29,7 @@ senzorCuloareSt = ColorSensor(Port.S2)
 senzorApasare = TouchSensor(Port.S3)
 senzorGiro = GyroSensor(Port.S4)
 
-#*********OBIECTELE*********
+#**************************OBIECTELE**************************
 
 #DRIVE BASE-UL SI SETARILE OBIECTELOR
 zap1 = DriveBase(st, dr, 49.5, 103)
@@ -50,10 +50,10 @@ zap2.settings(1000, 1000, 300, 300)
 zap3.settings(800, 800, 300, 300)
 zap4.settings(800, 500, 300, 300)
 zap5.settings(800, 500, 300, 300)
-zap6.settings(800, 500, 300, 150)
+zap6.settings(800, 500, 300, 300)
 zap7.settings(1000, 500, 800, 800)
 zap8.settings(800, 500, 200, 200)
-zap9.settings(1000, 1000, 800, 800)
+zap9.settings(800, 500, 300, 300)
 zap10.settings(800, 500, 300, 300)
 zap11.settings(1000, 500, 800, 800)
 zap12.settings(800, 500, 200, 200)
@@ -61,7 +61,7 @@ zap12.settings(800, 500, 200, 200)
 st.stop()
 dr.stop()
 
-#*********COEFICIENTE DE EROARE*********
+#**************************COEFICIENTE DE EROARE**************************
 
 #CREEM COEFICIENTELE DE EROARE
 #!Daca nu sti pentru ce sunt coefincientele intraba-l pe Vlad
@@ -116,7 +116,7 @@ coeft11 = 1
 coefd12 = 1
 coeft12 = 1
 
-#*********THREAD-URI*********
+#**************************THREAD-URI**************************
 
 global angles_zap1
 global bratSt_speed
@@ -138,60 +138,63 @@ def thread_bratDr(bratDr_speed, bratDr_angles, ):
     bratDr.run_angle(bratDr_speed, bratDr_angles)
 #    _thread.allocate_lock().release()  
 
-    
-#*********URMARIRE LINIE*********
 
-def urmarireLinie1(degrees):
-    st.reset_angle()
-    while st.angle() < degrees:
-        zap1.straight(coefd1*50)
-        time.sleep(0.1)
-        zapdisplay.screen.clear()
-        zapdisplay.screen.draw_text(80, 50, str(st.angle()), Color.BLACK, None)
-        if senzorCuloareSt.color() == Color.BLACK:
-            zap1.turn(10)
-        if senzorCuloareSt.color() == Color.WHITE:
-            zap1.turn(-10)
+#**************************RUNS**************************
+def run03():
+    _thread.start_new_thread(thread_zap1, (230,))
+    zap1.straight(coefd1* 100)
+    zap1.turn(coeft1*45)
+    zap1.straight(coefd1 * 250)
+    _thread.start_new_thread(thread_bratDr, (1000, 520))
+    _thread.start_new_thread(thread_zap1, (10,))
+    zap1.straight(coefd1* 100)
+    zap1.turn(coeft1*45)
+    zap1.straight(coefd1* -100)
 
 
-#*********RUNS*********
+def run09():
+    zap1.straight(150)
+    zap1.turn(-45)
+    zap1.straight(330)
+    bratSt.run_time(1000, 2000)
+    zap1.straight(-450)
+
 def run01():
-    zap1.straight(coefd1 * 100)
-    zap1.turn(coeft1*70)
-    zap1.straight(coefd1 * 620)
-    zap1.turn(coeft1 * -70)
-    zap1.straight(coefd1 * 270)
-    zap1.turn(coeft1*30)
+    zap1.straight(coefd1 * 280)
+    zap1.turn(coeft1*90)
+    zap1.straight(coefd1 * 640)
+    zap1.turn(coeft1 * -90)
+    zap1.straight(coefd1 * 250)
+    zap1.turn(coeft1*10)
     #diagonala
-    zap1.straight(coefd1 * 130)
-    zap1.turn(coeft1*-30)
-    zap1.straight(coefd1 * 60)
+    zap1.straight(coefd1 * 100)
+    zap1.turn(coeft1*-10)
+    zap1.straight(coefd1 * 100)
     #actionam bratul ca sa facem MOV
     bratSt.run_angle(-1000, 1050)
     #dam cu spatele dupa MOV
-    zap1.straight(coefd1*-100)
+    zap1.straight(coefd1*-100)9
     #ne intoarcem spre lalea
     zap1.turn(coeft1*-90)
     #facem diagonala pentru a face laleaua
     zap1.straight(coefd1*-160)
-    zap1.turn(coeft1*-25)
+    zap1.turn(coeft1*-30)
     #facem diagonala ca sa ne apropiem
-    zap1.straight(coefd1*-210)
-    zap1.turn(coeft1*25)
+    zap1.straight(coefd1*-240)
+    zap1.turn(coeft1*30)
     #mergem cu spatele sa facem laleaua
-    zap1.straight(coefd1*-500)
+    zap1.straight(coefd1*-440)
     zap1.turn(coeft1*-120)
-    zap1.straight(coefd1*30)
-    zap1.turn(coeft1*-100)
+    zap1.straight(coefd1*60)
+    zap1.turn(coeft1*-110)
     #facem TAO
     bratSt.run_angle(-1000, 500)
-    bratDr.run_angle(1000, 300)
-    zap1.straight(coefd1*130)
+    zap1.straight(coefd1*150)
     bratSt.run_angle(1000, 1300)
     bratDr.run_angle(-1000, 300)
     #catre baza albastraaaaaaaaaa LETSGOOOOOO MEOW MEOW
     zap1.straight(coefd1*-180)
-    zap1.turn(coeft1*90)
+    zap1.turn(coeft1*100)
     zap1.straight(coefd1*900)
 
 
@@ -232,6 +235,8 @@ def run01_init():
     #ne indretam spre TAO
     zap1.turn(coeft1*-230)
     #facem TAO
+
+
     zap1.straight(coefd1*230)
 
 
@@ -240,96 +245,24 @@ def run01_init():
     _thread.start_new_thread(thread_bratDr, (1000, 360))
     _thread.start_new_thread(thread_zap1, (100,))'''
 
-def run03():
-    _thread.start_new_thread(thread_zap1, (230,))
-    zap1.straight(coefd1* 100)
-    zap1.turn(coeft1*45)
-    zap1.straight(coefd1 * 250)
-    _thread.start_new_thread(thread_bratDr, (1000, 520))
-    _thread.start_new_thread(thread_zap1, (10,))
-    zap1.straight(coefd1* 100)
-    zap1.turn(coeft1*45)
-    zap1.straight(coefd1* -100)
+#**************************URMARIRE LINIE**************************
 
-def run09():
-    #diagonala
-    zap9.straight(coefd9*130)
-    #ne intoarcem spre cocos
-    zap9.turn(coeft9*-45)
-    #mergem in cocos
-    zap9.straight(coefd9*330)
-    zap9.turn(coeft9*-15)
-    #actionam bratul pentru cocos
-    bratSt.run_time(1000, 3000)
-    zap9.straight(coefd9*30)
-    #facem un unghi ca sa facem imprimanta
-    zap9.turn(coeft9*-10)
-    #ne intoarcem in baza
-    zap9.straight(coefd9*-400)
-
-def run06_test():
-    #trecem de pizza
-    zap6.straight(coefd6*650)
-    zap6.turn(coeft6*-90)
-    #mergem la muzeu
-    zap6.straight(coefd6*660)
-    zap6.turn(coeft6*90)
-    zap6.straight(coefd6*150)
-    #mergem la turn
-    zap6.straight(coefd6*-110)
-    zap6.turn(coeft6*180)
-    zap6.straight(coefd6*200)
-    zap6.turn(coeft6*-20)
-    #facem misiunea 
-    bratSt.run_time(-1000, 3400)
-    bratSt.run_time(1000, 500)
-    #merge inapoi
-    zap6.straight(coefd6*-150)
-    zap6.turn(coeft6*-90)
-    zap6.straight(coefd6*640)
-    zap6.turn(coeft6*80)
-    zap6.straight(coefd6*750)
-
-def run06():
-    #mergem spre tao
-    zap6.straight(coefd6*-450)
-    #diagonala
-    zap6.turn(coeft6*-45)
-    zap6.straight(coefd6*-290)
-    #ne intoarcem paralel cu turnul
-    zap6.turn(coeft6*-50)
-    #mergem pana in fata turnului paralel
-    zap6.straight(coefd6*-700)
-    #ne intoarcem spre muzeu
-    zap6.turn(coeft6*95)
-    #lasam tot in muzeu
-    zap6.straight(coefd6*-90)
-    #mergem in turn
-    zap6.straight(coefd6*300)
-    #facem turnul
-    bratSt.run_time(-1000, 4000)
-    #ne indepartam de turn
-    bratSt.run_time(1000, 500)
-    zap6.straight(coefd6*-110)
-    zap6.turn(coeft6*-100)
-    zap6.straight(coefd6*660)
-    zap6.turn(coeft6*75)
-    zap6.straight(coefd6*700)
+def urmarireLinie1(degrees):
+    st.reset_angle(0)
+    while st.angle() < degrees:
+        zap1.straight(coefd1*50)
+        time.sleep(0.1)
+        zapdisplay.screen.clear()
+        zapdisplay.screen.draw_text(80, 50, str(st.angle()), Color.BLACK, None)
+        if left_sensor.color() == Color.WHITE:
+            zap1.turn(10)
+        if left_sensor.color() == Color.BLACK:
+            zap1.turn(-10)
 
 
-    
-
-
-
-
-#*********BRAT OAMENII*********
-
-def miscaBrat(cm):
-    bratSt.run_time(1000, cm**2.2)
-
-#*********DISPLAY*********
+#**************************DISPLAY**************************
 #FUNCTIA DE AFISARE
-x = 6
+x = 1
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
@@ -339,8 +272,7 @@ def update_screen(x):
 
 touch=0
 
-#*********DISPLAY*********
-
+#**************************DISPLAY**************************
 while True:
     #verificare apasare butoane
     if Button.UP in zapdisplay.buttons.pressed() and x < 12:
