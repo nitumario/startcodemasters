@@ -46,8 +46,8 @@ zap11 = DriveBase(st, dr, 49.5, 103)
 zap12 = DriveBase(st, dr, 49.5, 103)
 
 zap1.settings(800, 200, 200, 200)
-zap2.settings(1000, 1000, 300, 300)
-zap3.settings(800, 800, 300, 300)
+zap2.settings(1000, 500, 300, 300)
+zap3.settings(800, 1000, 300, 300)
 zap4.settings(800, 500, 300, 300)
 zap5.settings(800, 500, 300, 300)
 zap6.settings(800, 500, 300, 300)
@@ -138,50 +138,46 @@ def thread_bratDr(bratDr_speed, bratDr_angles, ):
     bratDr.run_angle(bratDr_speed, bratDr_angles)
 #    _thread.allocate_lock().release()  
 
+    
+#*********URMARIRE LINIE*********
 
-#**************************RUNS**************************
-def run03():
-    _thread.start_new_thread(thread_zap1, (230,))
-    zap1.straight(coefd1* 100)
-    zap1.turn(coeft1*45)
-    zap1.straight(coefd1 * 250)
-    _thread.start_new_thread(thread_bratDr, (1000, 520))
-    _thread.start_new_thread(thread_zap1, (10,))
-    zap1.straight(coefd1* 100)
-    zap1.turn(coeft1*45)
-    zap1.straight(coefd1* -100)
+def urmarireLinie1(degrees):
+    st.reset_angle()
+    while st.angle() < degrees:
+        zap1.straight(coefd1*50)
+        time.sleep(0.1)
+        zapdisplay.screen.clear()
+        zapdisplay.screen.draw_text(80, 50, str(st.angle()), Color.BLACK, None)
+        if senzorCuloareSt.color() == Color.BLACK:
+            zap1.turn(10)
+        if senzorCuloareSt.color() == Color.WHITE:
+            zap1.turn(-10)
 
 
-def run09():
-    zap1.straight(150)
-    zap1.turn(-45)
-    zap1.straight(330)
-    bratSt.run_time(1000, 2000)
-    zap1.straight(-450)
-
+#*********RUNS*********
 def run01():
-    zap1.straight(coefd1 * 280)
-    zap1.turn(coeft1*90)
-    zap1.straight(coefd1 * 640)
-    zap1.turn(coeft1 * -90)
-    zap1.straight(coefd1 * 250)
-    zap1.turn(coeft1*10)
+    zap1.straight(coefd1 * 100)
+    zap1.turn(coeft1*70)
+    zap1.straight(coefd1 * 620)
+    zap1.turn(coeft1 * -70)
+    zap1.straight(coefd1 * 270)
+    zap1.turn(coeft1*30)
     #diagonala
-    zap1.straight(coefd1 * 100)
-    zap1.turn(coeft1*-10)
-    zap1.straight(coefd1 * 100)
+    zap1.straight(coefd1 * 130)
+    zap1.turn(coeft1*-30)
+    zap1.straight(coefd1 * 60)
     #actionam bratul ca sa facem MOV
     bratSt.run_angle(-1000, 1050)
     #dam cu spatele dupa MOV
-    zap1.straight(coefd1*-100)9
+    zap1.straight(coefd1*-100)
     #ne intoarcem spre lalea
     zap1.turn(coeft1*-90)
     #facem diagonala pentru a face laleaua
     zap1.straight(coefd1*-160)
     zap1.turn(coeft1*-30)
     #facem diagonala ca sa ne apropiem
-    zap1.straight(coefd1*-240)
-    zap1.turn(coeft1*30)
+    zap1.straight(coefd1*-210)
+    zap1.turn(coeft1*25)
     #mergem cu spatele sa facem laleaua
     zap1.straight(coefd1*-440)
     zap1.turn(coeft1*-120)
@@ -189,15 +185,14 @@ def run01():
     zap1.turn(coeft1*-110)
     #facem TAO
     bratSt.run_angle(-1000, 500)
-    zap1.straight(coefd1*150)
+    bratDr.run_angle(1000, 300)
+    zap1.straight(coefd1*130)
     bratSt.run_angle(1000, 1300)
     bratDr.run_angle(-1000, 300)
     #catre baza albastraaaaaaaaaa LETSGOOOOOO MEOW MEOW
     zap1.straight(coefd1*-180)
     zap1.turn(coeft1*100)
     zap1.straight(coefd1*900)
-
-
 
     '''_thread.start_new_thread(thread_zap1, (100,))
     _thread.start_new_thread(thread_bratSt, (1000, 360))
@@ -235,8 +230,6 @@ def run01_init():
     #ne indretam spre TAO
     zap1.turn(coeft1*-230)
     #facem TAO
-
-
     zap1.straight(coefd1*230)
 
 
@@ -245,22 +238,94 @@ def run01_init():
     _thread.start_new_thread(thread_bratDr, (1000, 360))
     _thread.start_new_thread(thread_zap1, (100,))'''
 
-#**************************URMARIRE LINIE**************************
+def run03():
+    _thread.start_new_thread(thread_zap1, (230,))
+    zap1.straight(coefd1* 100)
+    zap1.turn(coeft1*45)
+    zap1.straight(coefd1 * 250)
+    _thread.start_new_thread(thread_bratDr, (1000, 520))
+    _thread.start_new_thread(thread_zap1, (10,))
+    zap1.straight(coefd1* 100)
+    zap1.turn(coeft1*45)
+    zap1.straight(coefd1* -100)
 
-def urmarireLinie1(degrees):
-    st.reset_angle(0)
-    while st.angle() < degrees:
-        zap1.straight(coefd1*50)
-        time.sleep(0.1)
-        zapdisplay.screen.clear()
-        zapdisplay.screen.draw_text(80, 50, str(st.angle()), Color.BLACK, None)
-        if left_sensor.color() == Color.WHITE:
-            zap1.turn(10)
-        if left_sensor.color() == Color.BLACK:
-            zap1.turn(-10)
+def run09():
+    #diagonala
+    zap9.straight(coefd9*130)
+    #ne intoarcem spre cocos
+    zap9.turn(coeft9*-45)
+    #mergem in cocos
+    zap9.straight(coefd9*330)
+    zap9.turn(coeft9*-15)
+    #actionam bratul pentru cocos
+    bratSt.run_time(1000, 3000)
+    zap9.straight(coefd9*30)
+    #facem un unghi ca sa facem imprimanta
+    zap9.turn(coeft9*-10)
+    #ne intoarcem in baza
+    zap9.straight(coefd9*-400)
+
+def run06_test():
+    #trecem de pizza
+    zap6.straight(coefd6*650)
+    zap6.turn(coeft6*-90)
+    #mergem la muzeu
+    zap6.straight(coefd6*660)
+    zap6.turn(coeft6*90)
+    zap6.straight(coefd6*150)
+    #mergem la turn
+    zap6.straight(coefd6*-110)
+    zap6.turn(coeft6*180)
+    zap6.straight(coefd6*200)
+    zap6.turn(coeft6*-20)
+    #facem misiunea 
+    bratSt.run_time(-1000, 3400)
+    bratSt.run_time(1000, 500)
+    #merge inapoi
+    zap6.straight(coefd6*-150)
+    zap6.turn(coeft6*-90)
+    zap6.straight(coefd6*640)
+    zap6.turn(coeft6*80)
+    zap6.straight(coefd6*750)
+
+def run06():
+    #mergem spre tao
+    zap6.straight(coefd6*-450)
+    #diagonala
+    zap6.turn(coeft6*-45)
+    zap6.straight(coefd6*-290)
+    #ne intoarcem paralel cu turnul
+    zap6.turn(coeft6*-50)
+    #mergem pana in fata turnului paralel
+    zap6.straight(coefd6*-700)
+    #ne intoarcem spre muzeu
+    zap6.turn(coeft6*95)
+    #lasam tot in muzeu
+    zap6.straight(coefd6*-90)
+    #mergem in turn
+    zap6.straight(coefd6*300)
+    #facem turnul
+    bratSt.run_time(-1000, 4000)
+    #ne indepartam de turn
+    bratSt.run_time(1000, 500)
+    zap6.straight(coefd6*-110)
+    zap6.turn(coeft6*-100)
+    zap6.straight(coefd6*660)
+    zap6.turn(coeft6*75)
+    zap6.straight(coefd6*700)
 
 
-#**************************DISPLAY**************************
+    
+
+
+
+
+#*********BRAT OAMENII*********
+
+def miscaBrat(cm):
+    bratSt.run_time(1000, cm**2.2)
+
+#*********DISPLAY*********
 #FUNCTIA DE AFISARE
 x = 1
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
@@ -275,7 +340,7 @@ touch=0
 #**************************DISPLAY**************************
 while True:
     #verificare apasare butoane
-    if Button.UP in zapdisplay.buttons.pressed() and x < 12:
+    if Button.UP in zapdisplay.buttons.pressed() and x < 13:
         x = x+1
         update_screen(x)
         wait(700)
@@ -299,7 +364,7 @@ while True:
     if int(x)==3 and senzorApasare.pressed():
         touch = 1
         if senzorApasare.pressed() and touch==1:
-            run03()
+            run03(1)
             touch = 0   
     if int(x)==4 and senzorApasare.pressed():
         touch = 1
@@ -345,6 +410,11 @@ while True:
         touch = 1
         if senzorApasare.pressed() and touch==1:
             run12()
+            touch = 0
+    if int(x)==13 and senzorApasare.pressed():
+        touch = 1
+        if senzorApasare.pressed() and touch==1:
+            run13()
             touch = 0
 
     if Button.LEFT in zapdisplay.buttons.pressed():
