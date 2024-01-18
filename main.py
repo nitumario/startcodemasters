@@ -45,7 +45,7 @@ zap10 = DriveBase(st, dr, 49.5, 103)
 zap11 = DriveBase(st, dr, 49.5, 103)
 zap12 = DriveBase(st, dr, 49.5, 103)
 
-zap1.settings(800, 200, 200, 200)
+zap1.settings(800, 800, 500, 500)
 zap2.settings(1000, 500, 300, 300)
 zap3.settings(800, 1000, 300, 300)
 zap4.settings(800, 500, 300, 300)
@@ -125,18 +125,24 @@ global bratDr_speed
 global bratDr_angles
 global extra
 
+import _thread
+
+# Create a shared lock
+global_lock = _thread.allocate_lock()
+zap1_lock = _thread.allocate_lock()
+bratDr_lock = _thread.allocate_lock()
 def thread_zap1(angles_zap1):
-    _thread.allocate_lock().acquire()
-    zap1.straight(coefd1 * angles_zap1)
-#    _thread.allocate_lock().release()
+    with global_lock:
+        zap1.straight(coefd1 * angles_zap1)
+
 def thread_bratSt(bratSt_speed, bratSt_angles, extra):
-    _thread.allocate_lock().acquire()
-    bratSt.run_angle(bratSt_speed, bratSt_angles, extra)
-#    _thread.allocate_lock().release()
-def thread_bratDr(bratDr_speed, bratDr_angles, ):
-    _thread.allocate_lock().acquire()
-    bratDr.run_angle(bratDr_speed, bratDr_angles)
-#    _thread.allocate_lock().release()  
+    with global_lock:
+        bratSt.run_angle(bratSt_speed, bratSt_angles, extra)
+
+def thread_bratDr(bratDr_speed, bratDr_angles):
+    with global_lock:
+        bratDr.run_angle(bratDr_speed, bratDr_angles)
+
 
     
 #*********URMARIRE LINIE*********
@@ -153,6 +159,51 @@ def urmarireLinie1(degrees):
 
 #*********RUNS*********
 def run01():
+    # Start the threads for the first section
+
+    # Perform the first section sequentially
+    zap1.straight(coefd1 * 230)
+
+    # Continue with the first section sequentially
+    zap1.turn(coeft1 * 45)
+    zap1.straight(coefd1 * 240)
+
+    # Start the threads for the second section
+    _thread.start_new_thread(thread_bratDr, (1000, 450))
+    _thread.start_new_thread(thread_zap1, (20,))
+
+    # Perform the second section sequentially
+        # Assuming bratDr.run_angle is a method of zap1, adjust as needed
+    bratDr.run_angle(1000, 300)
+
+    # Continue with the second section sequentially
+    zap1.straight(coefd1 * 1)
+    zap1.turn(coeft1 * 45)
+    zap1.straight(coefd1 * -100)
+
+    # Allow some time for threads to finish (you might need to adjust this)
+    time.sleep(5)
+
+def run03(repetari):
+    #TEATRU
+    # mergem la teatru
+    zap3.straight(coeft2*-200)
+    zap3.turn(coeft2*-90)
+    zap3.straight(coeft2*-300)
+    zap3.turn(coeft2*90)
+    zap3.straight(coeft2*-460)
+    zap3.turn(coeft2*45)
+    # face misiunea
+    for i in range(repetari):
+        zap3.straight(coeft2*-60)
+        zap3.straight(coeft2*60)
+    # se intoarce in baza
+    zap3.turn(coeft2*-45)
+    zap3.straight(coeft2*500)
+    zap3.turn(coeft2*90)
+    zap3.straight(coeft2*-100)
+
+def run05():
     #RUN CINCI
     zap1.straight(coefd1 * 260)
     zap1.turn(coeft1*90)
@@ -196,58 +247,8 @@ def run01():
     _thread.start_new_thread(thread_bratDr, (1000, 360))
     _thread.start_new_thread(thread_zap1, (100,))'''
 
-
-def run04():
-    _thread.start_new_thread(thread_zap1, (230,))
-    zap1.straight(coefd1* 100)
-    zap1.turn(coeft1*45)
-    zap1.straight(coefd1 * 250)
-    _thread.start_new_thread(thread_bratDr, (1000, 520))
-    _thread.start_new_thread(thread_zap1, (10,))
-    zap1.straight(coefd1* 100)
-    zap1.turn(coeft1*45)
-    zap1.straight(coefd1* -100)
-
-def run09():
-    #diagonala
-    zap9.straight(coefd9*130)
-    #ne intoarcem spre cocos
-    zap9.turn(coeft9*-45)
-    #mergem in cocos
-    zap9.straight(coefd9*330)
-    zap9.turn(coeft9*-15)
-    #actionam bratul pentru cocos
-    bratSt.run_time(1000, 2050)
-    zap9.straight(coefd9*30)
-    #facem un unghi ca sa facem imprimanta
-    zap9.turn(coeft9*-10)
-    #ne intoarcem in baza
-    zap9.straight(coefd9*-600)
-
-def run06_test():
-    #trecem de pizza
-    zap6.straight(coefd6*650)
-    zap6.turn(coeft6*-90)
-    #mergem la muzeu
-    zap6.straight(coefd6*660)
-    zap6.turn(coeft6*90)
-    zap6.straight(coefd6*150)
-    #mergem la turn
-    zap6.straight(coefd6*-110)
-    zap6.turn(coeft6*180)
-    zap6.straight(coefd6*200)
-    zap6.turn(coeft6*-20)
-    #facem misiunea 
-    bratSt.run_time(-1000, 3400)
-    bratSt.run_time(1000, 500)
-    #merge inapoi
-    zap6.straight(coefd6*-150)
-    zap6.turn(coeft6*-90)
-    zap6.straight(coefd6*640)
-    zap6.turn(coeft6*80)
-    zap6.straight(coefd6*750)
-
 def run06():
+    #TURN
     #mergem spre tao
     zap6.straight(coefd6*-450)
     #diagonala
@@ -277,25 +278,30 @@ def run06():
     zap6.turn(coeft6*75)
     zap6.straight(coefd6*700)
 
-def run03(repetari):
-    # mergem la teatru
-    zap3.straight(coeft2*-200)
-    zap3.turn(coeft2*-90)
-    zap3.straight(coeft2*-300)
-    zap3.turn(coeft2*90)
-    zap3.straight(coeft2*-460)
-    zap3.turn(coeft2*45)
-    # face misiunea
-    for i in range(repetari):
-        zap3.straight(coeft2*-60)
-        zap3.straight(coeft2*60)
-    # se intoarce in baza
-    zap3.turn(coeft2*-45)
-    zap3.straight(coeft2*500)
-    zap3.turn(coeft2*90)
-    zap3.straight(coeft2*-100)
+def run07():
+    #SINA
+    zap7.straight(coeft2*-400)
+    zap7.straight(coeft2*400)
+
+def run09():
+    #GAINA/COCOS
+    #diagonala
+    zap9.straight(coefd9*130)
+    #ne intoarcem spre cocos
+    zap9.turn(coeft9*-45)
+    #mergem in cocos
+    zap9.straight(coefd9*330)
+    zap9.turn(coeft9*-15)
+    #actionam bratul pentru cocos
+    bratSt.run_time(1000, 2050)
+    zap9.straight(coefd9*30)
+    #facem un unghi ca sa facem imprimanta
+    zap9.turn(coeft9*-10)
+    #ne intoarcem in baza
+    zap9.straight(coefd9*-600)
 
 def run12():
+    #LANSAT OAMENI
     zap2.turn(coeft2*-25)
     bratSt.run_time(1300, 800)
     bratSt.run_time(-1300, 900)
@@ -311,10 +317,6 @@ def run12():
 def run13():
     bratSt.run_time(1300, 900)
 
-def run07():
-    zap7.straight(coeft2*-400)
-    zap7.straight(coeft2*400)
-
 #*********BRAT OAMENII*********
 
 def miscaBrat(cm):
@@ -322,7 +324,7 @@ def miscaBrat(cm):
 
 #*********DISPLAY*********
 #FUNCTIA DE AFISARE
-x = 6
+x = 1
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
