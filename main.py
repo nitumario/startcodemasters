@@ -45,7 +45,7 @@ zap10 = DriveBase(st, dr, 49.5, 103)
 zap11 = DriveBase(st, dr, 49.5, 103)
 zap12 = DriveBase(st, dr, 49.5, 103)
 
-zap1.settings(800, 800, 500, 500)
+zap1.settings(800, 800, 300, 300)
 zap2.settings(1000, 500, 300, 300)
 zap3.settings(800, 1000, 300, 300)
 zap4.settings(800, 500, 300, 300)
@@ -125,7 +125,6 @@ global bratDr_speed
 global bratDr_angles
 global extra
 
-import _thread
 
 # Create a shared lock
 global_lock = _thread.allocate_lock()
@@ -141,7 +140,7 @@ def thread_bratSt(bratSt_speed, bratSt_angles, extra):
 
 def thread_bratDr(bratDr_speed, bratDr_angles):
     with global_lock:
-        bratDr.run_angle(bratDr_speed, bratDr_angles)
+        bratDr.run_time(bratDr_speed, bratDr_angles)
 
 
     
@@ -159,30 +158,17 @@ def urmarireLinie1(degrees):
 
 #*********RUNS*********
 def run01():
-    # Start the threads for the first section
-
-    # Perform the first section sequentially
     zap1.straight(coefd1 * 230)
-
-    # Continue with the first section sequentially
     zap1.turn(coeft1 * 45)
     zap1.straight(coefd1 * 240)
-
-    # Start the threads for the second section
-    _thread.start_new_thread(thread_bratDr, (1000, 450))
+    _thread.start_new_thread(thread_bratDr, (1000, 1200))
     _thread.start_new_thread(thread_zap1, (20,))
-
-    # Perform the second section sequentially
-        # Assuming bratDr.run_angle is a method of zap1, adjust as needed
-    bratDr.run_angle(1000, 300)
-
-    # Continue with the second section sequentially
+    bratDr.run_time(1000, 1200)
     zap1.straight(coefd1 * 1)
     zap1.turn(coeft1 * 45)
     zap1.straight(coefd1 * -100)
-
-    # Allow some time for threads to finish (you might need to adjust this)
-    time.sleep(5)
+    zap1.turn(coeft1 * -45)
+    zap1.straight(coefd1 * -400)
 
 def run03(repetari):
     #TEATRU
