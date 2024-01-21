@@ -47,7 +47,7 @@ zap12 = DriveBase(st, dr, 49.5, 103)
 
 zap1.settings(800, 800, 300, 300)
 zap2.settings(1000, 500, 300, 300)
-zap3.settings(800, 1000, 300, 300)
+zap3.settings(800, 1000, 800, 800)
 zap4.settings(800, 500, 300, 300)
 zap5.settings(800, 500, 300, 300)
 zap6.settings(800, 500, 300, 150)
@@ -164,30 +164,29 @@ def run01():
     _thread.start_new_thread(thread_bratDr, (1000, 1200))
     _thread.start_new_thread(thread_zap1, (20,))
     bratDr.run_time(1000, 1200)
-    zap1.straight(coefd1 * 1)
+    zap1.straight(coefd1 * 1)  
     zap1.turn(coeft1 * 45)
     zap1.straight(coefd1 * -100)
     zap1.turn(coeft1 * -45)
     zap1.straight(coefd1 * -400)
 
+def run02():
+    zap3.straight(coefd3*-380)
+    zap3.straight(coefd3*50)
+    zap3.turn(coeft3*60)
+    zap3.straight(coefd3*300)
+
 def run03(repetari):
     #TEATRU
     # mergem la teatru
-    zap3.straight(coeft2*-200)
-    zap3.turn(coeft2*-90)
-    zap3.straight(coeft2*-300)
-    zap3.turn(coeft2*90)
-    zap3.straight(coeft2*-460)
-    zap3.turn(coeft2*45)
+    zap3.straight(coeft3*-660)
+    zap3.turn(coeft3*-35)
     # face misiunea
     for i in range(repetari):
-        zap3.straight(coeft2*-60)
-        zap3.straight(coeft2*60)
-    # se intoarce in baza
-    zap3.turn(coeft2*-45)
-    zap3.straight(coeft2*500)
-    zap3.turn(coeft2*90)
-    zap3.straight(coeft2*-100)
+        zap3.straight(coeft2*-30)
+        zap3.straight(coeft2*30)
+    zap3.turn(coeft3*40)
+    zap3.straight(coeft3*660)
 
 def run05():
     #RUN CINCI
@@ -310,7 +309,7 @@ def miscaBrat(cm):
 
 #*********DISPLAY*********
 #FUNCTIA DE AFISARE
-x = 1
+x = 2
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
