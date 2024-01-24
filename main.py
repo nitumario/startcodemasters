@@ -158,6 +158,7 @@ def urmarireLinie1(degrees):
 
 #*********RUNS*********
 def run01():
+    #MIXER
     zap1.straight(coefd1 * 230)
     zap1.turn(coeft1 * 45)
     zap1.straight(coefd1 * 240)
@@ -171,6 +172,7 @@ def run01():
     zap1.straight(coefd1 * -400)
 
 def run02():
+    #DRAGON
     zap3.straight(coefd3*-380)
     zap3.straight(coefd3*50)
     zap3.turn(coeft3*60)
@@ -287,17 +289,19 @@ def run09():
 
 def run12():
     #LANSAT OAMENI
-    zap2.turn(coeft2*-25)
-    bratSt.run_time(1300, 800)
-    bratSt.run_time(-1300, 900)
+    bratSt.run_time(-500, 100)
+    zap2.turn(coeft2*-20)
+    bratSt.run_time(900, 1400)
+    bratSt.run_time(-900, 1400)
     zap2.straight(coeft2*20)
-    zap2.turn(coeft2*-65)
-    zap2.straight(coeft2*-120)
-    bratSt.run_time(1300, 800)
-    bratSt.run_time(-1300, 900)
-    zap2.turn(coeft2*-25)
-    bratSt.run_time(1300, 800)
-    bratSt.run_time(-1300, 900)
+    zap2.turn(coeft2*-55)
+    zap2.straight(coeft2*-90)
+    wait(1000)
+    bratSt.run_time(900, 1500)
+    bratSt.run_time(-900, 1500)
+    zap2.turn(coeft2*-30)
+    bratSt.run_time(900, 1400)
+    bratSt.run_time(-900, 1400)
 
 def run13():
     bratSt.run_time(1300, 900)
@@ -309,7 +313,7 @@ def miscaBrat(cm):
 
 #*********DISPLAY*********
 #FUNCTIA DE AFISARE
-x = 2
+x = 5
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
@@ -357,7 +361,7 @@ while True:
     if int(x)==5 and senzorApasare.pressed():
         touch = 1
         if senzorApasare.pressed() and touch==1:
-            run05(5000)
+            run05()
             touch = 0
     if int(x)==6 and senzorApasare.pressed():
         touch = 1   
