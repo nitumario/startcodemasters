@@ -190,8 +190,25 @@ def run03(repetari):
     zap3.turn(coeft3*40)
     zap3.straight(coeft3*660)
 
+def run04():
+    #SINA BAZA ROSIE
+    bratSt.run_time(1000, 300)
+    zap4.straight(coefd4*470)
+    bratSt.run_time(-500, 500)
+    zap4.straight(coefd4*-200)
+    zap4.reset()
+    while zap4.distance() < 200:
+        zap4.drive(45, 200)
+    zap4.straight(5)
+    '''
+    zap4.turn(coeft4*-90)
+    zap4.straight(coefd4*100)
+    zap4.turn(coeft4*-45)
+    zap4.straight(coefd4*100)
+    '''
+
 def run05():
-    #RUN CINCI
+    #SCH BAZA SI LINIE SPATE
     zap1.straight(coefd1 * 260)
     zap1.turn(coeft1*90)
     zap1.straight(coefd1 * 640)
@@ -289,10 +306,9 @@ def run09():
 
 def run12():
     #LANSAT OAMENI
-    bratSt.run_time(-500, 100)
     zap2.turn(coeft2*-20)
-    bratSt.run_time(900, 1400)
-    bratSt.run_time(-900, 1400)
+    bratSt.run_time(1000, 1400)
+    bratSt.run_time(-1000, 1400)
     zap2.straight(coeft2*20)
     zap2.turn(coeft2*-55)
     zap2.straight(coeft2*-90)
@@ -313,7 +329,7 @@ def miscaBrat(cm):
 
 #*********DISPLAY*********
 #FUNCTIA DE AFISARE
-x = 5
+x = 4
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
