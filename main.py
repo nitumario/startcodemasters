@@ -322,6 +322,16 @@ def run12():
 def run13():
     bratSt.run_time(1300, 900)
 
+def run10():
+    #aflam rgb-ul unei culori
+    while Button.LEFT not in zapdisplay.buttons.pressed():
+        print(senzorCuloareSt.rgb())
+        wait(200)
+    """
+    while senzorCuloareSt.color() != Color.RED:
+        zap10.straight(coefd10*20)
+    """
+
 #*********BRAT OAMENII*********
 
 def miscaBrat(cm):
@@ -329,7 +339,7 @@ def miscaBrat(cm):
 
 #*********DISPLAY*********
 #FUNCTIA DE AFISARE
-x = 4
+x = 10
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
