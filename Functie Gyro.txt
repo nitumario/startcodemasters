@@ -6,4 +6,4 @@ def Gyro_move(degrees, Gdegree):
         if senzorGiro.angle() < Gdegree:
             zap1.turn(coeft1*(Gdegree-senzorGiro.angle()-Gdegree))
 
-        zap1.straight(1)
+        zap1.straight(15)
