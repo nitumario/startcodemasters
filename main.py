@@ -214,6 +214,23 @@ def run04():
     zap4.straight(coefd4*100)
     '''
 
+def run04():
+    #SINA BAZA ROSIE
+    bratSt.run_time(1000, 300)
+    zap4.straight(coefd4*470)
+    bratSt.run_time(-500, 500)
+    zap4.straight(coefd4*-200)
+    zap4.reset()
+    while zap4.distance() < 200:
+        zap4.drive(45, 200)
+    zap4.straight(5)
+    '''
+    zap4.turn(coeft4*-90)
+    zap4.straight(coefd4*100)
+    zap4.turn(coeft4*-45)
+    zap4.straight(coefd4*100)
+    '''
+
 def run05():
     #SCH BAZA SI LINIE SPATE
     zap1.straight(coefd1 * 260)
@@ -328,22 +345,6 @@ def run12():
 
 def run13():
     bratSt.run_time(1300, 900)
-
-def run10():
-    zap10.drive(150, 0)
-    while senzorCuloareSt.color()!=Color.YELLOW:
-        print(senzorCuloareSt.color()) 
-    zap10.stop()
-    
-    """
-    while senzorCuloareSt.color() != Color.RED:
-        zap10.straight(coefd10*20)
-    """
-def run11():
-    while True:
-        print(senzorCuloareSt.color()) 
-
-
 
 #*********BRAT OAMENII*********
 
