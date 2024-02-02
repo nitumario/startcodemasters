@@ -344,11 +344,14 @@ def run12():
     bratSt.run_time(-900, 1400)
 
 def run13():
-    bratSt.run_time(1300, 900)
+    st.reset_angle()
+    while True:
+        print(st.angle())
 
 def run10():
+    st.reset_angle()
     zap10.drive(150, 0)
-    while senzorCuloareSt.color()!=Color.YELLOW:
+    while senzorCuloareSt.color()!=Color.YELLOW and :
         print(senzorCuloareSt.color()) 
     zap10.stop()
     
