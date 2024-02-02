@@ -346,6 +346,22 @@ def run12():
 def run13():
     bratSt.run_time(1300, 900)
 
+def run10():
+    zap10.drive(150, 0)
+    while senzorCuloareSt.color()!=Color.YELLOW:
+        print(senzorCuloareSt.color()) 
+    zap10.stop()
+    
+    """
+    while senzorCuloareSt.color() != Color.RED:
+        zap10.straight(coefd10*20)
+    """
+def run11():
+    while True:
+        print(senzorCuloareSt.color()) 
+
+
+
 #*********BRAT OAMENII*********
 
 def miscaBrat(cm):
