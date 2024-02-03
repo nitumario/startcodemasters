@@ -54,7 +54,7 @@ zap6.settings(800, 500, 300, 150)
 zap7.settings(1000, 500, 800, 800)
 zap8.settings(800, 500, 200, 200)
 zap9.settings(1000, 1000, 800, 800)
-zap10.settings(800, 500, 300, 300)
+zap10.settings(1000, 500, 300, 300)
 zap11.settings(1000, 500, 800, 800)
 zap12.settings(800, 500, 200, 200)
 
@@ -192,8 +192,12 @@ def run02():
 
 def run03(repetari):
     #TEATRU
+    zap3.straight(-300)
+    zap3.turn(45)
+    zap3.straight(-300)
+    zap3.turn(-45)
     # mergem la teatru
-    zap3.straight(coeft3*-660)
+    zap3.straight(coeft3*-100)
     zap3.turn(coeft3*-35)
     # face misiunea
     for i in range(repetari):
@@ -201,6 +205,26 @@ def run03(repetari):
         zap3.straight(coeft2*30)
     zap3.turn(coeft3*40)
     zap3.straight(coeft3*660)
+    zap3.turn(coeft3*-90)
+
+def run04():
+    #SINA BAZA ROSIE
+    '''
+    bratSt.run_time(1000, 300)
+    zap4.straight(coefd4*470)
+    bratSt.run_time(-500, 500)
+    zap4.straight(coefd4*-200)
+    zap4.reset()
+    while zap4.distance() < 200:
+        zap4.drive(45, 200)
+    zap4.straight(5)
+    '''
+    '''
+    zap4.turn(coeft4*-90)
+    zap4.straight(coefd4*100)
+    zap4.turn(coeft4*-45)
+    zap4.straight(coefd4*100)
+    '''
 
 def run04():
     #SINA BAZA ROSIE
@@ -332,17 +356,22 @@ def run12():
     bratSt.run_time(-900, 1400)
 
 def run13():
-    bratSt.run_time(1300, 900)
+    st.reset_angle()
+    while True:
+        print(st.angle())
 
 def run10():
-    #aflam rgb-ul unei culori
-    while Button.LEFT not in zapdisplay.buttons.pressed():
-        print(senzorCuloareSt.rgb())
-        wait(200)
+    st.reset_angle()
+    zap10.drive(150, 0)
+    while senzorCuloareSt.color()!=Color.YELLOW and :
+        print(senzorCuloareSt.color()) 
+    zap10.stop()
+    
     """
     while senzorCuloareSt.color() != Color.RED:
         zap10.straight(coefd10*20)
     """
+
 #*********BRAT OAMENII*********
 
 def miscaBrat(cm):
@@ -361,7 +390,6 @@ def update_screen(x):
 touch=0
 
 #*********DISPLAY*********
-
 while True:
     #verificare apasare butoane
     if Button.UP in zapdisplay.buttons.pressed() and x < 13:
