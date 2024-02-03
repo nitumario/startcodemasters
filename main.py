@@ -344,17 +344,33 @@ def run12():
     bratSt.run_time(-900, 1400)
 
 def run13():
-    st.reset_angle()
+    st.reset_angle(0)
     while True:
         print(st.angle())
 
 def run10():
-    st.reset_angle()
+    st.reset_angle(0)
     zap10.drive(150, 0)
-    while senzorCuloareSt.color()!=Color.YELLOW and :
+    while True:
+        if senzorCuloareSt.color()==Color.YELLOW and st.angle()>920:
+            break
         print(senzorCuloareSt.color()) 
     zap10.stop()
-    
+    bratSt.run_time(700, 500)
+    zap10.straight(coefd10*-200)
+    zap10.reset()
+    while zap10.distance() < 250:
+        zap10.drive(100, -50)
+    zap10.straight(coefd10*10)
+    zap10.stop()    
+    zap10.reset()
+    bratSt.run_time(-700, 500)
+    zap10.reset()
+    while zap10.distance() > -300:
+        zap10.drive(-100, 20)
+    zap10.straight(coefd10*-100)
+    zap10.stop()    
+    zap10.reset()
     """
     while senzorCuloareSt.color() != Color.RED:
         zap10.straight(coefd10*20)
