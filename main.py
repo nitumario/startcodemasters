@@ -156,6 +156,11 @@ def urmarireLinie1(degrees):
         if senzorCuloareSt.color() == Color.WHITE:
             zap1.turn(-10)
 
+#*********GYRO FUNCTIONS***********
+
+#def gyro_speed_log():
+
+
 #*********SENZOR CULOARE*********
 
 def gasireRgb(StR, DrR):
@@ -253,11 +258,11 @@ def run03(repetari):
     #TEATRU
     zap3.straight(-300)
     zap3.turn(45)
-    zap3.straight(-300)
-    zap3.turn(-45)
+    zap3.straight(-450)
+    zap3.turn(-100)
     # mergem la teatru
     zap3.straight(coeft3*-100)
-    zap3.turn(coeft3*-35)
+    #zap3.turn(coeft3*-35)
     # face misiunea
     for i in range(repetari):
         zap3.straight(coeft2*-30)
@@ -416,12 +421,17 @@ def run12():
 
 def run13():
     st.reset_angle(0)
+    st.reset_angle(0)
     while True:
         print(st.angle())
 
 def run10():
     st.reset_angle(0)
+    st.reset_angle(0)
     zap10.drive(150, 0)
+    while True:
+        if senzorCuloareSt.color()==Color.YELLOW and st.angle()>920:
+            break
     while True:
         if senzorCuloareSt.color()==Color.YELLOW and st.angle()>920:
             break
@@ -442,10 +452,39 @@ def run10():
     zap10.straight(coefd10*-100)
     zap10.stop()    
     zap10.reset()
+    """
+    while senzorCuloareSt.color() != Color.RED:
+        zap10.straight(coefd10*20)
+    """
+def run11():
+    while True:
+        print(senzorCuloareSt.color()) 
+
+
+
+#*********BRAT OAMENII*********
+
+def miscaBrat(cm):
+    bratSt.run_time(1000, cm**2.2)
+    bratSt.run_time(700, 500)
+    zap10.straight(coefd10*-200)
+    zap10.reset()
+    while zap10.distance() < 250:
+        zap10.drive(100, -50)
+    zap10.straight(coefd10*10)
+    zap10.stop()    
+    zap10.reset()
+    bratSt.run_time(-700, 500)
+    zap10.reset()
+    while zap10.distance() > -300:
+        zap10.drive(-100, 20)
+    zap10.straight(coefd10*-100)
+    zap10.stop()    
+    zap10.reset()
 
 #*********DISPLAY*********
 #FUNCTIA DE AFISARE
-x = 10
+x = 3
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
