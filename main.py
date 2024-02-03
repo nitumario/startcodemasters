@@ -158,8 +158,97 @@ def urmarireLinie1(degrees):
 
 #*********GYRO FUNCTIONS***********
 
-#def gyro_speed_log():
+def gyroSpeedLog(TBR):
+    #TBR vine de la Time Between Reads si este in ms
+    watch = StopWatch()
+    data = DataLog('time', 'speed')
+    while True:
+        time=watch.time()
+        speed=senzorGiro.speed()
+        print(speed)
+        data.log(time, speed)
+        wait(TBR)
 
+def gyroTurn(degree):
+    senzorGiro.reset_angle(0)
+    while senzorGiro.angle() < degree:
+        zap1.turn(5)
+
+#def get_ultrasonic_distance(TBR):
+    #TBR vine de la Time Between Reads si este in milisecunde
+gyro_speed_log(300)
+
+
+#*********SENZOR CULOARE*********
+
+def gasireRgb(StR, DrR):
+    while buttons.LEFT not in zapdisplay.buttons.pressed:
+        if(StR == 1 and DrR == 0):
+            print(senzorCuloareSt.rgb())
+        elif(St == 0 and Dr == 1):
+            print(senzorCuloareDr.rgb())
+
+def gasireCuloare(StC, DrC):
+    while buttons.LEFT not in zapdisplay.buttons.pressed:
+        if(StC == 1 and DrC == 0):
+            print(senzorCuloareSt.color())
+        elif(St == 0 and Dr == 1):
+            print(senzorCuloareDr.color())
+
+def gasireLuminaAmbient(StA, DrA):
+    while buttons.LEFT not in zapdisplay.buttons.pressed:
+        if(StA == 1 and DrA == 0):
+            print(senzorCuloareSt.ambient())
+        elif(StA == 0 and DrA == 1):
+            print(senzorCuloareDr.ambient())
+
+def gasireRefractie(StRe, DrRe):
+    while buttons.BACK not in zapdisplay.buttons.pressed:
+        if(StRe == 1 and DrRe == 0):
+            print(senzorCuloareSt.reflection())
+        elif(StRe == 0 and DrRe == 1):
+            print(senzorCuloareDr.reflection())
+
+def oprireRgb(StR, DrR, unghiRoata, r, g, b):
+    while True:
+        if(StR == 1 and DrR == 0):
+            if senzorCuloareSt.rgb()==(r, g, b) and st.angle()>unghiRoata:
+                break
+        if(StR == 0 and DrR == 1):
+            if senzorCuloareDr.rgb()==(r, g, b) and st.angle()>unghiRoata:
+                break
+
+def oprireCuloare(StC, DrC, unghiRoata, culoare):
+    while True:
+        if(StC == 1 and DrC == 0):
+            if senzorCuloareSt.color()==culoare and st.angle()>unghiRoata:
+                break
+        if(StC == 0 and DrC == 1):
+            if senzorCuloareDr.color()==culoare and st.angle()>unghiRoata:
+                break
+
+def oprireRgb(StR, DrR, unghiRoata, r, g, b):
+    while True:
+        if(StR == 1 and DrR == 0):
+            if senzorCuloareSt.rgb()==(r, g, b) and st.angle()>unghiRoata:
+                break
+        if(StR == 0 and DrR == 1):
+            if senzorCuloareDr.rgb()==(r, g, b) and st.angle()>unghiRoata:
+                break
+
+def oprireRgb(StR, DrR, unghiRoata, r, g, b):
+    while True:
+        if(StR == 1 and DrR == 0):
+            if senzorCuloareSt.rgb()==(r, g, b) and st.angle()>unghiRoata:
+                break
+        if(StR == 0 and DrR == 1):
+            if senzorCuloareDr.rgb()==(r, g, b) and st.angle()>unghiRoata:
+                break
+
+#*********BRAT OAMENII*********
+
+def miscaBrat(cm):
+    bratSt.run_time(1000, cm**2.2)
 
 #*********RUNS*********
 def run01():
@@ -368,12 +457,17 @@ def run12():
 
 def run13():
     st.reset_angle(0)
+    st.reset_angle(0)
     while True:
         print(st.angle())
 
 def run10():
     st.reset_angle(0)
+    st.reset_angle(0)
     zap10.drive(150, 0)
+    while True:
+        if senzorCuloareSt.color()==Color.YELLOW and st.angle()>920:
+            break
     while True:
         if senzorCuloareSt.color()==Color.YELLOW and st.angle()>920:
             break
@@ -408,6 +502,21 @@ def run11():
 
 def miscaBrat(cm):
     bratSt.run_time(1000, cm**2.2)
+    bratSt.run_time(700, 500)
+    zap10.straight(coefd10*-200)
+    zap10.reset()
+    while zap10.distance() < 250:
+        zap10.drive(100, -50)
+    zap10.straight(coefd10*10)
+    zap10.stop()    
+    zap10.reset()
+    bratSt.run_time(-700, 500)
+    zap10.reset()
+    while zap10.distance() > -300:
+        zap10.drive(-100, 20)
+    zap10.straight(coefd10*-100)
+    zap10.stop()    
+    zap10.reset()
 
 #*********DISPLAY*********
 #FUNCTIA DE AFISARE
