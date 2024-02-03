@@ -156,6 +156,18 @@ def urmarireLinie1(degrees):
         if senzorCuloareSt.color() == Color.WHITE:
             zap1.turn(-10)
 
+#*********INDREPTARE AUTOMATA*********
+
+def Gyro_move(degrees, Gdegree):
+
+    while st.angle() < degrees+1:
+        if senzorGiro.angle() > Gdegree:
+            zap1.turn(-coeft1*(senzorGiro.angle()-Gdegree))
+        if senzorGiro.angle() < Gdegree:
+            zap1.turn(coeft1*(Gdegree-senzorGiro.angle()-Gdegree))
+
+        zap1.straight(15)
+
 #*********RUNS*********
 def run01():
     #MIXER
@@ -331,7 +343,6 @@ def run10():
     while senzorCuloareSt.color() != Color.RED:
         zap10.straight(coefd10*20)
     """
-
 #*********BRAT OAMENII*********
 
 def miscaBrat(cm):
@@ -339,7 +350,7 @@ def miscaBrat(cm):
 
 #*********DISPLAY*********
 #FUNCTIA DE AFISARE
-x = 10
+x = 3
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
