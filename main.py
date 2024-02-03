@@ -158,7 +158,25 @@ def urmarireLinie1(degrees):
 
 #*********GYRO FUNCTIONS***********
 
-#def gyro_speed_log():
+def gyroSpeedLog(TBR):
+    #TBR vine de la Time Between Reads si este in ms
+    watch = StopWatch()
+    data = DataLog('time', 'speed')
+    while True:
+        time=watch.time()
+        speed=senzorGiro.speed()
+        print(speed)
+        data.log(time, speed)
+        wait(TBR)
+
+def gyroTurn(degree):
+    senzorGiro.reset_angle(0)
+    while senzorGiro.angle() < degree:
+        zap1.turn(5)
+
+#def get_ultrasonic_distance(TBR):
+    #TBR vine de la Time Between Reads si este in milisecunde
+gyro_speed_log(300)
 
 
 #*********SENZOR CULOARE*********
@@ -209,25 +227,23 @@ def oprireCuloare(StC, DrC, unghiRoata, culoare):
             if senzorCuloareDr.color()==culoare and st.angle()>unghiRoata:
                 break
 
-def oprireLuminaAmbient(StA, DrA, unghiRoata, luminaAmbient):
+def oprireRgb(StR, DrR, unghiRoata, r, g, b):
     while True:
-        if(StA == 1 and DrA == 0):
-            if senzorCuloareSt.ambient()==luminaAmbient and st.angle()>unghiRoata:
+        if(StR == 1 and DrR == 0):
+            if senzorCuloareSt.rgb()==(r, g, b) and st.angle()>unghiRoata:
                 break
-        if(StA == 0 and DrA == 1):
-            if senzorCuloareDr.ambient()==luminaAmbient and st.angle()>unghiRoata:
+        if(StR == 0 and DrR == 1):
+            if senzorCuloareDr.rgb()==(r, g, b) and st.angle()>unghiRoata:
                 break
 
-def oprireRefractie(StRe, DrRe, unghiRoata, refractie):
+def oprireRgb(StR, DrR, unghiRoata, r, g, b):
     while True:
-        if(StRe == 1 and DrRe == 0):
-            if senzorCuloareSt.reflection()==refractie and st.angle()>unghiRoata:
+        if(StR == 1 and DrR == 0):
+            if senzorCuloareSt.rgb()==(r, g, b) and st.angle()>unghiRoata:
                 break
-        if(StRe == 0 and DrRe == 1):
-            if senzorCuloareDr.reflection()==refractie and st.angle()>unghiRoata:
+        if(StR == 0 and DrR == 1):
+            if senzorCuloareDr.rgb()==(r, g, b) and st.angle()>unghiRoata:
                 break
-
-def aliniereCuloare()
 
 #*********BRAT OAMENII*********
 
