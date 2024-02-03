@@ -209,23 +209,25 @@ def oprireCuloare(StC, DrC, unghiRoata, culoare):
             if senzorCuloareDr.color()==culoare and st.angle()>unghiRoata:
                 break
 
-def oprireRgb(StR, DrR, unghiRoata, r, g, b):
+def oprireLuminaAmbient(StA, DrA, unghiRoata, luminaAmbient):
     while True:
-        if(StR == 1 and DrR == 0):
-            if senzorCuloareSt.rgb()==(r, g, b) and st.angle()>unghiRoata:
+        if(StA == 1 and DrA == 0):
+            if senzorCuloareSt.ambient()==luminaAmbient and st.angle()>unghiRoata:
                 break
-        if(StR == 0 and DrR == 1):
-            if senzorCuloareDr.rgb()==(r, g, b) and st.angle()>unghiRoata:
+        if(StA == 0 and DrA == 1):
+            if senzorCuloareDr.ambient()==luminaAmbient and st.angle()>unghiRoata:
                 break
 
-def oprireRgb(StR, DrR, unghiRoata, r, g, b):
+def oprireRefractie(StRe, DrRe, unghiRoata, refractie):
     while True:
-        if(StR == 1 and DrR == 0):
-            if senzorCuloareSt.rgb()==(r, g, b) and st.angle()>unghiRoata:
+        if(StRe == 1 and DrRe == 0):
+            if senzorCuloareSt.reflection()==refractie and st.angle()>unghiRoata:
                 break
-        if(StR == 0 and DrR == 1):
-            if senzorCuloareDr.rgb()==(r, g, b) and st.angle()>unghiRoata:
+        if(StRe == 0 and DrRe == 1):
+            if senzorCuloareDr.reflection()==refractie and st.angle()>unghiRoata:
                 break
+
+def aliniereCuloare()
 
 #*********BRAT OAMENII*********
 
