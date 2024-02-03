@@ -156,6 +156,11 @@ def urmarireLinie1(degrees):
         if senzorCuloareSt.color() == Color.WHITE:
             zap1.turn(-10)
 
+#*********GYRO FUNCTIONS***********
+
+#def gyro_speed_log():
+
+
 #*********RUNS*********
 def run01():
     #MIXER
@@ -182,11 +187,11 @@ def run03(repetari):
     #TEATRU
     zap3.straight(-300)
     zap3.turn(45)
-    zap3.straight(-300)
-    zap3.turn(-45)
+    zap3.straight(-450)
+    zap3.turn(-100)
     # mergem la teatru
     zap3.straight(coeft3*-100)
-    zap3.turn(coeft3*-35)
+    #zap3.turn(coeft3*-35)
     # face misiunea
     for i in range(repetari):
         zap3.straight(coeft2*-30)
@@ -388,7 +393,7 @@ def miscaBrat(cm):
 
 #*********DISPLAY*********
 #FUNCTIA DE AFISARE
-x = 10
+x = 3
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
