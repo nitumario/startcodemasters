@@ -171,18 +171,20 @@ def gyroSpeedLog(TBR):
 
 def gyroTurn(degree):
     senzorGiro.reset_angle(0)
+    
     while True:
-        if senzorGiro.angle()+10 < degree:
+        current_angle = senzorGiro.angle()
+        print(current_angle)
+        if current_angle + 10 <= degree:
             zap1.turn(10)
-        else:
-            while senzorGiro.angle() != degree:
-                if senzorGiro.angle() != degree:
-                    zap1.turn(1)
-                else:
-                    break
+        elif current_angle == degree:
             break
+        else:
+            zap1.turn(1)
 
-gyroTurn(90)
+
+gyroTurn(108)
+
 #*********SENZOR CULOARE*********
 
 def gasireRgb(StR, DrR):
