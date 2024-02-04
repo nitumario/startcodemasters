@@ -276,22 +276,40 @@ def run02():
     zap3.turn(coeft3*60)
     zap3.straight(coefd3*300)
 
-def run03(repetari):
+def run03():
+    #LANSAT OAMENI BAZA ROSIE
+    zap2.turn(coeft2*35)
+    bratSt.run_time(500, 1400)
+    bratSt.run_time(-320, 1000)
+    bratSt.run_time(320, 1000)
+
+    zap2.turn(coeft2*-30)
+    wait(1000)
+    bratSt.run_time(-180, 1000)
+    bratSt.run_time(180, 1000)
+    zap2.turn(coeft2*-5)
+    bratSt.run_time(-120, 1000)
+    bratSt.run_time(120, 1000)
+
+
+"""def run03vechi(repetari):
     #TEATRU
     zap3.straight(-300)
     zap3.turn(45)
     zap3.straight(-450)
     zap3.turn(-100)
-    # mergem la teatru
-    zap3.straight(coeft3*-100)
-    #zap3.turn(coeft3*-35)
+    # teatru
+    zap3.straight(coeft3*-80)
+    zap3.straight(coeft3*30)
     # face misiunea
     for i in range(repetari):
         zap3.straight(coeft2*-30)
         zap3.straight(coeft2*30)
-    zap3.turn(coeft3*40)
+    zap3.turn(coeft3*15)
+    zap3.straight(coeft3*40)
+    zap3.turn(coeft3*55)
     zap3.straight(coeft3*660)
-    zap3.turn(coeft3*-90)
+    zap3.turn(coeft3*-90)"""
 
 def run04():
     #SINA BAZA ROSIE
@@ -543,7 +561,7 @@ while True:
     if int(x)==3 and senzorApasare.pressed():
         touch = 1
         if senzorApasare.pressed() and touch==1:
-            run03(1)
+            run03()
             touch = 0   
     if int(x)==4 and senzorApasare.pressed():
         touch = 1
