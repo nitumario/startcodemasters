@@ -171,14 +171,18 @@ def gyroSpeedLog(TBR):
 
 def gyroTurn(degree):
     senzorGiro.reset_angle(0)
-    while senzorGiro.angle() < degree:
-        zap1.turn(5)
+    while True:
+        if senzorGiro.angle()+10 < degree:
+            zap1.turn(10)
+        else:
+            while senzorGiro.angle() != degree:
+                if senzorGiro.angle() != degree:
+                    zap1.turn(1)
+                else:
+                    break
+            break
 
-#def get_ultrasonic_distance(TBR):
-    #TBR vine de la Time Between Reads si este in milisecunde
-gyro_speed_log(300)
-
-
+gyroTurn(90)
 #*********SENZOR CULOARE*********
 
 def gasireRgb(StR, DrR):
