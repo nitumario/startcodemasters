@@ -174,39 +174,35 @@ def gyroTurn(degree):
     while senzorGiro.angle() < degree:
         zap1.turn(5)
 
-#def get_ultrasonic_distance(TBR):
-    #TBR vine de la Time Between Reads si este in milisecunde
-gyro_speed_log(300)
-
 
 #*********SENZOR CULOARE*********
 
 def gasireRgb(StR, DrR):
-    while buttons.LEFT not in zapdisplay.buttons.pressed:
+    while Button.LEFT not in zapdisplay.buttons.pressed:
         if(StR == 1 and DrR == 0):
             print(senzorCuloareSt.rgb())
         elif(St == 0 and Dr == 1):
             print(senzorCuloareDr.rgb())
 
 def gasireCuloare(StC, DrC):
-    while buttons.LEFT not in zapdisplay.buttons.pressed:
+    while Button.LEFT not in zapdisplay.buttons.pressed:
         if(StC == 1 and DrC == 0):
             print(senzorCuloareSt.color())
         elif(St == 0 and Dr == 1):
             print(senzorCuloareDr.color())
 
 def gasireLuminaAmbient(StA, DrA):
-    while buttons.LEFT not in zapdisplay.buttons.pressed:
+    while Button.LEFT not in zapdisplay.buttons.pressed:
         if(StA == 1 and DrA == 0):
             print(senzorCuloareSt.ambient())
         elif(StA == 0 and DrA == 1):
             print(senzorCuloareDr.ambient())
 
 def gasireRefractie(StRe, DrRe):
-    while buttons.BACK not in zapdisplay.buttons.pressed:
-        if(StRe == 1 and DrRe == 0):
+    while Button.LEFT not in zapdisplay.buttons.pressed:
+        if(int(StRe) == 1 and int(DrRe) == 0):
             print(senzorCuloareSt.reflection())
-        elif(StRe == 0 and DrRe == 1):
+        elif(int(StRe) == 0 and int(DrRe) == 1):
             print(senzorCuloareDr.reflection())
 
 def oprireRgb(StR, DrR, unghiRoata, r, g, b):
@@ -250,6 +246,30 @@ def oprireRgb(StR, DrR, unghiRoata, r, g, b):
 def miscaBrat(cm):
     bratSt.run_time(1000, cm**2.2)
 
+#*********PID*********
+def pidLinie(gradR):
+    uEroare = 0
+    integral = 0
+
+    eroare = (gasireRefractie(1, 0)) - 50
+    pFix = eroare*0.5
+
+    integral = integral + eroare
+    iFix = integral *0.01
+
+    derivat = eroare-uEroare
+    uEroare = eroare
+    dFix = derivat*4
+    zap12.reset()
+    while st.degrees() < gradR:
+        zap12.drive(coefd12*(pFix+iFix+dFix), 0)
+    zap12.straight(coefd12*10)
+
+
+
+
+
+
 #*********RUNS*********
 def run01():
     #MIXER
@@ -287,61 +307,27 @@ def run03():
     bratSt.run_time(-120, 1000)
     bratSt.run_time(120, 1000)
 
-
-"""def run03vechi(repetari):
-    #TEATRU
-    zap3.straight(-300)
-    zap3.turn(45)
-    zap3.straight(-450)
-    zap3.turn(-100)
-    # teatru
-    zap3.straight(coeft3*-80)
-    zap3.straight(coeft3*30)
-    # face misiunea
-    for i in range(repetari):
-        zap3.straight(coeft2*-30)
-        zap3.straight(coeft2*30)
-    zap3.turn(coeft3*15)
-    zap3.straight(coeft3*40)
-    zap3.turn(coeft3*55)
-    zap3.straight(coeft3*660)
-    zap3.turn(coeft3*-90)"""
-
 def run04():
-    #SINA BAZA ROSIE
-    '''
-    bratSt.run_time(1000, 300)
-    zap4.straight(coefd4*470)
-    bratSt.run_time(-500, 500)
-    zap4.straight(coefd4*-200)
-    zap4.reset()
-    while zap4.distance() < 200:
-        zap4.drive(45, 200)
-    zap4.straight(5)
-    '''
-    '''
-    zap4.turn(coeft4*-90)
-    zap4.straight(coefd4*100)
-    zap4.turn(coeft4*-45)
-    zap4.straight(coefd4*100)
-    '''
-
-def run04():
-    #SINA BAZA ROSIE
-    bratSt.run_time(1000, 300)
-    zap4.straight(coefd4*470)
-    bratSt.run_time(-500, 500)
-    zap4.straight(coefd4*-200)
-    zap4.reset()
-    while zap4.distance() < 200:
-        zap4.drive(45, 200)
-    zap4.straight(5)
-    '''
-    zap4.turn(coeft4*-90)
-    zap4.straight(coefd4*100)
-    zap4.turn(coeft4*-45)
-    zap4.straight(coefd4*100)
-    '''
+    st.reset_angle(0)
+    st.reset_angle(0)
+    zap10.drive(150, 0)
+    oprireCuloare(1, 0, 920, Color.YELLOW)
+    zap10.stop()
+    bratSt.run_time(700, 500)
+    zap10.straight(coefd10*-200)
+    zap10.reset()
+    while zap10.distance() < 250:
+        zap10.drive(100, -50)
+    zap10.straight(coefd10*10)
+    zap10.stop()    
+    zap10.reset()
+    bratSt.run_time(-700, 500)
+    zap10.reset()
+    while zap10.distance() > -300:
+        zap10.drive(-100, 20)
+    zap10.straight(coefd10*-100)
+    zap10.stop()    
+    zap10.reset()
 
 def run05():
     #SCH BAZA SI LINIE SPATE
@@ -455,48 +441,14 @@ def run12():
     bratSt.run_time(900, 1400)
     bratSt.run_time(-900, 1400)
 
+def run11():
+    pidLinie(300)
+
 def run13():
     st.reset_angle(0)
     st.reset_angle(0)
     while True:
         print(st.angle())
-
-def run10():
-    st.reset_angle(0)
-    st.reset_angle(0)
-    zap10.drive(150, 0)
-    while True:
-        if senzorCuloareSt.color()==Color.YELLOW and st.angle()>920:
-            break
-    while True:
-        if senzorCuloareSt.color()==Color.YELLOW and st.angle()>920:
-            break
-        print(senzorCuloareSt.color()) 
-    zap10.stop()
-    bratSt.run_time(700, 500)
-    zap10.straight(coefd10*-200)
-    zap10.reset()
-    while zap10.distance() < 250:
-        zap10.drive(100, -50)
-    zap10.straight(coefd10*10)
-    zap10.stop()    
-    zap10.reset()
-    bratSt.run_time(-700, 500)
-    zap10.reset()
-    while zap10.distance() > -300:
-        zap10.drive(-100, 20)
-    zap10.straight(coefd10*-100)
-    zap10.stop()    
-    zap10.reset()
-    """
-    while senzorCuloareSt.color() != Color.RED:
-        zap10.straight(coefd10*20)
-    """
-def run11():
-    while True:
-        print(senzorCuloareSt.color()) 
-
-
 
 #*********BRAT OAMENII*********
 
@@ -520,7 +472,7 @@ def miscaBrat(cm):
 
 #*********DISPLAY*********
 #FUNCTIA DE AFISARE
-x = 3
+x = 11
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
