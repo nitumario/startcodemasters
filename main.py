@@ -175,8 +175,8 @@ def gyroTurn(degree):
     while True:
         current_angle = senzorGiro.angle()
         print(current_angle)
-        if current_angle + 10 <= degree:
-            zap1.turn(10)
+        if current_angle + 1 <= degree:
+            zap1.turn(1)
         elif current_angle == degree:
             break
         else:
@@ -189,16 +189,16 @@ def gyroTurn(degree):
 
 def gasireRgb(StR, DrR):
     while Button.LEFT not in zapdisplay.buttons.pressed:
-        if(StR == 1 and DrR == 0):
+        if StR == 1 and DrR == 0:
             print(senzorCuloareSt.rgb())
-        elif(St == 0 and Dr == 1):
+        elif St == 0 and Dr == 1:
             print(senzorCuloareDr.rgb())
 
 def gasireCuloare(StC, DrC):
     while Button.LEFT not in zapdisplay.buttons.pressed:
-        if(StC == 1 and DrC == 0):
+        if StC == 1 and DrC == 0:
             print(senzorCuloareSt.color())
-        elif(St == 0 and Dr == 1):
+        elif St == 0 and Dr == 1:
             print(senzorCuloareDr.color())
 
 def gasireLuminaAmbient(StA, DrA):
@@ -290,12 +290,35 @@ def run01():
     zap1.turn(coeft1 * -45)
     zap1.straight(coefd1 * -400)
 
-def run02():
-    #DRAGON
-    zap3.straight(coefd3*-380)
-    zap3.straight(coefd3*50)
-    zap3.turn(coeft3*60)
-    zap3.straight(coefd3*300)
+
+def run02(repetari):
+    #mergem spre dragon
+    zap2.straight(coefd2 * -250)
+    #ne intoarcem opus dragonului
+    zap2.turn(coeft2 * -25)
+    #diagonala dragon
+    zap2.straight(coefd2 * -150)
+    #face dragonul
+    zap2.turn(coeft2 * 35)
+    #inapoi in baza
+    zap2.straight(coefd2 * 325)
+    wait(2000)
+    senzorGiro.reset_angle(0)
+    zap3.straight(coeft3*-680)
+    while senzorGiro.angle() > -45:
+            zap1.turn(-5)
+
+    # face misiunea
+    for i in range(repetari):
+        zap3.straight(coeft2*-30)
+        zap3.straight(coeft2*30)
+    zap3.turn(coeft3*30)
+    zap2.straight(coefd2 * -50)
+    zap3.turn(coeft3*15)
+    zap2.straight(coeft2*100)
+    zap3.turn(coeft3*-15)
+    zap3.straight(coeft3*660)
+
 
 def run03():
     #LANSAT OAMENI BAZA ROSIE
@@ -446,7 +469,8 @@ def run12():
     bratSt.run_time(-900, 1400)
 
 def run11():
-    pidLinie(500)
+    while True:
+        
 
 #*********BRAT OAMENII*********
 
@@ -502,7 +526,7 @@ while True:
         wait(200)
         touch = 1
         if senzorApasare.pressed() and touch==1:
-            run02()
+            run02(1)
             touch = 0
     if int(x)==3 and senzorApasare.pressed():
         touch = 1
