@@ -183,9 +183,6 @@ def gyroTurn(degree):
             zap1.turn(1)
 
 
-gyroTurn(108)
-    while senzorGiro.angle() < degree:
-        zap1.turn(5)
 
 
 #*********SENZOR CULOARE*********
@@ -215,7 +212,7 @@ def gasireRefractie(StRe, DrRe):
     while Button.LEFT not in zapdisplay.buttons.pressed:
         if(int(StRe) == 1 and int(DrRe) == 0):
             print(senzorCuloareSt.reflection())
-        elif(int(StRe) == 0 and int(DrRe) == 1):
+        else:
             print(senzorCuloareDr.reflection())
 
 def oprireRgb(StR, DrR, unghiRoata, r, g, b):
@@ -236,22 +233,22 @@ def oprireCuloare(StC, DrC, unghiRoata, culoare):
             if senzorCuloareDr.color()==culoare and st.angle()>unghiRoata:
                 break
 
-def oprireRgb(StR, DrR, unghiRoata, r, g, b):
+def oprireLuminaAmbient(StA, DrA, unghiRoata, luminaAmbient):
     while True:
-        if(StR == 1 and DrR == 0):
-            if senzorCuloareSt.rgb()==(r, g, b) and st.angle()>unghiRoata:
+        if(StA == 1 and DrA == 0):
+            if senzorCuloareSt.ambient()==luminaAmbient and st.angle()>unghiRoata:
                 break
-        if(StR == 0 and DrR == 1):
-            if senzorCuloareDr.rgb()==(r, g, b) and st.angle()>unghiRoata:
+        if(StA == 0 and DrA == 1):
+            if senzorCuloareDr.ambient()==luminaAmbient and st.angle()>unghiRoata:
                 break
 
-def oprireRgb(StR, DrR, unghiRoata, r, g, b):
+def oprireRefractie(StRe, DrRe, unghiRoata, refractie):
     while True:
         if(StR == 1 and DrR == 0):
-            if senzorCuloareSt.rgb()==(r, g, b) and st.angle()>unghiRoata:
+            if senzorCuloareSt.reflection()==refractie and st.angle()>unghiRoata:
                 break
         if(StR == 0 and DrR == 1):
-            if senzorCuloareDr.rgb()==(r, g, b) and st.angle()>unghiRoata:
+            if senzorCuloareDr.reflection()==refractie and st.angle()>unghiRoata:
                 break
 
 #*********BRAT OAMENII*********
@@ -264,7 +261,7 @@ def pidLinie(gradR):
     uEroare = 0
     integral = 0
 
-    eroare = (gasireRefractie(1, 0)) - 50
+    eroare = senzorCuloareSt.reflection() - 50
     pFix = eroare*0.5
 
     integral = integral + eroare
@@ -277,11 +274,6 @@ def pidLinie(gradR):
     while st.degrees() < gradR:
         zap12.drive(coefd12*(pFix+iFix+dFix), 0)
     zap12.straight(coefd12*10)
-
-
-
-
-
 
 #*********RUNS*********
 def run01():
@@ -311,7 +303,6 @@ def run03():
     bratSt.run_time(500, 1400)
     bratSt.run_time(-320, 1000)
     bratSt.run_time(320, 1000)
-
     zap2.turn(coeft2*-30)
     wait(1000)
     bratSt.run_time(-180, 1000)
@@ -455,13 +446,7 @@ def run12():
     bratSt.run_time(-900, 1400)
 
 def run11():
-    pidLinie(300)
-
-def run13():
-    st.reset_angle(0)
-    st.reset_angle(0)
-    while True:
-        print(st.angle())
+    pidLinie(500)
 
 #*********BRAT OAMENII*********
 
@@ -480,7 +465,7 @@ def miscaBrat(cm):
     while zap10.distance() > -300:
         zap10.drive(-100, 20)
     zap10.straight(coefd10*-100)
-    zap10.stop()    
+    zap10.stop()
     zap10.reset()
 
 #*********DISPLAY*********
