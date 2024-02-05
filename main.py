@@ -171,6 +171,19 @@ def gyroSpeedLog(TBR):
 
 def gyroTurn(degree):
     senzorGiro.reset_angle(0)
+    
+    while True:
+        current_angle = senzorGiro.angle()
+        print(current_angle)
+        if current_angle + 10 <= degree:
+            zap1.turn(10)
+        elif current_angle == degree:
+            break
+        else:
+            zap1.turn(1)
+
+
+gyroTurn(108)
     while senzorGiro.angle() < degree:
         zap1.turn(5)
 
