@@ -1,5 +1,5 @@
 #!/usr/bin/env pybricks-micropython
-#*********IMPORTS*********
+#IMPORTS****
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
                                  InfraredSensor, UltrasonicSensor, GyroSensor)
@@ -11,13 +11,14 @@ import utime
 import time
 import _thread
 
-#*********ROBOTUL*********
+#ROBOTUL****
 #!bratDr (+) ridicare
 #!bratSt (-) lasa in jos
 
 #definim caramida si display-ul
 zap=EV3Brick()
 zapdisplay = EV3Brick()
+speaker = EV3Brick()
 
 #definim motoarele si senzorii
 st = Motor(Port.B, positive_direction=Direction.COUNTERCLOCKWISE)
@@ -29,9 +30,10 @@ senzorCuloareSt = ColorSensor(Port.S2)
 senzorApasare = TouchSensor(Port.S3)
 senzorGiro = GyroSensor(Port.S4)
 
-#*********OBIECTELE*********
+#OBIECTELE****
 
 #DRIVE BASE-UL SI SETARILE OBIECTELOR
+zapT = DriveBase(st, dr, 49.5, 103)
 zap1 = DriveBase(st, dr, 49.5, 103)
 zap2 = DriveBase(st, dr, 49.5, 103)
 zap3 = DriveBase(st, dr, 49.5, 103)
@@ -45,13 +47,14 @@ zap10 = DriveBase(st, dr, 49.5, 103)
 zap11 = DriveBase(st, dr, 49.5, 103)
 zap12 = DriveBase(st, dr, 49.5, 103)
 
+zapT.settings(400, 400, 300, 300)
 zap1.settings(800, 800, 300, 300)
 zap2.settings(1000, 500, 300, 300)
 zap3.settings(800, 1000, 800, 800)
 zap4.settings(800, 500, 300, 300)
 zap5.settings(800, 500, 300, 300)
 zap6.settings(800, 500, 300, 150)
-zap7.settings(1000, 500, 800, 800)
+zap7.settings(1000, 500, 300, 300)
 zap8.settings(800, 500, 200, 200)
 zap9.settings(1000, 1000, 800, 800)
 zap10.settings(1000, 500, 300, 300)
@@ -61,10 +64,10 @@ zap12.settings(800, 500, 200, 200)
 st.stop()
 dr.stop()
 
-#*********COEFICIENTE DE EROARE*********
+#COEFICIENTE DE EROARE****
 
 #CREEM COEFICIENTELE DE EROARE
-#!Daca nu sti pentru ce sunt coefincientele intraba-l pe Vlad
+#!Daca nu sti pentru ce sunt coeficientele intraba-l pe Vlad
 
 global coefd1
 global coeft1
@@ -77,7 +80,7 @@ global coeft4
 global coefd5
 global coeft5
 global coefd6
-global coeft6
+global coeft7
 global coefd7
 global coeft7
 global coefd8
@@ -115,8 +118,10 @@ coefd11 = 1
 coeft11 = 1
 coefd12 = 1
 coeft12 = 1
+global coeftT
+coeftT = 1
 
-#*********THREAD-URI*********
+#THREAD-URI****
 
 global angles_zap1
 global bratSt_speed
@@ -125,14 +130,10 @@ global bratDr_speed
 global bratDr_angles
 global extra
 
-
-# Create a shared lock
 global_lock = _thread.allocate_lock()
-zap1_lock = _thread.allocate_lock()
-bratDr_lock = _thread.allocate_lock()
 def thread_zap1(angles_zap1):
     with global_lock:
-        zap1.straight(coefd1 * angles_zap1)
+        zapT.straight(coefd1 * angles_zap1)
 
 def thread_bratSt(bratSt_speed, bratSt_angles, extra):
     with global_lock:
@@ -142,340 +143,453 @@ def thread_bratDr(bratDr_speed, bratDr_angles):
     with global_lock:
         bratDr.run_time(bratDr_speed, bratDr_angles)
 
-
-    
-#*********URMARIRE LINIE*********
+#URMARIRE LINIE****
 
 def urmarireLinie1(degrees):
     while st.angle() < degrees:
-        zap1.straight(coefd1*-25)
+        zap5.straight(coefd5*10)
         zapdisplay.screen.clear()
         zapdisplay.screen.draw_text(80, 50, str(st.angle()), Color.BLACK, None)
         if senzorCuloareSt.color() == Color.BLACK:
-            zap1.turn(10)
+            zap5.turn(10)
         if senzorCuloareSt.color() == Color.WHITE:
-            zap1.turn(-10)
+            zap5.turn(-10)
 
-#*********GYRO FUNCTIONS***********
+def urmarireLinie2(grade2):
+    alb = 3
+    negru = 40
+    medieL = (alb+negru)/2
+    pGain = 2
+    while st.angle() < grade2:
+        deviatie = senzorCuloareDr.reflection() - medieL
+        rotireL = pGain * deviatie
+        print(rotireL)
+        zap1.drive(100, rotireL)
+
+def urmarireLinie3(grade3):
+    while st.angle() < grade3:
+        if gasireCuloare(0, 1) == Color.BLACK:
+            zap1.turn(10)
+        elif gasireCuloare(0, 1) == Color.WHITE:
+            zap1.turn(-10)
+        else:
+            zap1.straight(10)
+
+#GYRO FUNCTIONS****
 
 def gyroSpeedLog(TBR):
     #TBR vine de la Time Between Reads si este in ms
     watch = StopWatch()
-    data = DataLog('time', 'speed')
+    #data = DataLog('time', 'speed')
     while True:
         time=watch.time()
         speed=senzorGiro.speed()
         print(speed)
-        data.log(time, speed)
+        #data.log(time, speed)
         wait(TBR)
 
-def gyroTurn(degree):
-    senzorGiro.reset_angle(0)
-    
-    while True:
-        current_angle = senzorGiro.angle()
-        print(current_angle)
-        if current_angle + 1 <= degree:
-            zap1.turn(1)
-        elif current_angle == degree:
+global heading
+def gyrogoto(scop, viteza):
+    while senzorGiro.angle() < scop:
+        st.run(viteza)
+        dr.run(-viteza)
+        print(senzorGiro.angle())
+        if scop-senzorGiro.angle() > 10:
+            print("a iesit1")
             break
-        else:
-            zap1.turn(1)
+        elif scop-senzorGiro.angle() < 10:
+            print("a iesit2")
+            break
+    st.hold()
+    dr.hold()
+
+    if scop-senzorGiro.angle() > 10:
+        print("a iesit3")
+        zapT.turn(coeftT*scop-senzorGiro.angle())
+        zapT.stop()
+    elif scop-senzorGiro.angle() < 10:
+        print("a iesit4")
+
+        zapT.turn(coeftT*scop-senzorGiro.angle())
+        zapT.stop()
 
 
-
-
-#*********SENZOR CULOARE*********
+    while senzorGiro.angle() > scop:
+        st.run(-viteza)
+        dr.run(viteza)
+        print(senzorGiro.angle())
+    st.hold()
+    dr.hold()
+#SENZOR CULOARE****
 
 def gasireRgb(StR, DrR):
-    while Button.LEFT not in zapdisplay.buttons.pressed:
-        if StR == 1 and DrR == 0:
-            print(senzorCuloareSt.rgb())
-        elif St == 0 and Dr == 1:
-            print(senzorCuloareDr.rgb())
+    if StR == 1 and DrR == 0:
+        print(senzorCuloareSt.rgb())
+        wait(100)
+    elif StR == 0 and DrR == 1:
+        print(senzorCuloareDr.rgb())
+        wait(100)
 
 def gasireCuloare(StC, DrC):
-    while Button.LEFT not in zapdisplay.buttons.pressed:
-        if StC == 1 and DrC == 0:
-            print(senzorCuloareSt.color())
-        elif St == 0 and Dr == 1:
-            print(senzorCuloareDr.color())
+    if StC == 1 and DrC == 0:
+        print(senzorCuloareSt.color())
+        wait(100)
+    elif StC == 0 and DrC == 1:
+        print(senzorCuloareDr.color())
+        wait(100)
 
 def gasireLuminaAmbient(StA, DrA):
-    while Button.LEFT not in zapdisplay.buttons.pressed:
-        if(StA == 1 and DrA == 0):
-            print(senzorCuloareSt.ambient())
-        elif(StA == 0 and DrA == 1):
-            print(senzorCuloareDr.ambient())
+    if StA == 1 and DrA == 0:
+        print(senzorCuloareSt.ambient())
+        wait(100)
+    elif StA == 0 and DrA == 1:
+        print(senzorCuloareDr.ambient())
+        wait(100)
 
 def gasireRefractie(StRe, DrRe):
-    while Button.LEFT not in zapdisplay.buttons.pressed:
-        if(int(StRe) == 1 and int(DrRe) == 0):
-            print(senzorCuloareSt.reflection())
-        else:
-            print(senzorCuloareDr.reflection())
+    if StRe == 1 and DrRe == 0:
+        print(senzorCuloareSt.reflection())
+        wait(100)
+    elif StRe == 0 and DrRe == 1:
+        print(senzorCuloareDr.reflection())
+        wait(100)
 
-def oprireRgb(StR, DrR, unghiRoata, r, g, b):
+def oprireRgb(StR, DrR, r, g, b):
+    st.reset_angle(0)
+    rgbul = [r, g, b]
     while True:
-        if(StR == 1 and DrR == 0):
-            if senzorCuloareSt.rgb()==(r, g, b) and st.angle()>unghiRoata:
-                break
-        if(StR == 0 and DrR == 1):
-            if senzorCuloareDr.rgb()==(r, g, b) and st.angle()>unghiRoata:
-                break
+        if StR == 1 and DrR == 0:
+            while senzorCuloareSt.rgb()!=rgbul:
+                st.run(300)
+                dr.run(300)
+            st.hold()
+            dr.hold()
+        while StR == 0 and DrR == 1:
+            while senzorCuloareDr.rgb()!=rgbul:
+                st.run(300)
+                dr.run(300)
+            st.hold()
+            dr.hold()
+        break
 
 def oprireCuloare(StC, DrC, unghiRoata, culoare):
+    st.reset_angle(0)
     while True:
-        if(StC == 1 and DrC == 0):
-            if senzorCuloareSt.color()==culoare and st.angle()>unghiRoata:
-                break
-        if(StC == 0 and DrC == 1):
-            if senzorCuloareDr.color()==culoare and st.angle()>unghiRoata:
-                break
+        if StC == 1 and DrC == 0:
+            while senzorCuloareSt.color()!=culoare and st.angle()<unghiRoata:
+                st.run(300)
+                dr.run(300)
+            st.hold()
+            dr.hold()
+        elif StC == 0 and DrC == 1:
+            while senzorCuloareDr.color()!=culoare and st.angle()<unghiRoata:
+                st.run(300)
+                dr.run(300)
+            st.hold()
+            dr.hold()
+        break
 
 def oprireLuminaAmbient(StA, DrA, unghiRoata, luminaAmbient):
+    st.reset_angle(0)
     while True:
-        if(StA == 1 and DrA == 0):
-            if senzorCuloareSt.ambient()==luminaAmbient and st.angle()>unghiRoata:
-                break
-        if(StA == 0 and DrA == 1):
-            if senzorCuloareDr.ambient()==luminaAmbient and st.angle()>unghiRoata:
-                break
+        if StC == 1 and DrC == 0:
+            while senzorCuloareSt.ambient()!=luminaAmbient and st.angle()<unghiRoata:
+                st.run(300)
+                dr.run(300)
+            st.hold()
+            dr.hold()
+        elif StC == 0 and DrC == 1:
+            while senzorCuloareDr.ambient()!=luminaAmbient and st.angle()<unghiRoata:
+                st.run(300)
+                dr.run(300)
+            st.hold()
+            dr.hold()
+        break
 
 def oprireRefractie(StRe, DrRe, unghiRoata, refractie):
+    st.reset_angle(0)
     while True:
-        if(StR == 1 and DrR == 0):
-            if senzorCuloareSt.reflection()==refractie and st.angle()>unghiRoata:
-                break
-        if(StR == 0 and DrR == 1):
-            if senzorCuloareDr.reflection()==refractie and st.angle()>unghiRoata:
-                break
+        if StC == 1 and DrC == 0:
+            while senzorCuloareSt.reflection()!=refractie and st.angle()<unghiRoata:
+                st.run(300)
+                dr.run(300)
+            st.hold()
+            dr.hold()
+        elif StC == 0 and DrC == 1:
+            while senzorCuloareDr.reflection()!=refractie and st.angle()<unghiRoata:
+                st.run(300)
+                dr.run(300)
+            st.hold()
+            dr.hold()
+        break
 
-#*********BRAT OAMENII*********
+#BRAT OAMENII****
 
 def miscaBrat(cm):
     bratSt.run_time(1000, cm**2.2)
 
-#*********PID*********
+#PID****
 def pidLinie(gradR):
+    st.reset_angle(0)
     uEroare = 0
     integral = 0
 
-    eroare = senzorCuloareSt.reflection() - 50
-    pFix = eroare*0.5
+    while st.angle() < gradR:
+        eroare = senzorCuloareDr.reflection() - 50
+        pFix = eroare*0.5
 
-    integral = integral + eroare
-    iFix = integral *0.01
+        integral = integral + eroare
+        iFix = integral *0.01
 
-    derivat = eroare-uEroare
-    uEroare = eroare
-    dFix = derivat*4
-    zap12.reset()
-    while st.degrees() < gradR:
-        zap12.drive(coefd12*(pFix+iFix+dFix), 0)
-    zap12.straight(coefd12*10)
+        derivat = eroare-uEroare
+        uEroare = eroare
+        dFix = derivat*4
 
-#*********RUNS*********
+        zap13.drive(10, pFix+iFix+dFix)
+
+#RUNS****
 def run01():
-    #MIXER
-    zap1.straight(coefd1 * 230)
+    #MIXER - linia 5
+    zap1.straight(coefd1 * 210)
     zap1.turn(coeft1 * 45)
-    zap1.straight(coefd1 * 240)
+    zap1.straight(coefd1 * 250)
     _thread.start_new_thread(thread_bratDr, (1000, 1200))
-    _thread.start_new_thread(thread_zap1, (20,))
+    _thread.start_new_thread(thread_zap1, (coefd1*30,))
     bratDr.run_time(1000, 1200)
-    zap1.straight(coefd1 * 1)  
+    zap1.straight(coefd1 * 1) #linia asta nu face nimic dar reseteaza threadurile 
     zap1.turn(coeft1 * 45)
     zap1.straight(coefd1 * -100)
     zap1.turn(coeft1 * -45)
     zap1.straight(coefd1 * -400)
 
+    bratDr.stop()
+    bratSt.stop()
 
 def run02(repetari):
     #mergem spre dragon
     zap2.straight(coefd2 * -250)
     #ne intoarcem opus dragonului
-    zap2.turn(coeft2 * -25)
+    zap2.turn(coeft2 * -35)
     #diagonala dragon
     zap2.straight(coefd2 * -150)
     #face dragonul
-    zap2.turn(coeft2 * 35)
+    zap2.turn(coeft2 * 45)
     #inapoi in baza
     zap2.straight(coefd2 * 325)
-    wait(2000)
-    senzorGiro.reset_angle(0)
-    zap3.straight(coeft3*-680)
-    while senzorGiro.angle() > -45:
-            zap1.turn(-5)
-
+    wait(1500)
     # face misiunea
+    zap2.straight(-580 * coefd2)
+    zap2.turn(45 * coeft2)
+    zap2.straight(-120  * coefd2)
+    zap2.turn(-95 * coeft2)
+    zap2.stop()
+    """dr.reset_angle(0)
+    while dr.angle() < 220:
+        dr.run(500) 
+    dr.hold()"""
     for i in range(repetari):
-        zap3.straight(coeft2*-30)
-        zap3.straight(coeft2*30)
-    zap3.turn(coeft3*30)
-    zap2.straight(coefd2 * -50)
-    zap3.turn(coeft3*15)
-    zap2.straight(coeft2*100)
-    zap3.turn(coeft3*-15)
-    zap3.straight(coeft3*660)
+        zap3.straight(coefd2*-60)
+        zap3.straight(coefd2*60)
+    zap2.turn(90)
+    '''
+    zap3.straight(coeft2*-140)
+    zap2.turn(-90)
+    zap3.straight(coeft2*-100)
+    zap3.turn(coeft3*20)
+    zap4.reset()
+    while zap4.distance() < 700:
+        zap4.drive(500, 10)
+    zap4.straight(coefd4*10)
+    zap4.stop()
+    zap4.reset()
+    '''
+    zap2.straight(coefd2*600)
 
+    bratDr.stop()
+    bratSt.stop()
 
 def run03():
-    #LANSAT OAMENI BAZA ROSIE
-    zap2.turn(coeft2*35)
-    bratSt.run_time(500, 1400)
-    bratSt.run_time(-320, 1000)
-    bratSt.run_time(320, 1000)
-    zap2.turn(coeft2*-30)
-    wait(1000)
-    bratSt.run_time(-180, 1000)
-    bratSt.run_time(180, 1000)
-    zap2.turn(coeft2*-5)
-    bratSt.run_time(-120, 1000)
-    bratSt.run_time(120, 1000)
+    #DUCEM OAMENII - pe directia zonei de lasat oameni din fata dinozaurului
+    zap3.straight(coefd3*-430)
+    zap3.straight(coefd3*430)
 
 def run04():
-    st.reset_angle(0)
-    st.reset_angle(0)
-    zap10.drive(150, 0)
-    oprireCuloare(1, 0, 920, Color.YELLOW)
-    zap10.stop()
-    bratSt.run_time(700, 500)
-    zap10.straight(coefd10*-200)
-    zap10.reset()
-    while zap10.distance() < 250:
-        zap10.drive(100, -50)
-    zap10.straight(coefd10*10)
-    zap10.stop()    
-    zap10.reset()
+    #SINA - la extrema cu spatele
     bratSt.run_time(-700, 500)
-    zap10.reset()
-    while zap10.distance() > -300:
-        zap10.drive(-100, 20)
-    zap10.straight(coefd10*-100)
-    zap10.stop()    
-    zap10.reset()
+    #zap4.drive(150, 0)
+    zap4.straight(coefd4*460)
+    zap4.stop()
+    bratSt.run_time(300, 900)
+    zap4.straight(coefd4*-200)
+    zap4.reset()
+    while zap4.distance() < 100:
+        zap4.drive(100 * coefd4, -60)
+    zap4.straight(coefd4*10)
+    zap4.stop()
+    zap4.reset()
+    bratSt.run_time(-700, 500)
+    zap4.reset()
+    while zap4.distance() > -200:
+        zap4.drive(-1000 * coefd4, 20)
+    zap4.straight(coefd4*-100)
+    zap4.stop()    
+    zap4.reset()
+
+    bratDr.stop()
+    bratSt.stop()
 
 def run05():
-    #SCH BAZA SI LINIE SPATE
-    zap1.straight(coefd1 * 260)
-    zap1.turn(coeft1*90)
-    zap1.straight(coefd1 * 640)
-    zap1.turn(coeft1 * -90)
-    zap1.straight(coefd1 * 270)
-    zap1.turn(coeft1*10)
-    #diagonala
-    zap1.straight(coefd1 * 100)
-    zap1.turn(coeft1*-10)
-    zap1.straight(coefd1 * 80)
-    #actionam bratul ca sa facem MOV
-    bratSt.run_angle(-1000, 1050)
+    #SCH BAZA SI MISIUNI SPATE - linia 1 cu distantier pe spate
+    senzorGiro.reset_angle(0)
+    zap5.straight(coefd5*130)
+    #ne intoarcem spre turn
+    zap5.turn(coeft5*-95)
+    #mergem langa turn
+    zap5.straight(coefd5*-650)
+    #ne intoarcem spre MOV
+    zap5.stop()
+    gyrogoto(-177, 80)
+    #facem mov
+    zap5.straight(coefd5*-550)
+    zap5.stop()
+    senzorGiro.reset_angle(0)
     #dam cu spatele dupa MOV
-    zap1.straight(coefd1*-90)
+    zap5.straight(coefd5*90)
     #ne intoarcem spre lalea
-    zap1.turn(coeft1*-90)
+    zap5.turn(coeft5*65)
     #facem diagonala pentru a face laleaua
-    zap1.straight(coefd1*-160)
-    zap1.turn(coeft1*-30)
-    #facem diagonala ca sa ne apropiem
-    zap1.straight(coefd1*-220)
-    zap1.turn(coeft1*30)
-    #mergem cu spatele sa facem laleaua
-    zap1.straight(coefd1*-440)
-    zap1.turn(coeft1*-120)
-    zap1.straight(coefd1*60)
-    zap1.turn(coeft1*-110)
-    #facem TAO
-    bratSt.run_angle(-1000, 500)
-    zap1.straight(coefd1*170)
-    bratSt.run_angle(1000, 1400)
-    bratDr.run_angle(-1000, 300)
-    #catre baza albastraaaaaaaaaa LETSGOOOOOO MEOW MEOW
-    zap1.straight(coefd1*-180)
-    zap1.turn(coeft1*100)
-    zap1.straight(coefd1*900)
+    zap5.straight(coefd5*-260)
+    zap5.turn(coefd5*25)
+    #facem laleaua
+    zap5.straight(coefd5*-600)
+    print(senzorGiro.angle())
+    zap5.stop()
+    #ne indreptam pe directia 90
+    gyrogoto(90, 100)
+    zap5.straight(coefd5*100)
+    zap5.turn(coeft5*55)
+    zap5.straight(coeft5*-800)
 
-    '''_thread.start_new_thread(thread_zap1, (100,))
-    _thread.start_new_thread(thread_bratSt, (1000, 360))
-    _thread.start_new_thread(thread_bratDr, (1000, 360))
-    _thread.start_new_thread(thread_zap1, (100,))'''
+    #codul pentru a face si tao
+
 
 def run06():
+    senzorGiro.reset_angle(0)
+    print(senzorGiro.angle())
     #TURN
     #mergem spre tao
-    zap6.straight(coefd6*-450)
+    zap7.straight(coefd7*-450)
+    print(senzorGiro.angle())
     #diagonala
-    zap6.turn(coeft6*-45)
-    zap6.straight(coefd6*-290)
+    zap7.turn(coeft7*-45)
+    print(senzorGiro.angle())
+    zap7.straight(coefd7*-270)
+    print(senzorGiro.angle())
     #ne intoarcem paralel cu turnul
-    zap6.turn(coeft6*-50)
+    zap7.turn(coeft7*-50)
+    print(senzorGiro.angle())
     #mergem pana in fata turnului paralel
-    zap6.straight(coefd6*-680)
+    zap7.straight(coefd7*-670)
+    print(senzorGiro.angle())
     #ne intoarcem spre muzeu
-    zap6.turn(coeft6*90)
+    zap7.stop()
+    gyrogoto(0, 100)
+    print(senzorGiro.angle())
     #lasam tot in muzeu
-    zap6.straight(coefd6*-70)
-    #mergem in turn
-    zap6.straight(coefd6*70)
-    zap6.turn(20)
-    zap6.straight(coefd6*100)
-    zap6.turn(-20)
-    zap6.straight(coefd6*60)
-    #facem turnul
+    zap7.straight(coefd7*-100)
+    zap7.stop()
+    senzorGiro.reset_angle(0)
+    zap7.straight(coefd7*50)
+    zap7.turn(coeft7*25)
+    zap7.straight(coefd7*120)
+    zap7.turn(coeft7*-25)
+    zap7.straight(coefd7*80)
     bratSt.run_time(-1000, 4600)
-    #ne indepartam de turn
     bratSt.run_time(1000, 1000)
-    zap6.straight(coefd6*-90)
-    zap6.turn(coeft6*-100)
-    zap6.straight(coefd6*640)
-    zap6.turn(coeft6*75)
-    zap6.straight(coefd6*700)
+    zap7.straight(coefd7*-90)
+    zap7.turn(coeft7*-100)
+    zap7.straight(coefd7*640)
+    zap7.turn(coeft7*75)
+    zap7.straight(coefd7*700)
+    
+    bratDr.stop()
+    bratSt.stop()
 
 def run07():
     #SINA
-    zap7.straight(coeft2*-400)
-    zap7.straight(coeft2*400)
+    zap8.straight(coefd8*-400)
+    zap8.straight(coefd8*400)
+
+    bratDr.stop()
+    bratSt.stop()
+
+def run08():
+    #luam specialistii de langa sina si cocos
+    zap9.straight(coefd9*30)
+    #semi-cerc
+    zap9.reset()
+    while zap9.distance() < 250:
+        zap9.drive(100 * coefd9, -25)
+    #iesim din while
+    zap9.straight(coefd9*5)
+    zap9.stop()
+    zap9.reset()
+
+    
+    zap9.turn(-160 * coeft9)
+    zap9.straight(coefd9*400)
+    bratDr.stop()
+    bratSt.stop()
 
 def run09():
-    #GAINA/COCOS
+    senzorGiro.reset_angle(0)
+    #!GAINA/COCOS
     #diagonala
-    zap9.straight(coefd9*130)
+    zap10.straight(coefd10*170)
     #ne intoarcem spre cocos
-    zap9.turn(coeft9*-45)
+    zap10.stop()
+    gyrogoto(-45, 100)
     #mergem in cocos
-    zap9.straight(coefd9*330)
-    zap9.turn(coeft9*-15)
+    zap10.straight(coefd10*350)
+    zap10.stop()
+    gyrogoto(-45, 100)
     #actionam bratul pentru cocos
-    bratSt.run_time(1000, 2050)
-    zap9.straight(coefd9*30)
+    zap10.straight(coefd10*20)
+    bratSt.run_time(1000, 2120)
     #facem un unghi ca sa facem imprimanta
-    zap9.turn(coeft9*-10)
+    zap10.turn(coeft10*-10)
     #ne intoarcem in baza
-    zap9.straight(coefd9*-600)
+    zap10.straight(coefd10*-600)
 
-def run12():
+    bratDr.stop()
+    bratSt.stop()
+
+def run10():
     #LANSAT OAMENI
-    zap2.turn(coeft2*-20)
+    zap11.turn(coeft11*-20)
     bratSt.run_time(1000, 1400)
     bratSt.run_time(-1000, 1400)
-    zap2.straight(coeft2*20)
-    zap2.turn(coeft2*-55)
-    zap2.straight(coeft2*-90)
+    zap11.straight(coeft11*20)
+    zap11.turn(coeft11*-55)
+    zap11.straight(coefd11*-90)
     wait(1000)
     bratSt.run_time(900, 1500)
     bratSt.run_time(-900, 1500)
-    zap2.turn(coeft2*-30)
+    zap11.turn(coeft11*-30)
     bratSt.run_time(900, 1400)
     bratSt.run_time(-900, 1400)
 
+    bratDr.stop()
+    bratSt.stop()
+
 def run11():
-    while True:
-        
-
-#*********BRAT OAMENII*********
-
-def miscaBrat(cm):
-    bratSt.run_time(1000, cm**2.2)
+    senzorGiro.reset_angle(0)
+    gyrogoto(90, 100)
+    gyrogoto(-90, 100)
+    gyrogoto(0, 100)
+#BRAT OAMENII****
+'''
+def miscaBrat():
     bratSt.run_time(700, 500)
     zap10.straight(coefd10*-200)
     zap10.reset()
@@ -491,10 +605,11 @@ def miscaBrat(cm):
     zap10.straight(coefd10*-100)
     zap10.stop()
     zap10.reset()
+'''
 
-#*********DISPLAY*********
+#DISPLAY****
 #FUNCTIA DE AFISARE
-x = 11
+x = 1
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
@@ -504,14 +619,14 @@ def update_screen(x):
 
 touch=0
 
-#*********DISPLAY*********
+#DISPLAY****
 while True:
     #verificare apasare butoane
     if Button.UP in zapdisplay.buttons.pressed() and x < 13:
         x = x+1
         update_screen(x)
         wait(700)
-
+    
     elif Button.DOWN in zapdisplay.buttons.pressed() and x > 1:
         x = x-1
         update_screen(x)
@@ -523,7 +638,6 @@ while True:
             run01()
             touch = 0
     if int(x)==2 and senzorApasare.pressed():
-        wait(200)
         touch = 1
         if senzorApasare.pressed() and touch==1:
             run02(1)
