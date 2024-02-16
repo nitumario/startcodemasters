@@ -1,9 +1,0 @@
-def Gyro_move(degrees, Gdegree):
-
-    while st.angle() < degrees+1:
-        if senzorGiro.angle() > Gdegree:
-            zap1.turn(-coeft1*(senzorGiro.angle()-Gdegree))
-        if senzorGiro.angle() < Gdegree:
-            zap1.turn(coeft1*(Gdegree-senzorGiro.angle()-Gdegree))
-
-        zap1.straight(15)
