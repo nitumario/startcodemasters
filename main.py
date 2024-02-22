@@ -141,6 +141,9 @@ def thread_bratSt(bratSt_speed, bratSt_angles, extra):
 def thread_bratDr(bratDr_speed, bratDr_angles):
     with global_lock:
         bratDr.run_time(bratDr_speed, bratDr_angles)
+
+
+    
 #*URMARIRE LINIE***
 
 def urmarireLinie1(degrees):
@@ -154,6 +157,39 @@ def urmarireLinie1(degrees):
             zap1.turn(-10)
 
 #*GYRO FUNCTIONS***
+
+def gyrogoto(scop, viteza):
+    while senzorGiro.angle() < scop:
+        st.run(viteza)
+        dr.run(-viteza)
+        print(senzorGiro.angle())
+        if scop-senzorGiro.angle() > 10:
+            print("a iesit1")
+            break
+        elif scop-senzorGiro.angle() < 10:
+            print("a iesit2")
+            break
+    st.hold()
+    dr.hold()
+
+    if scop-senzorGiro.angle() > 10:
+        print("a iesit3")
+        zapT.turn(coeftT*scop-senzorGiro.angle())
+        zapT.stop()
+    elif scop-senzorGiro.angle() < 10:
+        print("a iesit4")
+
+        zapT.turn(coeftT*scop-senzorGiro.angle())
+        zapT.stop()
+
+
+    while senzorGiro.angle() > scop:
+        st.run(-viteza)
+        dr.run(viteza)
+        print(senzorGiro.angle())
+    st.hold()
+    dr.hold()
+
 
 def gyroSpeedLog(TBR):
     #TBR vine de la Time Between Reads si este in ms
@@ -312,90 +348,101 @@ def pidLinie(gradR):
 bratSt.stop()
 bratDr.stop()
 
-def log_dis():
-    
+def run01(): #oameni si imprimanta baza dreapta
+
     zap1 = DriveBase(st, dr, 56, 117.5)
     zap1.settings(1000, 1000, 100, 100)
-    timer1=StopWatch()
-    datalog_file=DataLog("time","distance", "gyro_angle", name="log_dis", timestamp=False, extension="csv", append=False)
-    while True:
-            time=timer1.time()
-            dis = zap1.distance()
-            gyro_angle=senzorGiro.angle()
 
-            datalog_file.log(time, dis, gyro_angle)
+    #luat 2 oameni
+    bratDr.run_time(500, 700)
+    zap1.straight(230)
+    zap1.turn(-70)
+    zap1.straight(20)
+    zap1.turn(-50)
+    bratDr.run_time(-150, 1300)
+    zap1.turn(50)
+    zap1.straight(-200)
 
-def log_indiv():
-    timer1=StopWatch()
-    datalog_file=DataLog("time","lmotor", "rmotor", name="log_dis_indiv", timestamp=False, extension="csv", append=False)
-    while True:
-            time=timer1.time()
-            lmotor = st.angle()
-            rmotor=dr.angle()
-            datalog_file.log(time, lmotor, rmotor)
-def log_indiv_gyro():
-    timer1=StopWatch()
-    datalog_file=DataLog("time","lmotor", "rmotor","gyro", name="log_dis_indiv", timestamp=False, extension="csv", append=False)
-    while True:
-            time=timer1.time()
-            lmotor = st.angle()
-            rmotor=dr.angle()
-            gyro = senzorGiro.angle()
-            datalog_file.log(time, lmotor, rmotor, gyro)
+    wait(4000)
 
-def run_by_dis(target_angle_fit):
-    while True:
-        print("giro: " ,senzorGiro.angle())
-        print("distanta ", zap1.distance())
-        kp = -10
-        x = zap1.distance() + 0
-        target_angle_fit
-        fit_R2 = 0.995
-        if x <= 280 or x > 1300:
-            target_angle = 0
-        else:
-            target_angle = target_angle_fit
-        gyro_anglee = senzorGiro.angle()
-        error = (gyro_anglee - target_angle)
-        steering_correction = kp * error
-        zap1.drive(100,steering_correction)
-        Max_distance = 1250
-        if zap1.distance() >= Max_distance:
-            break
-    zap1.stop()
+    #cocos si imprimanta
+    zap1.straight(160)
+    zap1.turn(-40)
 
+    zap1.straight(320)
+    bratSt.run_angle(1000, 600)
+    bratDr.run_time(500, 900)
 
-def run_by_dis_indiv(target_angle_fit):
-    while True:
-        print("giro: " ,senzorGiro.angle())
-        print("distanta ", zap1.distance())
-        kp = -10
-        x = zap1.distance() + 0
-        target_angle_fit
-        fit_R2 = 0.995
-        if x <= 280 or x > 1300:
-            target_angle = 0
-        else:
-            target_angle = target_angle_fit
-        gyro_anglee = senzorGiro.angle()
-        error = (gyro_anglee - target_angle)
-        steering_correction = kp * error
-        zap1.drive(100,steering_correction)
-        Max_distance = 1250
-        if zap1.distance() >= Max_distance:
-            break
-    zap1.stop()
+    zap1.straight(-450)
 
+    bratSt.stop()
+    bratDr.stop()
 
-def run01():
-    zap1 = DriveBase(st, dr, 56, 117.5)
-    zap1.settings(1000, 1000, 100, 100)
-    senzorGiro.reset_angle(0)
-    log_indiv_gyro()
-    #run_by_dis(0.499 + -0.0642*x + 6.25E-04*x*x + -1.9E-06*x*x*x + 1.75E-09*x*x*x*x + -4.85E-13*x*x*x*x*x)
 
 def run02():
-    bratSt.run(-1000)   
+    zap2.straight(320)
+    zap2.turn(-39)
+    zap2.straight(330)
+    zap2.turn(85)
+    zap2.straight(190)
+    zap2.turn(-15)
+    bratSt.run_angle(200, 300)
+    _thread.start_new_thread(thread_zap1,(40,))
+    bratDr.run_angle(500, 700)
+    zap2.straight(-100)
+    zap2.turn(110)
+    zap2.straight(450)
+
+def run03():
+    zap3.straight(-350)
+    zap3.straight(350)
+
+def run04():
+    bratDr.run_angle(-100, 10)
+    zap4.straight(1500)
+    zap4.turn(155)
+    bratDr.run_angle(100, 200)
+
+
+def run05():
+    #zap5 = DriveBase(st, dr, 56, 117.5)
+    zap5.settings(700, 700, 100, 100)
+
+    zap5.straight(-110)
+
+    zap5.stop()
+    senzorGiro.reset_angle(0)
+    while(senzorGiro.angle()<90):
+        st.run(100)
+        dr.run(-100)
+    dr.stop()
+    st.stop()
+
+    zap5.straight(-410)
+    zap5.turn(-65)
+    zap5.straight(-610)
+    zap5.turn(-32)
+    zap5.straight(190)
+    bratSt.run_angle(-500, 1950)
+    zap5.straight(-50)
+    zap5.turn(60)
+    zap5.straight(230)
+    zap5.turn(-60)
+    zap5.straight(-200)
+    wait(500)
+    zap5.straight(130)
+    zap5.turn(70)
+    zap5.straight(-380)
+    zap5.turn(50)
+    zap5.straight(-400)
+    zap5.turn(40)
+    zap5.straight(-700)
+    
+
+    
+
+
+
 
 
 
@@ -410,7 +457,7 @@ def run02():
 
 #*DISPLAY***
 #FUNCTIA DE AFISARE
-x = 1
+x = 5
 zapdisplay.screen.draw_text(80, 50, str(x), Color.BLACK, None) 
 zap.speaker.beep() 
 
