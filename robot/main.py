@@ -34,4 +34,4 @@ while True:
         wait(700)
     elif senzorApasare.pressed():
         run = runs[x - 1]
-        run()
+        run()   

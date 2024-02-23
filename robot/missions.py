@@ -6,7 +6,7 @@ from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 import time
-import threading
+import _thread
 from setup import Robot
 
 zap1 = Robot(56,117.5)
@@ -23,9 +23,11 @@ def run01(): #oameni si imprimanta baza dreapta
 
 
 def run02():
-    pass
-    
-
+    zap1.run_by_angle_thread(500, 360, zap1.bratSt, zap1.lock0)
+    zap1.run_by_angle_thread(500,360,zap1.bratDr, zap1.lock1)
+    wait(1000)
+    zap1.thread_stop()
+    EV3Brick().speaker.beep(100, 500)
 def run03():
     pass
 

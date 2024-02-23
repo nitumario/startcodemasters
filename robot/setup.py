@@ -14,9 +14,7 @@ class Robot:
         self.wheel_diameter = wheel_diameter
         self.axle_track = axle_track
         self.ev3 = EV3Brick()
-        self.display = EV3Brick()
-        self.timer = StopWatch()
-        self.speaker = EV3Brick
+
         self.record = False
 
         self.datalog = self.datalog = DataLog('time', 'distance', 'gyroangle', 'lcolor','rcolor', "llspd",'rlspd',"lmspd","rmspd",name="log_robot", timestamp= False, extension = 'csv', append=True)
@@ -86,9 +84,46 @@ class Robot:
 
 
         self.d = DriveBase(self.st, self.dr, self.wheel_diameter, self.axle_track)
-        
-    def multithreading():
-        
+        self.coefd = 1
+        self.coeft = 1
+
+    lock0 =_thread.allocate_lock()
+    lock1 = _thread.allocate_lock()
+    lock2 = _thread.allocate_lock()
+    lock3 = _thread.allocate_lock()
+
+    def straight_threadSET(self, angles,lock):
+        with lock:
+            self.d.straight(self.coefd * angles)
+
+    def run_by_time_threadSET(self,speed,time,motor,lock):
+        with lock:
+            motor.run_time(speed, time)
+
+    def run_by_angle_threadSET(self,speed,angle,motor,lock):
+        with lock:
+            motor.run_angle(speed, angle)
+    global threadstop
+    threadstop = False
+    def thread_start(self):
+        threadstop = False
+    def thread_stop(self):
+        threadstop = True
+
+    def straight_thread(self, angles, lock):
+        if not threadstop:
+            _thread.start_new_thread(self.straight_threadSET, (angles,lock))
+
+    def run_by_time_thread(self, speed,time,motor, lock):
+        if not threadstop:
+            _thread.start_new_thread(self.run_by_time_threadSET, (speed,time,motor,lock))
+
+    def run_by_angle_thread(self, speed,angle,motor, lock):
+        if not threadstop:
+            _thread.start_new_thread(self.run_by_angle_threadSET, (speed,angle,motor,lock))
+
+    
+            
 
     def datalog(self, data_logger):
         if self.RecordOn is True: data_logger=True
