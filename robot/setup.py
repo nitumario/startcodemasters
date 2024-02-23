@@ -133,3 +133,43 @@ class Robot:
                             self.bratSt.speed(), self.bratDr.speed(), self.st.speed(), self.dr.speed())
         else:
             pass
+        
+    def gyrogoto(self, scop, viteza, abandon_timer = 4000):
+        self.d.stop()
+        timer = StopWatch()
+        while(timer.time()<abandon_timer):
+            print("timp",timer.time())
+            while self.senzorGiro.angle() < scop:
+                self.st.run(viteza)
+                self.dr.run(-viteza)
+                print(self.senzorGiro.angle())
+            self.st.hold()
+            self.dr.hold()
+            if scop-self.senzorGiro.angle() > 10:
+                print("a iesit1")
+                self.d.turn(self.coeft*scop-self.senzorGiro.angle())
+                break
+            elif scop-self.senzorGiro.angle() < -10:
+                print("a iesit2")
+                self.d.turn(self.coeft*scop-self.senzorGiro.angle())
+                break
+            self.st.hold()
+            self.dr.hold()
+
+            if scop-self.senzorGiro.angle() > 10:
+                print("a iesit3")
+                self.d.turn(self.coeft*scop-self.senzorGiro.angle())
+                self.stop()
+            elif scop-self.senzorGiro.angle() < -10:
+                print("a iesit4")
+
+                self.d.turn(self.coeft*scop-self.senzorGiro.angle())
+                self.stop()
+
+
+            while self.senzorGiro.angle() > scop:
+                self.st.run(-viteza)
+                self.dr.run(viteza)
+                print(self.senzorGiro.angle())
+            self.st.hold()
+            self.dr.hold()

@@ -10,8 +10,8 @@ import _thread
 from setup import Robot
 
 zap1 = Robot(56,117.5)
-def run01(): #oameni si imprimanta baza dreapta
-    #luat 2 oameni
+zap1.d.settings(1000,1000,100,100)
+def run01():
     zap1.bratDr.run_time(500, 700)
     zap1.d.straight(230)
     zap1.d.turn(-70)
@@ -21,13 +21,27 @@ def run01(): #oameni si imprimanta baza dreapta
     zap1.d.turn(50)
     zap1.d.straight(-200)
 
+    wait(4000)
+
+    zap1.d.straight(160)
+    zap1.d.turn(-40)
+
+    zap1.d.straight(320)
+    zap1.bratSt.run_angle(1000, 600)
+    zap1.bratDr.run_time(500, 900)
+
+    zap1.d.straight(-450)
+
+    zap1.bratSt.stop()
+    zap1.bratDr.stop()
+
+
 
 def run02():
-    zap1.run_by_angle_thread(500, 360, zap1.bratSt, zap1.lock0)
-    zap1.run_by_angle_thread(500,360,zap1.bratDr, zap1.lock1)
-    wait(1000)
-    zap1.thread_stop()
-    EV3Brick().speaker.beep(100, 500)
+    zap1.senzorGiro.reset_angle
+    zap1.d.straight(300)
+    zap1.gyrogoto(360, 100)
+
 def run03():
     pass
 
