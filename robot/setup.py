@@ -15,10 +15,6 @@ class Robot:
         self.axle_track = axle_track
         self.ev3 = EV3Brick()
 
-        self.record = False
-
-        self.datalog = self.datalog = DataLog('time', 'distance', 'gyroangle', 'lcolor','rcolor', "llspd",'rlspd',"lmspd","rmspd",name="log_robot", timestamp= False, extension = 'csv', append=True)
-
         while True:
             try:
                 self.st = Motor(Port.B, positive_direction=Direction.COUNTERCLOCKWISE)
