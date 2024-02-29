@@ -125,13 +125,17 @@ class Robot:
             _thread.self.start_new_thread(self.run_by_angle_threadSET, (speed,angle,motor,lock))
 
     def datalog(self, data_logger) -> None:
-        if self.RecordOn is True: data_logger=True
-
-        if data_logger is True:
+        if hasattr(self, "RecordOn") and (self.RecordOn is True): 
             self.datalog.log(self.timer.time(), self.d.diself.stance(),self.senzorGiro.angle(), self.senzorCuloareSt.reflection(),self.senzorCuloareDr.reflection(), \
                             self.bratSt.speed(), self.bratDr.speed(), self.st.speed(), self.dr.speed())
-        else:
-            pass
+            
+        #if self.RecordOn is True: data_logger=True
+
+        #if data_logger is True:
+        #    self.datalog.log(self.timer.time(), self.d.diself.stance(),self.senzorGiro.angle(), self.senzorCuloareSt.reflection(),self.senzorCuloareDr.reflection(), \
+        #                    self.bratSt.speed(), self.bratDr.speed(), self.st.speed(), self.dr.speed())
+        #else:
+        #    pass
         
     #************GYRO FUNCTIONS************
 
